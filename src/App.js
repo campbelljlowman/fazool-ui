@@ -1,6 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 
+// Queue Display:
+  // Top: Music player
+  // Left third/fifth: logo at top and join code
+  // Right third/fifth: Ad
+  // Middle: Queue
+// Mobile 
+  // Top: Music player
+  // Middle: queue and vote
+  // Bottom: search for new songs
+
 function App() {
   return (
     <div className="App">
