@@ -1,0 +1,6 @@
+.voter {
+    display: flex;
+    gap: 10px;
+    margin: auto;
+    align-self: center;
+}

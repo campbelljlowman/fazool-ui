@@ -1,0 +1,15 @@
+.song {
+    display: flex;
+    flex-grow: 2;
+    gap: 10px;
+    align-self: center;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-title {
+    font-weight: bold;
+}
