@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-export default class Ad extends PureComponent {
-  render() {
-    return (
-      <div>Ad</div>
-    )
-  }
+function Ad () {
+  return (
+    <div>Ad</div>
+    );
 }
+
+export default Ad;

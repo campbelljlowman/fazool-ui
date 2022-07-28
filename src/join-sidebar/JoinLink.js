@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-export default class JoinLink extends PureComponent {
-  render() {
-    return (
-      <div >JoinLink</div>
-    )
-  }
+function JoinLink () {
+  return (
+    <div >JoinLink</div>
+  );
 }
+
+export default JoinLink;

@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 
-export default class QueueHeader extends PureComponent {
-  render() {
-    return (
-      <div>QueueHeader</div>
-    )
-  }
+function QueueHeader () {
+  return (
+    <div>QueueHeader</div>
+  );
 }
+
+export default QueueHeader;

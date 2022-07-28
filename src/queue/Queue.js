@@ -1,19 +1,31 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import Header from './QueueHeader'
 import QueueItem from './QueueItem'
 
-export default class Queue extends PureComponent {
-  render() {
-    return (
-      <div > 
-          <Header></Header>
-          <div>
-              <QueueItem></QueueItem>
-              <QueueItem></QueueItem>
-              <QueueItem></QueueItem>
-              <QueueItem></QueueItem>
-          </div>
-      </div>
-    )
-  }
+function Queue () {
+  // const [songs, setSongs] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchSongs = async () => {
+  //     const rsp = await fetch("/houses.json")
+  //     const songs = await rsp.json();
+  //     setSongss(songs);
+  //   };
+  //   setSongs();
+  // }, []);
+
+
+  return (
+    <div > 
+        <Header></Header>
+        <div>
+            <QueueItem></QueueItem>
+            <QueueItem></QueueItem>
+            <QueueItem></QueueItem>
+            <QueueItem></QueueItem>
+        </div>
+    </div>
+  );
 }
+
+export default Queue;
