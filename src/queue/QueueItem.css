@@ -1,0 +1,18 @@
+.queue-item {
+    display: flex;
+    margin-top: 22.5px;
+
+}
+
+.vote {
+    display: flex;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.voter {
+    display: flex;
+    gap: 10px;
+    margin: auto;
+    align-self: center;
+}

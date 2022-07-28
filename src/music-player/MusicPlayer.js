@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
-import Song from './Song';
+import Song from '../shared-components/Song';
 import './MusicPlayer.css'
 
 export default class MusicPlayer extends PureComponent {

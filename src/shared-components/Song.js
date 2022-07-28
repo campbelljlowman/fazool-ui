@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import albumCover from './assets/424958.png';
+import albumCover from '../assets/424958.png';
 import './Song.css'
 
 export default class Song extends PureComponent {

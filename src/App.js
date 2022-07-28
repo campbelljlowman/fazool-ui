@@ -1,5 +1,9 @@
-import Session from './Session';
-
+import MusicPlayer from './music-player/MusicPlayer'
+import Queue from './queue/Queue'
+import Ad from './ads/Ad'
+import JoinLink from './join-sidebar/JoinLink'
+import { Container, Row, Col } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Queue Display:
   // Top: Music player
   // Left third/fifth: logo at top and join code
@@ -23,8 +27,22 @@ function App() {
   // }, []);
 
   return (
-    <Session />
-  );
+    <>
+    <Container>
+      <Row>
+        <Col xs={3}>
+         <JoinLink />
+        </Col>
+        <Col xs={6}>
+          <MusicPlayer />
+          <Queue />
+        </Col>
+        <Col xs={3}>
+          <Ad />
+        </Col>
+      </Row>
+    </Container>
+    </>  );
 }
 
 export default App;

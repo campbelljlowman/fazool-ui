@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Header from './Header'
+import Header from './QueueHeader'
 import QueueItem from './QueueItem'
 
 export default class Queue extends PureComponent {
