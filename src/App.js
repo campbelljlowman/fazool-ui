@@ -11,6 +11,17 @@ import Session from './Session';
   // Bottom: search for new songs
 
 function App() {
+  // const [songs, setSongs] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchSongs = async () => {
+  //     const rsp = await fetch("/houses.json")
+  //     const songs = await rsp.json();
+  //     setSongss(songs);
+  //   };
+  //   setSongs();
+  // }, []);
+
   return (
     <Session />
   );

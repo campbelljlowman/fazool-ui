@@ -8,9 +8,9 @@ import './MusicPlayer.css'
 export default class MusicPlayer extends PureComponent {
   render() {
     return (
-        <div class="music-player" >
+        <div className="music-player" >
             <Song></Song>
-            <div class="media-buttons">
+            <div className="media-buttons">
                 <Button variant="outline-dark" className="play-pause-button"><FontAwesomeIcon icon={faPlay} /></Button>
                 <Button variant="outline-dark" className="advance-button"><FontAwesomeIcon icon={faForward} /></Button>
             </div>

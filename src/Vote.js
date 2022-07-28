@@ -4,7 +4,7 @@ import './Vote.css'
 export default class Vote extends PureComponent {
   render() {
     return (
-        <div class='vote'> 15 </div>
+        <div className='vote'> 15 </div>
         )
   }
 }

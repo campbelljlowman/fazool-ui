@@ -7,7 +7,7 @@ import './QueueItem.css'
 export default class QueueItem extends PureComponent {
   render() {
     return (
-      <div class="queue-item">
+      <div className="queue-item">
           <Song></Song>
           <Vote></Vote>
           <Voter></Voter>

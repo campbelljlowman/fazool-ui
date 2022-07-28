@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "title": "The Jackie",
+        "artist": "J. Cole",
+        "votes": 0,
+        "image": "424958"
+    },
+    {
+        "id": 2,
+        "title": "Myron",
+        "artist": "Lil Uzi Vert",
+        "votes": 0,
+        "image": "478207"
+    },
+    {
+        "id": 3,
+        "title": "Wagon Wheel",
+        "artist": "Darius Rucker",
+        "votes": 0,
+        "image": "948504"
+    },
+    {
+        "id": 4,
+        "title": "Change",
+        "artist": "J. Cole",
+        "votes": 0,
+        "image": "203848"
+    },
+    {
+        "id": 5,
+        "title": "Fool's Gold",
+        "artist": "Aries",
+        "votes": 0,
+        "image": "094829"
+    },
+    {
+        "id": 6,
+        "title": "Go Crazy",
+        "artist": "Chris Brown",
+        "votes": 0,
+        "image": "483045"
+    },
+    {
+        "id": 7,
+        "title": "Darkside",
+        "artist": "iann dior",
+        "votes": 0,
+        "image": "545673"
+    },
+    {
+        "id": 8,
+        "title": "Venetia",
+        "artist": "Lil Uzi Vert",
+        "votes": 0,
+        "image": "223654"
+    },
+    {
+        "id": 9,
+        "title": "223's",
+        "artist": "YNW Melly",
+        "votes": 0,
+        "image": "987495"
+    },
+    {
+        "id": 10,
+        "title": "Emotionally Scarred",
+        "artist": "Lil Baby",
+        "votes": 0,
+        "image": "522490"
+    }
+]
