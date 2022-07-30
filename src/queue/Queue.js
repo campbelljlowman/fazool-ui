@@ -1,28 +1,30 @@
-import React from 'react'
-import Header from './QueueHeader'
+import React, { useEffect, useState } from 'react'
+import QueueHeader from './QueueHeader'
 import QueueItem from './QueueItem'
 
 function Queue () {
-  // const [songs, setSongs] = useState([]);
+  const [queue, setQueue] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchSongs = async () => {
-  //     const rsp = await fetch("/houses.json")
-  //     const songs = await rsp.json();
-  //     setSongss(songs);
-  //   };
-  //   setSongs();
-  // }, []);
+  useEffect(() => {
+    const fetchSongs = async () => {
+      const rsp = await fetch("/songs.json");
+      const songs = await rsp.json();
+      setQueue(songs);
+    };
+    fetchSongs().catch(console.error);
+  }, []);
 
+  if(!queue){
+    return null;
+  }
 
   return (
     <div > 
-        <Header></Header>
+        <QueueHeader></QueueHeader>
         <div>
-            <QueueItem></QueueItem>
-            <QueueItem></QueueItem>
-            <QueueItem></QueueItem>
-            <QueueItem></QueueItem>
+            {queue.map(song => (
+              <QueueItem key={song.id} song={song} />
+            ))}
         </div>
     </div>
   );
