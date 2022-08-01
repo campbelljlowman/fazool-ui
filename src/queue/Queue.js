@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import QueueHeader from './QueueHeader'
 import QueueItem from './QueueItem'
+import './Queue.css'
 
 function Queue () {
   const [queue, setQueue] = useState([]);
@@ -19,9 +20,9 @@ function Queue () {
   }
 
   return (
-    <div > 
+    <div> 
         <QueueHeader></QueueHeader>
-        <div>
+        <div className='queue'>
             {queue.map(song => (
               <QueueItem key={song.id} song={song} />
             ))}

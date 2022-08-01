@@ -4,6 +4,7 @@ import Ad from './ads/Ad'
 import JoinLink from './join-sidebar/JoinLink'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SearchBox from './search-box/SearchBox'
 // Queue Display:
   // Top: Music player
   // Left third/fifth: logo at top and join code
@@ -36,6 +37,7 @@ function App() {
         <Col xs={6}>
           <MusicPlayer />
           <Queue />
+          <SearchBox />
         </Col>
         <Col xs={3}>
           <Ad />
