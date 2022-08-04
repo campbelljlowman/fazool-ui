@@ -12,7 +12,7 @@ function Queue () {
       const songs = await rsp.json();
       setQueue(songs);
     };
-    fetchSongs().catch(console.error);
+    fetchSongs().catch(console.error("Error reading songs.json file"));
   }, []);
 
   if(!queue){
