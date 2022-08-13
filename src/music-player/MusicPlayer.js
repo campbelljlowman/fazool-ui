@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../shared-components/Song';
 import './MusicPlayer.css'
+import QueueHeader from '../queue/QueueHeader';
 
 function MusicPlayer () {
   const [currentlyPlaying, setCurrentlyPlaying] = useState([]);
@@ -26,6 +27,7 @@ function MusicPlayer () {
   }
 
   return (
+    <div>
       <div className="music-player" >
           <Song song={currentlyPlaying} />
           <div className="media-buttons">
@@ -33,6 +35,9 @@ function MusicPlayer () {
               <Button variant="outline-dark" className="advance-button" onClick={advance}><FontAwesomeIcon icon={faForward} /></Button>
           </div>
       </div>
+      {/*Render this here to allow queue to scroll properly*/}
+      <QueueHeader></QueueHeader>
+    </div>
   );
 }
 

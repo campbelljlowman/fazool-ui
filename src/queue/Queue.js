@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import QueueHeader from './QueueHeader'
 import QueueItem from './QueueItem'
 import './Queue.css'
 
@@ -20,14 +19,11 @@ function Queue () {
   }
 
   return (
-    <div className='queue-container'> 
-        <QueueHeader></QueueHeader>
-        <div className='queue'>
-            {queue.map(song => (
-              <QueueItem key={song.id} song={song} />
-            ))}
-        </div>
-    </div>
+      <div className='queue'>
+          {queue.map(song => (
+            <QueueItem key={song.id} song={song} />
+          ))}
+      </div>
   );
 }
 

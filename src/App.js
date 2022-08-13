@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import SearchBox from './search-box/SearchBox'
+
 // Queue Display:
   // Top: Music player
   // Left third/fifth: logo at top and join code

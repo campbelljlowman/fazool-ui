@@ -1,9 +1,8 @@
-/* .main-column {
+.main-column {
     display: flex;
     flex-direction: column;
-    /* justify-content: space-between; */
-    /* flex-grow: 1; */
-/* } */
+    height: 100vh;
+}
 
 /* #root {
     position: fixed;

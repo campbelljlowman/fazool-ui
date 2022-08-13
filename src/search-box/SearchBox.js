@@ -1,6 +1,7 @@
 import React,  { useState, useEffect, useCallback } from 'react'
 import {Buffer} from 'buffer'
 import SearchResults from './SearchResults';
+import './SearchBox.css'
 
 function SearchBox () {
     const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
@@ -70,7 +71,7 @@ function SearchBox () {
     }, [getClientToken]);
 
     return(
-        <div>
+        <div className='search-box'>
         <form>
             {/* <label>
                 Song:
