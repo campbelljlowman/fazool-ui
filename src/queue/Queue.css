@@ -4,6 +4,7 @@
     border: black;
     border-style: solid;
     padding: 5px;
+    border-radius: 15px;
 }
 
 .queue::-webkit-scrollbar {
