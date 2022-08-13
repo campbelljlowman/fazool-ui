@@ -20,7 +20,7 @@ function Queue () {
   }
 
   return (
-    <div> 
+    <div className='queue-container'> 
         <QueueHeader></QueueHeader>
         <div className='queue'>
             {queue.map(song => (

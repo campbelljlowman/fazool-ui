@@ -1,0 +1,17 @@
+.song-header {
+    font-weight: bold;
+    font-size: large;
+    margin-left: 10px;
+}
+
+.votes-header {
+    font-weight: bold;
+    font-size: large;
+    margin-right: 40px;
+}
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
