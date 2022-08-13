@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../shared-components/Song';

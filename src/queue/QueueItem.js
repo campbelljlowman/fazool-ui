@@ -1,7 +1,6 @@
 import React from 'react'
 import Song from '../shared-components/Song'
 import './QueueItem.css'
-import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 

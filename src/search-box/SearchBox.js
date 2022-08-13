@@ -1,6 +1,5 @@
 import React,  { useState, useEffect, useCallback } from 'react';
 import {Buffer} from 'buffer';
-import { Button } from 'react-bootstrap';
 import SearchResults from './SearchResults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
