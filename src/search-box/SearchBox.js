@@ -1,6 +1,10 @@
-import React,  { useState, useEffect, useCallback } from 'react'
-import {Buffer} from 'buffer'
+import React,  { useState, useEffect, useCallback } from 'react';
+import {Buffer} from 'buffer';
+import { Button } from 'react-bootstrap';
 import SearchResults from './SearchResults';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+
 import './SearchBox.css'
 
 function SearchBox () {
@@ -77,7 +81,7 @@ function SearchBox () {
                 Song:
             </label> */}
             <input type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
-            <button onClick={searchForSong}>Search</button>
+            <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </form>
         <SearchResults searchResults={searchResults} />
         </div>

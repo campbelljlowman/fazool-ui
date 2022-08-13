@@ -25,8 +25,8 @@ function QueueItem ({ song }) {
         <Song song={song}></Song>
         <div className='vote'> {song.votes} </div>
         <div className="voter">
-          <Button variant="light" className="up-vote" onClick={incrementVote}><FontAwesomeIcon icon={faAngleUp} /></Button>
-          <Button variant="light" className="up-vote" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></Button>
+          <button className="transparent-button" onClick={incrementVote}><FontAwesomeIcon icon={faAngleUp} /></button>
+          <button className="transparent-button" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
         </div>
     </div>
   );

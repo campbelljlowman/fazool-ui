@@ -31,8 +31,8 @@ function MusicPlayer () {
       <div className="music-player" >
           <Song song={currentlyPlaying} />
           <div className="media-buttons">
-              <Button variant="outline-dark" className="play-pause-button" onClick={playPause}><FontAwesomeIcon icon={faPlay}/></Button>
-              <Button variant="outline-dark" className="advance-button" onClick={advance}><FontAwesomeIcon icon={faForward} /></Button>
+              <button className="transparent-button" onClick={playPause}><FontAwesomeIcon icon={faPlay}/></button>
+              <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
           </div>
       </div>
       {/*Render this here to allow queue to scroll properly*/}

@@ -4,6 +4,10 @@
     height: 100vh;
 }
 
+.transparent-button {
+    border: none;
+    background-color: transparent;
+}
 /* #root {
     position: fixed;
     top: 0;
