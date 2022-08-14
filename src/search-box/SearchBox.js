@@ -50,6 +50,7 @@ function SearchBox () {
         if(!rsp.ok){
             console.log(`Request return code: ${rsp.status}`);
             console.log(`Request error body: ${await rsp.text()}`);
+            setSearchResults(null);
         }
         const rspJson = await rsp.json();
         const songs = await rspJson.tracks.items;
@@ -76,9 +77,6 @@ function SearchBox () {
     return(
         <div className='search-box'>
         <form>
-            {/* <label>
-                Song:
-            </label> */}
             <input type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
             <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </form>

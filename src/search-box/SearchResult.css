@@ -1,0 +1,17 @@
+.search-result-item {
+    display: flex;
+    padding: 5px;
+}
+
+.search-results {
+    position: absolute;
+    /* top: 0; */
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    background-color: rgb(254, 168, 168);
+    border-radius: 15px;
+    border: black;
+    border-style: solid;
+    padding: 5px;
+}
