@@ -29,12 +29,12 @@ function SearchBox () {
         }
         const rsp = await fetch("https://accounts.spotify.com/api/token", requestOptions);
         if(!rsp.ok){
-            console.log(`Request return code: ${rsp.status}`);
             console.log(`Request error body: ${await rsp.text()}`);
+        } else{
+            const rspJson = await rsp.json();
+            setSpotifyAccessToken(rspJson.access_token);
+            console.log(rspJson.access_token);
         }
-        const rspJson = await rsp.json();
-        setSpotifyAccessToken(rspJson.access_token);
-        console.log(rspJson.access_token);
     }, []) 
 
     const searchForSong = async (e) => {
@@ -48,26 +48,27 @@ function SearchBox () {
         }
         const rsp = await fetch(`https://api.spotify.com/v1/search?type=track&limit=5&q=${searchValue}`, requestOptions);
         if(!rsp.ok){
-            console.log(`Request return code: ${rsp.status}`);
             console.log(`Request error body: ${await rsp.text()}`);
+            // If request error json body.error.message = "The access token expired", then refresh
             setSearchResults(null);
+        } else {
+            const rspJson = await rsp.json();
+            const songs = await rspJson.tracks.items;
+            // console.log(songs);
+            // TODO: Loop through artists names
+            const songObjects = []
+            songs.forEach(e => {
+                const song = {
+                    'id': e.id,
+                    'title': e.name,
+                    'artist': e.artists[0].name,
+                    'image': e.album.images[0].url
+                }
+                songObjects.push(song);
+            });
+            // console.log(songObjects);
+            setSearchResults(songObjects);
         }
-        const rspJson = await rsp.json();
-        const songs = await rspJson.tracks.items;
-        // console.log(songs);
-        // TODO: Loop through artists names
-        const songObjects = []
-        songs.forEach(e => {
-            const song = {
-                'id': e.id,
-                'title': e.name,
-                'artist': e.artists[0].name,
-                'image': e.album.images[0].url
-            }
-            songObjects.push(song);
-        });
-        // console.log(songObjects);
-        setSearchResults(songObjects);
     }
 
     useEffect(() => {
