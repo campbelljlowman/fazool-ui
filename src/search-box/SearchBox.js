@@ -81,7 +81,7 @@ function SearchBox () {
             <input type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
             <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </form>
-        <SearchResults searchResults={searchResults} />
+        <SearchResults searchResults={searchResults} setSearchResults={setSearchResults} />
         </div>
     );
 }

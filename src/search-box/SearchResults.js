@@ -3,33 +3,31 @@ import Song from '../shared-components/Song';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
 import './SearchResult.css'
+import { useMutation, gql } from '@apollo/client';
 
-function SearchResults ({ searchResults }) {
+const UPDATE_QUEUE = gql`
+  mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
+    updateQueue(sessionID: $sessionID, song: $song) {
+      id
+    }
+  }
+`;
+
+function SearchResults ({ searchResults, setSearchResults }) {
+    const [addTodo, { queryData, loading, error }] = useMutation(UPDATE_QUEUE);
 
     const addSongToQueue = async (song) => {
-        const data = {
+        const songData = {
             'id': song.id,
             'title': song.title,
             'artist': song.artist,
-            'votes': 1,
-            'image': song.image
+            'image': song.image,
+            'vote': 1
         }
 
-        console.log(song)
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify(data)
-        }
-        const rsp = await fetch(`${process.env.REACT_APP_BACKEND_SERVER}/session/81`, requestOptions);
-        console.log(rsp);
-        if(!rsp.ok){
-            console.log(`Request error body: ${await rsp.text()}`);
-        }
-        // const text = await rsp.text();
-        // console.log(text);
+        addTodo({ variables: {sessionID: 81, song: songData}});
+
+        setSearchResults(null);
     }
 
     if(!searchResults){
@@ -41,7 +39,7 @@ function SearchResults ({ searchResults }) {
             {searchResults.map(song => (
                 <div className="search-result-item" key={song.id}>
                     <Song song={song} />
-                    <button song={song} className="transparent-button" onClick={() => addSongToQueue(song)}><FontAwesomeIcon icon={faPlus}/></button>
+                    <button className="transparent-button" onClick={() => addSongToQueue(song)}><FontAwesomeIcon icon={faPlus}/></button>
                 </div>
             ))}  
         </div>  
