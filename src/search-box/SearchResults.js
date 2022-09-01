@@ -14,7 +14,7 @@ const UPDATE_QUEUE = gql`
 `;
 
 function SearchResults ({ searchResults, setSearchResults }) {
-    const [addTodo, { queryData, loading, error }] = useMutation(UPDATE_QUEUE);
+    const [addTodo] = useMutation(UPDATE_QUEUE);
 
     const addSongToQueue = async (song) => {
         const songData = {
