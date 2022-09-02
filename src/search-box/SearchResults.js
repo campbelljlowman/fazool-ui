@@ -14,7 +14,7 @@ const UPDATE_QUEUE = gql`
 `;
 
 function SearchResults ({ searchResults, setSearchResults }) {
-    const [addTodo] = useMutation(UPDATE_QUEUE);
+    const [updateQueue] = useMutation(UPDATE_QUEUE);
 
     const addSongToQueue = async (song) => {
         const songData = {
@@ -25,7 +25,7 @@ function SearchResults ({ searchResults, setSearchResults }) {
             'vote': 1
         }
 
-        addTodo({ variables: {sessionID: 81, song: songData}});
+        updateQueue({ variables: {sessionID: 81, song: songData}});
 
         setSearchResults(null);
     }
