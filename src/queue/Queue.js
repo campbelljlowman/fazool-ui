@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from 'react'
 import QueueItem from './QueueItem'
 import './Queue.css'
+import { useQuery, gql } from '@apollo/client';
+
+const GET_SESSION = gql`
+  query getSession($sessionID: Int!){
+    session(sessionID: $sessionID){
+      queue {
+        id
+        title
+        artist
+        image
+        votes
+      }
+    }
+  }
+`;
 
 function Queue () {
-  const [queue, setQueue] = useState([]);
+  const { loading, error, data } = useQuery(GET_SESSION, { 
+    variables: {sessionID: 81}
+  });
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      const rsp = await fetch("/songs.json");
-      const songs = await rsp.json();
-      setQueue(songs);
-    };
-    fetchSongs().catch(console.error("Error reading songs.json file"));
-  }, []);
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
 
-  if(!queue){
+  if(!data.session[0].queue){
     return null;
   }
 
   return (
       <div className='queue'>
-          {queue.map(song => (
+          {data.session[0].queue.map(song => (
             <QueueItem key={song.id} song={song} />
           ))}
       </div>
