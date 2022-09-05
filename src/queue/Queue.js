@@ -44,9 +44,10 @@ function Queue () {
         variables: {sessionID: 81},
         updateQuery: (prev, {subscriptionData}) => {
           if(!subscriptionData.data) return prev;
-          return Object.assign({}, prev, {
-            queue: subscriptionData.data.sessionUpdated.queue
-          });
+          // TODO: There's probably a better way to merge these resulst
+          const returnSession = structuredClone(prev);
+          returnSession.session[0].queue = subscriptionData.data.sessionUpdated.queue;
+          return returnSession;
         }
       });
     }
