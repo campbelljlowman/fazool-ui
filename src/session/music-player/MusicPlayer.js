@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
-import Song from '../shared-components/Song';
+import Song from '../song/Song';
 import './MusicPlayer.css'
 import QueueHeader from '../queue/QueueHeader';
 

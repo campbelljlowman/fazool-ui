@@ -1,5 +1,5 @@
 import React from "react";
-import Song from '../shared-components/Song';
+import Song from '../song/Song';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
 import './SearchResult.css'

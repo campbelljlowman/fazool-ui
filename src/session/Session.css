@@ -1,0 +1,10 @@
+.main-column {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.transparent-button {
+    border: none;
+    background-color: transparent;
+}
