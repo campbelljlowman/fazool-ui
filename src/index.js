@@ -5,7 +5,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@a
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
-import { BrowserRouter } from "react-router-dom";
 
 const httpLink = new HttpLink({
   uri: `http${process.env.REACT_APP_BACKEND_SERVER}/query`,
@@ -36,9 +35,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <App />
       </ApolloProvider>
   </React.StrictMode>
 );

@@ -1,6 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
 import Session from './session/Session'
+import Home from './website/home/Home';
+import Login from './website/login/Login';
+import Register from './website/register/Register';
+import Welcome from './website/welcome/Welcome';
+import Join from './website/join/Join';
 
 // Website endpoints
 // / - welcome page. Welcome, demo video, sign up
@@ -14,9 +20,17 @@ import Session from './session/Session'
 function App() {
 
   return (
-    <>
-      <Session />
-    </>  );
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Welcome/>} />
+        <Route path='/join' element={<Join/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/home' element={<Home/>} />
+        <Route path='/session' element={<Session/>} />
+      </Routes>
+    </BrowserRouter>
+    );
 }
 
 export default App;
