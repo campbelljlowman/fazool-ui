@@ -3,7 +3,7 @@ import './App.css'
 import Session from './session/Session'
 
 // Website endpoints
-// / - home page. Welcome, demo video, sign up
+// / - welcome page. Welcome, demo video, sign up
 //     buttons for sign up, login, join session, click logo for home, home button for session page if logged in
 // /join - join existion queue
 // /session/sessionID - session for ID
