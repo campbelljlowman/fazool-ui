@@ -27,7 +27,15 @@ function App() {
         <Route path='/login' element={<Login/>} />
         <Route path='/register' element={<Register/>} />
         <Route path='/home' element={<Home/>} />
-        <Route path='/session' element={<Session/>} />
+        <Route path='/session' >
+          <Route path=':sessionID' element={<Session/>} />
+        </Route>
+        <Route path="*" element={
+          <main style={{ padding: "1rem" }}>
+            <p>There's nothing here!</p>
+          </main>
+          }
+        />
       </Routes>
     </BrowserRouter>
     );

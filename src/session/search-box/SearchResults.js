@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus} from '@fortawesome/free-solid-svg-icons'
 import './SearchResult.css'
 import { useMutation, gql } from '@apollo/client';
+import { useParams } from "react-router-dom";
+
 
 const UPDATE_QUEUE = gql`
   mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
@@ -14,6 +16,9 @@ const UPDATE_QUEUE = gql`
 `;
 
 function SearchResults ({ searchResults, setSearchResults }) {
+    const params = useParams();
+    const sessionID = params.sessionID;
+
     const [updateQueue] = useMutation(UPDATE_QUEUE);
 
     const addSongToQueue = async (song) => {
@@ -25,7 +30,7 @@ function SearchResults ({ searchResults, setSearchResults }) {
             'vote': 1
         }
 
-        updateQueue({ variables: {sessionID: 81, song: songData}});
+        updateQueue({ variables: {sessionID: sessionID, song: songData}});
 
         setSearchResults(null);
     }

@@ -1,6 +1,7 @@
 import QueueItem from './QueueItem'
 import './Queue.css'
 import { useQuery, gql } from '@apollo/client';
+import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
 
 const GET_SESSION = gql`
@@ -33,15 +34,18 @@ const SUBSCRIBE_SESSION = gql`
 `;
 
 function Queue () {
+  const params = useParams();
+  const sessionID = params.sessionID;
+
   const { subscribeToMore, loading, error, data } = useQuery(GET_SESSION, { 
-    variables: {sessionID: 81}
+    variables: {sessionID: sessionID}
   });
 
   useEffect (() => {
     const subscribeToSession = () => {
       subscribeToMore({
         document: SUBSCRIBE_SESSION,
-        variables: {sessionID: 81},
+        variables: {sessionID: sessionID},
         updateQuery: (prev, {subscriptionData}) => {
           if(!subscriptionData.data) return prev;
           // TODO: There's probably a better way to merge these resulst
@@ -52,7 +56,7 @@ function Queue () {
       });
     }
     subscribeToSession();
-  }, [subscribeToMore]);
+  }, [subscribeToMore, sessionID]);
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
