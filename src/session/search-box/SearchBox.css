@@ -6,7 +6,7 @@
     position: relative;
 }
 
-input {
+.search-box-input {
     border-radius: 25px;
     padding-top: 5px;
     padding-bottom: 5px;

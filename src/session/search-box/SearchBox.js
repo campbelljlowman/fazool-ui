@@ -78,7 +78,7 @@ function SearchBox () {
     return(
         <div className='search-box'>
         <form>
-            <input type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
+            <input className='search-box-input' type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
             <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </form>
         <SearchResults searchResults={searchResults} setSearchResults={setSearchResults} />
