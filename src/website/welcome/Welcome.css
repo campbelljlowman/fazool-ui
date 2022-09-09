@@ -1,0 +1,16 @@
+.nav-bar {
+    border-bottom: 1px solid black;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav-button {
+    /* background-color: rgb(241, 139, 128); */
+    border-radius: 25px;
+    padding: 5px 15px;
+    text-decoration: none;
+    color: black;
+    list-style: none;
+}
