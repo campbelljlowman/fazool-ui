@@ -21,7 +21,7 @@ function SearchResults ({ searchResults, setSearchResults }) {
 
     const [updateQueue] = useMutation(UPDATE_QUEUE);
 
-    const addSongToQueue = async (song) => {
+    const addSongToQueue = (song) => {
         const songData = {
             'id': song.id,
             'title': song.title,
