@@ -58,16 +58,17 @@ function Queue () {
     subscribeToSession();
   }, [subscribeToMore, sessionID]);
 
+  // This error should keep whole session from loading, not just queue
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  if(!data.session[0].queue){
+  if(!data.session.queue){
     return null;
   }
 
   return (
       <div className='queue'>
-          {data.session[0].queue.map(song => (
+          {data.session.queue.map(song => (
             <QueueItem key={song.id} song={song} />
           ))}
       </div>
