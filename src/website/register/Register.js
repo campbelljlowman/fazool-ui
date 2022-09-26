@@ -1,23 +1,35 @@
 import React, {useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
 const CREATE_USER = gql`
   mutation createUser ($newUser: NewUser!) {
     createUser(newUser: $newUser){
-      firstName
       id
+      firstName
+      lastName
+      email
     }
   }
 `;
 
-function Register() {
+function Register({ setUser }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [createUser] = useMutation(CREATE_USER);
+  const navigate = useNavigate();
+
+  // TODO: Get errors variable here and check 
+  const [createUser, { error }] = useMutation(CREATE_USER, {
+    onCompleted(data){
+    setUser(data.createUser);
+
+    navigate("/home");
+    }
+  });
 
 
   const handleFirstName = (e) => {
@@ -47,10 +59,11 @@ function Register() {
     };
 
     createUser({ variables: {newUser: newUser}});
-
-    console.log("Submit registration");
-    console.log(password);
   }
+
+  // TODO: parse error message and don't replace form
+  if (error) return `Error! ${error.message}`;
+
 
   return (
     <Container>

@@ -1,8 +1,16 @@
 import React from 'react'
 
-function Home() {
+function Home({ user }) {
+
+  if(!user){
+    return "Please register or login";
+  }
+
   return (
-    <div>Home</div>
+    <div>
+      <div>Home</div>
+      <div>Welcome {user.firstName}</div>
+    </div>
   )
 }
 
