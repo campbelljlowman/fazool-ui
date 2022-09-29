@@ -1,10 +1,35 @@
 import React from 'react'
+import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from "react-router-dom";
+
+
+const CREATE_SESSION = gql`
+mutation createSession($userID: Int!) {
+  createSession(userID:$userID){
+    sessionID
+  }
+}
+`
 
 function Home({ user }) {
+  const navigate = useNavigate();
+  const [createSessionMutation, { error }] = useMutation(CREATE_SESSION, {
+    onCompleted(data){
+      console.log(data);
+      user.sessionID = data.createSession.sessionID;
+    }
+  });
 
   const createSession = () => {
-    console.log("create session")
+    createSessionMutation({ variables: {userID: user.id}});
   }
+
+  const launchSession = (e) => {
+    e.preventDefault();
+    navigate(`/session/${user.sessionID}`);  }
+
+  if (error) return `Error! ${error.message}`;
+
   if(!user){
     return "Please register or login";
   }
@@ -18,7 +43,12 @@ function Home({ user }) {
         </div>
       )
     } else {
-      return <div>session</div>
+      return (
+        <div>
+          <div>Current Session: {user.sessionID}</div>
+          <button onClick={launchSession}>Launch</button>
+        </div>
+      )
     }
   }
 
