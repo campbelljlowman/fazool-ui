@@ -6,15 +6,12 @@ import { useNavigate } from 'react-router-dom';
 const CREATE_USER = gql`
   mutation createUser ($newUser: NewUser!) {
     createUser(newUser: $newUser){
-      id
-      firstName
-      lastName
-      email
+      jwt
     }
   }
 `;
 
-function Register({ setUser }) {
+function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,9 +22,9 @@ function Register({ setUser }) {
   // TODO: Get errors variable here and check 
   const [createUser, { error }] = useMutation(CREATE_USER, {
     onCompleted(data){
-    setUser(data.createUser);
+      sessionStorage.setItem("jwt", data.login.jwt)
 
-    navigate("/home");
+      navigate("/home");
     }
   });
 

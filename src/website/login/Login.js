@@ -7,25 +7,21 @@ import { useNavigate } from 'react-router-dom';
 const LOGIN = gql`
   mutation login ($userLogin: UserLogin!) {
     login(userLogin:$userLogin){
-      id
-      firstName
-      lastName
-      email
-      sessionID
+      jwt
     }
   }
 `;
 
-function Login({ setUser }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const [loginMutation, { error }] = useMutation(LOGIN, {
     onCompleted(data){
-    setUser(data.login);
+      sessionStorage.setItem("jwt", data.login.jwt)
 
-    navigate("/home");
+      navigate("/home");
     }
   });
 

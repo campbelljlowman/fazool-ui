@@ -7,7 +7,6 @@ import Login from './website/login/Login';
 import Register from './website/register/Register';
 import Welcome from './website/welcome/Welcome';
 import Join from './website/join/Join';
-import { useState } from 'react';
 
 // Website endpoints
 // / - welcome page. Welcome, demo video, sign up
@@ -19,16 +18,14 @@ import { useState } from 'react';
 // /home - account overview, current sessions, button to create new session, button to link spotify
 
 function App() {
-  const [user, setUser] = useState();
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Welcome/>} />
         <Route path='/join' element={<Join/>} />
-        <Route path='/login' element={<Login setUser={setUser}/>} />
-        <Route path='/register' element={<Register setUser={setUser}/>} />
-        <Route path='/home' element={<Home user={user}/>} />
+        <Route path='/login' element={<Login/>} />
+        <Route path='/register' element={<Register/>} />
+        <Route path='/home' element={<Home/>} />
         <Route path='/session' >
           <Route path=':sessionID' element={<Session/>} />
         </Route>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
@@ -11,7 +11,8 @@ mutation createSession($userID: Int!) {
 }
 `
 
-function Home({ user }) {
+function Home() {
+  const [user, setUser] = useState();
   const navigate = useNavigate();
   const [createSessionMutation, { error }] = useMutation(CREATE_SESSION, {
     onCompleted(data){
