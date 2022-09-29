@@ -1,7 +1,15 @@
-import React, { useState } from 'react'
-import { useMutation, gql } from '@apollo/client';
+import React from 'react'
+import { useQuery, useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
+const GET_USER = gql`
+query getUser {
+  user{
+		id
+    firstName
+    sessionID
+  }
+}`
 
 const CREATE_SESSION = gql`
 mutation createSession($userID: Int!) {
@@ -12,31 +20,35 @@ mutation createSession($userID: Int!) {
 `
 
 function Home() {
-  const [user, setUser] = useState();
   const navigate = useNavigate();
-  const [createSessionMutation, { error }] = useMutation(CREATE_SESSION, {
+  const {loading, queryError, data} = useQuery(GET_USER);
+  const [createSessionMutation, { mutationError }] = useMutation(CREATE_SESSION, {
     onCompleted(data){
       console.log(data);
-      user.sessionID = data.createSession.sessionID;
+      data.sessionID = data.createSession.sessionID;
     }
   });
 
   const createSession = () => {
-    createSessionMutation({ variables: {userID: user.id}});
+    createSessionMutation({ variables: {userID: data.id}});
   }
 
   const launchSession = (e) => {
     e.preventDefault();
-    navigate(`/session/${user.sessionID}`);  }
+    navigate(`/session/${data.user.sessionID}`);  
+  }
 
-  if (error) return `Error! ${error.message}`;
-
-  if(!user){
+  if (loading) return 'Loading...';
+  if (mutationError) return `Error! ${mutationError.message}`;
+  if (queryError) return `Error! ${queryError.message}`;
+    
+  if(!data){
+    console.log(data);
     return "Please register or login";
   }
 
   const sessionInfo = () => {
-    if (user.sessionID === 0){
+    if (data.user.sessionID === 0){
       return (
         <div>
           <div>No Current Session</div>
@@ -46,7 +58,7 @@ function Home() {
     } else {
       return (
         <div>
-          <div>Current Session: {user.sessionID}</div>
+          <div>Current Session: {data.user.sessionID}</div>
           <button onClick={launchSession}>Launch</button>
         </div>
       )
@@ -56,7 +68,7 @@ function Home() {
   return (
     <div>
       <div>Home</div>
-      <div>Welcome {user.firstName}</div>
+      <div>Welcome {data.user.firstName}</div>
       <div>{sessionInfo()}</div>
     </div>
   )
