@@ -1,9 +1,33 @@
 import React, {useState }  from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+
+const LOGIN = gql`
+  mutation login ($userLogin: UserLogin!) {
+    login(userLogin:$userLogin){
+      id
+      firstName
+      lastName
+      email
+      sessionID
+    }
+  }
+`;
+
+function Login({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const [loginMutation, { error }] = useMutation(LOGIN, {
+    onCompleted(data){
+    setUser(data.login);
+
+    navigate("/home");
+    }
+  });
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -15,9 +39,17 @@ function Login() {
 
   const login = (e) => {
     e.preventDefault();
-    console.log("Login!");
+    const userLogin = {
+      "email": email,
+      "password": password
+    };
+
+    loginMutation({ variables: {userLogin: userLogin}});
   }
   
+  // TODO: parse error message and don't replace form
+  if (error) return `Error! ${error.message}`;
+
   return (
     <Container>
     <Row className="justify-content-md-center">
