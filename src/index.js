@@ -4,6 +4,7 @@ import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws';
 
 const httpLink = new HttpLink({
@@ -26,8 +27,20 @@ const splitLink = split(
   httpLink,
 );
 
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = sessionStorage.getItem('jwt');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+
 const client = new ApolloClient({
-  link: splitLink,
+  link: authLink.concat(splitLink),
   cache: new InMemoryCache(),
 });
 
