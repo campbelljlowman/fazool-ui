@@ -30,7 +30,7 @@ function Home() {
   });
 
   const createSession = () => {
-    createSessionMutation({ variables: {userID: data.id}});
+    createSessionMutation({ variables: {userID: data.user.id}});
   }
 
   const launchSession = (e) => {
