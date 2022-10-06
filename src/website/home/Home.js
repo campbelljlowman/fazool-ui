@@ -26,7 +26,10 @@ function Home() {
     onCompleted(data){
       console.log(data);
       data.sessionID = data.createSession.sessionID;
-    }
+    },
+    refetchQueries: [
+      {query: GET_USER}
+    ]
   });
 
   const createSession = () => {
