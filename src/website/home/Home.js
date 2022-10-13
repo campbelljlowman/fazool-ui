@@ -19,6 +19,18 @@ mutation createSession($userID: Int!) {
 }
 `
 
+const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
+const redirectURI = 'http://localhost:3000/callback'
+var scope = 'user-modify-playback-state';
+
+//TODO: Add state to request
+const spotifyLoginURL = `https://accounts.spotify.com/authorize?
+client_id=${spotifyClientId}
+&scope=${scope}
+&redirect_uri=${redirectURI}
+&response_type=code
+`
+
 function Home() {
   const navigate = useNavigate();
   const {loading, queryError, data} = useQuery(GET_USER);
@@ -55,17 +67,25 @@ function Home() {
       return (
         <div>
           <div>No Current Session</div>
-          <button onClick={createSession}>Create</button>
+          <button onClick={createSession}>Create Session</button>
         </div>
       )
     } else {
       return (
         <div>
           <div>Current Session: {data.user.sessionID}</div>
-          <button onClick={launchSession}>Launch</button>
+          <button onClick={launchSession}>Launch Session</button>
         </div>
       )
     }
+  }
+
+  const spotifyInfo = () => {
+    return (
+      <div>
+        <a href={spotifyLoginURL}>Register Spotify</a>
+      </div>
+    )
   }
 
   return (
@@ -73,6 +93,7 @@ function Home() {
       <div>Home</div>
       <div>Welcome {data.user.firstName}</div>
       <div>{sessionInfo()}</div>
+      <div>{spotifyInfo()}</div>
     </div>
   )
 }
