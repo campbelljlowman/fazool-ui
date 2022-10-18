@@ -30,7 +30,7 @@ function MusicPlayer ({ sessionID }) {
 
   const playPause = () => {
     console.log("Play/Pause");
-    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "PAUSE"}})
+    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "PLAY"}})
   };
 
   const advance = () => {
