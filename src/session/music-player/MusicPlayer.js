@@ -15,7 +15,7 @@ mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
   }
 `
 
-function MusicPlayer ({ sessoinID }) {
+function MusicPlayer ({ sessionID }) {
   const [currentlyPlaying, setCurrentlyPlaying] = useState([]);
   const [updateCurrentlyPlayingMutation, { mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
@@ -30,12 +30,12 @@ function MusicPlayer ({ sessoinID }) {
 
   const playPause = () => {
     console.log("Play/Pause");
-    updateCurrentlyPlayingMutation({variables: {sessionID: sessoinID, action: "PAUSE"}})
+    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "PAUSE"}})
   };
 
   const advance = () => {
     console.log("Skip to next track");
-    updateCurrentlyPlayingMutation({variables: {sessionID: 81, action: "ADVANCE"}})
+    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "ADVANCE"}})
   }
 
   if (mutationError) return `Error! ${mutationError.message}`;

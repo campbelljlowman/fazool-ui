@@ -23,6 +23,7 @@ import { useEffect } from 'react';
   const GET_SESSION = gql`
   query getSession($sessionID: Int!){
     session(sessionID: $sessionID){
+      id
       queue {
         id
         title
@@ -66,7 +67,7 @@ function Session() {
           if(!subscriptionData.data) return prev;
           // TODO: There's probably a better way to merge these resulst
           const returnSession = structuredClone(prev);
-          returnSession.session.queue = subscriptionData.data.sessionUpdated.queue;
+          returnSession.session = subscriptionData.data.sessionUpdated;
           return returnSession;
         }
       });
@@ -91,7 +92,7 @@ function Session() {
         </Col>
         <Col xs={6}>
           <div className='main-column'>
-            <MusicPlayer />
+            <MusicPlayer sessionID={data.session.id}/>
             <Queue  queue={data.session.queue}/>
             <SearchBox />
           </div>
