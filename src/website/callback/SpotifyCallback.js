@@ -23,7 +23,7 @@ function SpotifyCallback() {
   const [updateSpotifyCredsMutation, { mutationError }] = useMutation(UPDATE_SPOTIFY_CREDENTIALS, {
     onCompleted(data){
       console.log(data);
-      // Nav to back to user page
+      // TODO: Nav to back to user page
     }
   });
 

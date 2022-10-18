@@ -4,9 +4,20 @@ import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
 import './MusicPlayer.css'
 import QueueHeader from '../queue/QueueHeader';
+import { useMutation, gql } from '@apollo/client';
 
-function MusicPlayer () {
+
+const UPDATE_CURRENTLY_PLAYING = gql`
+mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
+    updateCurrentlyPlaying(sessionID:$sessionID, action:$action){
+        id
+    }
+  }
+`
+
+function MusicPlayer ({ sessoinID }) {
   const [currentlyPlaying, setCurrentlyPlaying] = useState([]);
+  const [updateCurrentlyPlayingMutation, { mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
   useEffect (() => {
     const fetchSong = async () => {
@@ -19,11 +30,15 @@ function MusicPlayer () {
 
   const playPause = () => {
     console.log("Play/Pause");
+    updateCurrentlyPlayingMutation({variables: {sessionID: sessoinID, action: "PAUSE"}})
   };
 
   const advance = () => {
     console.log("Skip to next track");
+    updateCurrentlyPlayingMutation({variables: {sessionID: 81, action: "ADVANCE"}})
   }
+
+  if (mutationError) return `Error! ${mutationError.message}`;
 
   return (
     <div>
