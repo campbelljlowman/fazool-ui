@@ -24,6 +24,13 @@ import { useEffect } from 'react';
   query getSession($sessionID: Int!){
     session(sessionID: $sessionID){
       id
+      currentlyPlaying {
+        id
+        title
+        artist
+        image
+        playing
+      }
       queue {
         id
         title
@@ -92,7 +99,7 @@ function Session() {
         </Col>
         <Col xs={6}>
           <div className='main-column'>
-            <MusicPlayer sessionID={data.session.id}/>
+            <MusicPlayer session={data.session}/>
             <Queue  queue={data.session.queue}/>
             <SearchBox />
           </div>

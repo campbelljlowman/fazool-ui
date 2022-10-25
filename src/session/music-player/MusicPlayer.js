@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
@@ -15,35 +15,28 @@ mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
   }
 `
 
-function MusicPlayer ({ sessionID }) {
-  const [currentlyPlaying, setCurrentlyPlaying] = useState([]);
+function MusicPlayer ({ session }) {
   const [updateCurrentlyPlayingMutation, { mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
-
-  useEffect (() => {
-    const fetchSong = async () => {
-      const rsp = await fetch ("/song.json");
-      const song = await rsp.json();
-      setCurrentlyPlaying(song);
-    };
-    fetchSong().catch(console.error);
-  }, []);
 
   const playPause = () => {
     console.log("Play/Pause");
-    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "PLAY"}})
+    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "PLAY"}})
   };
 
   const advance = () => {
     console.log("Skip to next track");
-    updateCurrentlyPlayingMutation({variables: {sessionID: sessionID, action: "ADVANCE"}})
+    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "ADVANCE"}})
   }
 
   if (mutationError) return `Error! ${mutationError.message}`;
+  if(!session.currentlyPlaying){
+    return null;
+  }
 
   return (
     <div>
       <div className="music-player" >
-          <Song song={currentlyPlaying} />
+          <Song song={session.currentlyPlaying} />
           <div className="media-buttons">
               <button className="transparent-button" onClick={playPause}><FontAwesomeIcon icon={faPlay}/></button>
               <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
