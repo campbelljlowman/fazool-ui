@@ -21,7 +21,7 @@ mutation createSession($userID: Int!) {
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const redirectURI = 'http://localhost:3000/callback'
-var scope = 'user-modify-playback-state';
+var scope = 'user-modify-playback-state user-read-playback-state';
 
 //TODO: Add state to request
 const spotifyLoginURL = `https://accounts.spotify.com/authorize?

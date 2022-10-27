@@ -46,6 +46,13 @@ const SUBSCRIBE_SESSION = gql`
   subscription sessionSubscription($sessionID: Int!) {
     sessionUpdated(sessionID: $sessionID){
       id
+      currentlyPlaying {
+        id
+        title
+        artist
+        image
+        playing
+      }
       queue{
         id
         title
