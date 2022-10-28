@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faForward } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
 import './MusicPlayer.css'
 import QueueHeader from '../queue/QueueHeader';
@@ -18,9 +18,14 @@ mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
 function MusicPlayer ({ session }) {
   const [updateCurrentlyPlayingMutation, { mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
-  const playPause = () => {
+  const play = () => {
     console.log("Play/Pause");
     updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "PLAY"}})
+  };
+
+  const pause = () => {
+    console.log("Play/Pause");
+    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "PAUSE"}})
   };
 
   const advance = () => {
@@ -33,12 +38,24 @@ function MusicPlayer ({ session }) {
     return null;
   }
 
+  const playPause = () => {
+    if (session.currentlyPlaying.playing === false) {
+      return(
+        <button className="transparent-button" onClick={play}><FontAwesomeIcon icon={faPlay}/></button>
+      )
+    } else {
+      return (
+        <button className="transparent-button" onClick={pause}><FontAwesomeIcon icon={faPause}/></button>
+      )
+    }
+  }
+
   return (
     <div>
       <div className="music-player" >
           <Song song={session.currentlyPlaying} />
           <div className="media-buttons">
-              <button className="transparent-button" onClick={playPause}><FontAwesomeIcon icon={faPlay}/></button>
+              {playPause()}
               <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
           </div>
       </div>
