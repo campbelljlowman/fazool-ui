@@ -5,6 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Environment
 
 ## npm
+    sudo apt-get update
+    sudo apt-get upgrade
     sudo apt install npm
 
 ## Dependencies
