@@ -4,6 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Environment
 
+`make init` command runs these for you
+
 ## npm
     sudo apt-get update
     sudo apt-get upgrade
