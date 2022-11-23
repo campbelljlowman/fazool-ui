@@ -12,8 +12,8 @@ query getUser {
 }`
 
 const CREATE_SESSION = gql`
-mutation createSession($userID: Int!) {
-  createSession(userID:$userID){
+mutation createSession {
+  createSession{
     sessionID
   }
 }
@@ -45,7 +45,7 @@ function Home() {
   });
 
   const createSession = () => {
-    createSessionMutation({ variables: {userID: data.user.id}});
+    createSessionMutation();
   }
 
   const launchSession = (e) => {

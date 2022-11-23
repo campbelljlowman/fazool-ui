@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 
 
-const UPDATE_SPOTIFY_CREDENTIALS = gql`
-  mutation updateSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {
-    updateSpotifyToken(spotifyCreds:$spotifyCreds){
+const UPSERT_SPOTIFY_CREDENTIALS = gql`
+  mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {
+    upsertSpotifyToken(spotifyCreds:$spotifyCreds){
         id
     }
   }
@@ -20,7 +20,7 @@ const redirectURI = 'http://localhost:3000/callback'
 function SpotifyCallback() {
   const [searchParams] = useSearchParams();
   const spotifyCode = searchParams.get("code")
-  const [updateSpotifyCredsMutation, { mutationError }] = useMutation(UPDATE_SPOTIFY_CREDENTIALS, {
+  const [updateSpotifyCredsMutation, { mutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
     onCompleted(data){
       console.log(data);
       // TODO: Nav to back to user page
