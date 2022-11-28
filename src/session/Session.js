@@ -107,7 +107,7 @@ function Session() {
         <Col xs={6}>
           <div className='main-column'>
             <MusicPlayer session={data.session}/>
-            <Queue  queue={data.session.queue}/>
+            <Queue  session={data.session}/>
             <SearchBox />
           </div>
         </Col>

@@ -13,7 +13,7 @@ const UPDATE_QUEUE = gql`
   }
 `;
 
-function QueueItem ({ song }) {
+function QueueItem ({ song, sessionID }) {
   const [updateQueue] = useMutation(UPDATE_QUEUE);
 
   if(!song){
@@ -25,7 +25,7 @@ function QueueItem ({ song }) {
       'id': song.id,
       'vote': 1
   }
-  updateQueue({ variables: {sessionID: 81, song: songData}});
+  updateQueue({ variables: {sessionID: sessionID, song: songData}});
   };
 
   const decrementVote = () => {
@@ -33,7 +33,7 @@ function QueueItem ({ song }) {
       'id': song.id,
       'vote': -1
   }
-  updateQueue({ variables: {sessionID: 81, song: songData}});
+  updateQueue({ variables: {sessionID: sessionID, song: songData}});
   };
 
   return (

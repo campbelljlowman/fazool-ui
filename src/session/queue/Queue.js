@@ -3,15 +3,15 @@ import './Queue.css'
 
 
 
-function Queue ({ queue }) {
-  if(!queue){
+function Queue ({ session }) {
+  if(!session.queue){
     return null;
   }
 
   return (
       <div className='queue'>
-          {queue.map(song => (
-            <QueueItem key={song.id} song={song} />
+          {session.queue.map(song => (
+            <QueueItem key={song.id} song={song} sessionID={session.id} />
           ))}
       </div>
   );
