@@ -16,7 +16,7 @@ mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
 `
 
 function MusicPlayer ({ session }) {
-  const [updateCurrentlyPlayingMutation, { mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
+  const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
   const play = () => {
     console.log("Play/Pause");

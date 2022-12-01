@@ -33,8 +33,8 @@ client_id=${spotifyClientId}
 
 function Home() {
   const navigate = useNavigate();
-  const {loading, queryError, data} = useQuery(GET_USER);
-  const [createSessionMutation, { mutationError }] = useMutation(CREATE_SESSION, {
+  const {loading, error: queryError, data} = useQuery(GET_USER);
+  const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
     onCompleted(data){
       console.log(data);
       data.sessionID = data.createSession.sessionID;

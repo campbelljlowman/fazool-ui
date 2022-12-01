@@ -64,11 +64,35 @@ const SUBSCRIBE_SESSION = gql`
   }
 `;
 
+const GET_VOTER_TOKEN = gql`
+  query voterToken {
+    voterToken
+  }
+`
+
+// const JOIN_VOTERS = gql`
+
+// `
+
+
 function Session() {
   const params = useParams();
   const sessionID = params.sessionID;
+  // TODO: This keeps token from refreshing, since it will be true if a bad token is already in storage. Old token should be removed if session is expired
+  let haveVoterToken = (() => {
+    let token = sessionStorage.getItem('jwt');
+    return token !== null;
+  })();
 
-  const { subscribeToMore, loading, error, data } = useQuery(GET_SESSION, { 
+
+  useQuery(GET_VOTER_TOKEN, {
+    skip: haveVoterToken,
+    onCompleted(voterTokenData){
+      sessionStorage.setItem('jwt', voterTokenData.voterToken);
+      haveVoterToken = true;
+    }
+  });
+  const { subscribeToMore, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, { 
     variables: {sessionID: sessionID}
   });
 
@@ -89,11 +113,22 @@ function Session() {
     subscribeToSession();
   }, [subscribeToMore, sessionID]);
 
-  // This error should keep whole session from loading, not just queue
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+  // Get a voter token if there's no user token in localstorage
+  useEffect (() => {
+    const joinVoters = () => {
+      if (haveVoterToken) {
+        // Call join voters mutation
+      } else {
+      }
+    }
+    joinVoters();
+  }, [haveVoterToken]);
 
-  if(!data.session){
+  // This error should keep whole session from loading, not just queue
+  if (sessionLoading) return 'Loading...';
+  if (sessionError) return `Error! ${sessionError.message}`;
+
+  if(!sessionData.session){
     return null;
   }
 
@@ -106,8 +141,8 @@ function Session() {
         </Col>
         <Col xs={6}>
           <div className='main-column'>
-            <MusicPlayer session={data.session}/>
-            <Queue  session={data.session}/>
+            <MusicPlayer session={sessionData.session}/>
+            <Queue  session={sessionData.session}/>
             <SearchBox />
           </div>
         </Col>

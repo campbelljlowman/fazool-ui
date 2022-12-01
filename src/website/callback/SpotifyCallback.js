@@ -20,7 +20,7 @@ const redirectURI = 'http://localhost:3000/callback'
 function SpotifyCallback() {
   const [searchParams] = useSearchParams();
   const spotifyCode = searchParams.get("code")
-  const [updateSpotifyCredsMutation, { mutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
+  const [updateSpotifyCredsMutation, { error: mutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
     onCompleted(data){
       console.log(data);
       // TODO: Nav to back to user page
