@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const CREATE_USER = gql`
   mutation createUser ($newUser: NewUser!) {
-    createUser(newUser: $newUser){
-      jwt
-    }
+    createUser(newUser: $newUser)
   }
 `;
 
@@ -22,7 +20,7 @@ function Register() {
   // TODO: Get errors variable here and check 
   const [createUser, { error }] = useMutation(CREATE_USER, {
     onCompleted(data){
-      sessionStorage.setItem("jwt", data.login.jwt)
+      sessionStorage.setItem("jwt", data.createUser)
 
       navigate("/home");
     }
