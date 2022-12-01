@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import SearchBox from './search-box/SearchBox'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
 
@@ -70,9 +70,16 @@ const GET_VOTER_TOKEN = gql`
   }
 `
 
-// const JOIN_VOTERS = gql`
+const JOIN_VOTERS = gql`
+  query voter ($sessionID: Int!){
+    voter (sessionID: $sessionID){
+      type
+      songsVotedFor
+      bonusVotes
+    }
+  }
 
-// `
+`
 
 
 function Session() {
@@ -91,6 +98,9 @@ function Session() {
       sessionStorage.setItem('jwt', voterTokenData.voterToken);
       haveVoterToken = true;
     }
+  });
+  const [ voterQuery, {error: voterError, data: voterData}] = useLazyQuery(JOIN_VOTERS, {
+    variables: {sessionID: sessionID}
   });
   const { subscribeToMore, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, { 
     variables: {sessionID: sessionID}
@@ -118,8 +128,9 @@ function Session() {
     const joinVoters = () => {
       if (haveVoterToken) {
         // Call join voters mutation
-      } else {
-      }
+        voterQuery();
+        console.log("Voter data: " + voterData);
+      } 
     }
     joinVoters();
   }, [haveVoterToken]);
@@ -127,6 +138,8 @@ function Session() {
   // This error should keep whole session from loading, not just queue
   if (sessionLoading) return 'Loading...';
   if (sessionError) return `Error! ${sessionError.message}`;
+  // TODO: This is the error if session is full! Should figure out what to display
+  if (voterError) return `Error! ${voterError.message}`;
 
   if(!sessionData.session){
     return null;
