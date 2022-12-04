@@ -16,3 +16,11 @@
     margin: auto;
     align-self: center;
 }
+
+.upvoted-for {
+    color: orange
+}
+
+.downvoted-for {
+    color: blue
+}

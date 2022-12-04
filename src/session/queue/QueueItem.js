@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Song from '../song/Song'
 import './QueueItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,11 +13,24 @@ const UPDATE_QUEUE = gql`
   }
 `;
 
-function QueueItem ({ song, sessionID }) {
+function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
+
+  const [upVotedFor, setUpVotedFor] = useState(initialVotedFor);
+  const [downVotedFor, setDownVotedFor] = useState(initialVotedFor);
   const [updateQueue] = useMutation(UPDATE_QUEUE);
 
   if(!song){
     return null;
+  }
+
+  const addUpvote = () => {
+    incrementVote();
+    setUpVotedFor(true);
+  }
+
+  const removeUpvote = () => {
+    decrementVote();
+    setUpVotedFor(false);
   }
 
   const incrementVote = () => {
@@ -26,6 +39,8 @@ function QueueItem ({ song, sessionID }) {
       'vote': 1
   }
   updateQueue({ variables: {sessionID: sessionID, song: songData}});
+  setUpVotedFor(true);
+  setDownVotedFor(false);
   };
 
   const decrementVote = () => {
@@ -34,6 +49,30 @@ function QueueItem ({ song, sessionID }) {
       'vote': -1
   }
   updateQueue({ variables: {sessionID: sessionID, song: songData}});
+  setUpVotedFor(false);
+  setDownVotedFor(true);
+  };
+
+  const upvote = () => {
+    if (upVotedFor) {
+      return <button className="transparent-button upvoted-for" onClick={removeUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
+    } else {
+      return <button className="transparent-button" onClick={addUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
+    }
+  };
+
+  const downVote = () => {
+    // TODO: This needs separate increment and decrement functions
+    console.log("Show decrement" + showDecrement);
+    if (showDecrement) {
+      if (downVotedFor) {
+        return <button className="transparent-button downvoted-for" onClick={incrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
+      } else {
+        return <button className="transparent-button" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
+      }
+    } else {
+      return null
+    }
   };
 
   return (
@@ -41,8 +80,8 @@ function QueueItem ({ song, sessionID }) {
         <Song song={song}></Song>
         <div className='vote'> {song.votes} </div>
         <div className="voter">
-          <button className="transparent-button" onClick={incrementVote}><FontAwesomeIcon icon={faAngleUp} /></button>
-          <button className="transparent-button" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
+          {upvote()}
+          {downVote()}
         </div>
     </div>
   );
