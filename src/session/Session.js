@@ -8,7 +8,7 @@ import './Session.css'
 import SearchBox from './search-box/SearchBox'
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import { useParams } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Queue Display:
   // Top: Music player
@@ -70,7 +70,7 @@ const GET_VOTER_TOKEN = gql`
   }
 `
 
-const JOIN_VOTERS = gql`
+const GET_VOTER = gql`
   query voter ($sessionID: Int!){
     voter (sessionID: $sessionID){
       type
@@ -91,6 +91,7 @@ function Session() {
     return token !== null;
   })();
 
+  const [votes, setVotes] = useState();
 
   useQuery(GET_VOTER_TOKEN, {
     skip: haveVoterToken,
@@ -99,9 +100,15 @@ function Session() {
       haveVoterToken = true;
     }
   });
-  const [ voterQuery, {error: voterError, data: voterData}] = useLazyQuery(JOIN_VOTERS, {
-    variables: {sessionID: sessionID}
+
+  const [ voterQuery, {error: voterError}] = useLazyQuery(GET_VOTER, {
+    variables: {sessionID: sessionID},
+    onCompleted(voter){
+      setVotes(voter.voter.songsVotedFor);
+      console.log("votes after query: " + voter.voter.songsVotedFor);
+    }
   });
+
   const { subscribeToMore, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, { 
     variables: {sessionID: sessionID}
   });
@@ -129,11 +136,10 @@ function Session() {
       if (haveVoterToken) {
         // Call join voters mutation
         voterQuery();
-        console.log("Voter data: " + voterData);
-      } 
+      }
     }
     joinVoters();
-  }, [haveVoterToken]);
+  }, [haveVoterToken, voterQuery]);
 
   // This error should keep whole session from loading, not just queue
   if (sessionLoading) return 'Loading...';
@@ -155,7 +161,7 @@ function Session() {
         <Col xs={6}>
           <div className='main-column'>
             <MusicPlayer session={sessionData.session}/>
-            <Queue  session={sessionData.session}/>
+            <Queue  session={sessionData.session} votes={votes} />
             <SearchBox />
           </div>
         </Col>

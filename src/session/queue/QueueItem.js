@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Song from '../song/Song'
 import './QueueItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,11 +13,25 @@ const UPDATE_QUEUE = gql`
   }
 `;
 
-function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
+const GET_VOTER = gql`
+  query voter ($sessionID: Int!){
+    voter (sessionID: $sessionID){
+      type
+      songsVotedFor
+      bonusVotes
+    }
+  }
 
-  const [upVotedFor, setUpVotedFor] = useState(initialVotedFor);
-  const [downVotedFor, setDownVotedFor] = useState(initialVotedFor);
-  const [updateQueue] = useMutation(UPDATE_QUEUE);
+`
+
+function QueueItem ({ song, sessionID, showDecrement, votedFor }) {
+
+  const [updateQueue] = useMutation(UPDATE_QUEUE, {
+    refetchQueries: [
+        {query: GET_VOTER},
+        'voter' 
+      ]
+});
 
   if(!song){
     return null;
@@ -25,12 +39,10 @@ function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
 
   const addUpvote = () => {
     incrementVote();
-    setUpVotedFor(true);
   }
 
   const removeUpvote = () => {
     decrementVote();
-    setUpVotedFor(false);
   }
 
   const incrementVote = () => {
@@ -39,8 +51,6 @@ function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
       'vote': 1
   }
   updateQueue({ variables: {sessionID: sessionID, song: songData}});
-  setUpVotedFor(true);
-  setDownVotedFor(false);
   };
 
   const decrementVote = () => {
@@ -49,12 +59,10 @@ function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
       'vote': -1
   }
   updateQueue({ variables: {sessionID: sessionID, song: songData}});
-  setUpVotedFor(false);
-  setDownVotedFor(true);
   };
 
   const upvote = () => {
-    if (upVotedFor) {
+    if (votedFor) {
       return <button className="transparent-button upvoted-for" onClick={removeUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
     } else {
       return <button className="transparent-button" onClick={addUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
@@ -63,9 +71,8 @@ function QueueItem ({ song, sessionID, showDecrement, initialVotedFor }) {
 
   const downVote = () => {
     // TODO: This needs separate increment and decrement functions
-    console.log("Show decrement" + showDecrement);
     if (showDecrement) {
-      if (downVotedFor) {
+      if (votedFor) {
         return <button className="transparent-button downvoted-for" onClick={incrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
       } else {
         return <button className="transparent-button" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>

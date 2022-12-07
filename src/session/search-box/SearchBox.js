@@ -8,7 +8,7 @@ import './SearchBox.css'
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
 
-function SearchBox () {
+function SearchBox ({ refetchVoter }) {
     const [searchValue, setSearchValue] = useState("");
     const [spotifyAccessToken, setSpotifyAccessToken] = useState();
     const [searchResults, setSearchResults] = useState();
@@ -81,7 +81,7 @@ function SearchBox () {
             <input className='search-box-input' type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
             <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </form>
-        <SearchResults searchResults={searchResults} setSearchResults={setSearchResults} />
+        <SearchResults searchResults={searchResults} setSearchResults={setSearchResults} refetchVoter={refetchVoter}/>
         </div>
     );
 }

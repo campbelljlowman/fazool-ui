@@ -15,11 +15,27 @@ const UPDATE_QUEUE = gql`
   }
 `;
 
-function SearchResults ({ searchResults, setSearchResults }) {
+const GET_VOTER = gql`
+  query voter ($sessionID: Int!){
+    voter (sessionID: $sessionID){
+      type
+      songsVotedFor
+      bonusVotes
+    }
+  }
+
+`
+
+function SearchResults ({ searchResults, setSearchResults, refetchVoter}) {
     const params = useParams();
     const sessionID = params.sessionID;
 
-    const [updateQueue] = useMutation(UPDATE_QUEUE);
+    const [updateQueue] = useMutation(UPDATE_QUEUE, {
+        refetchQueries: [
+            {query: GET_VOTER},
+            'voter' 
+          ]
+    });
 
     const addSongToQueue = (song) => {
         const songData = {
@@ -31,7 +47,6 @@ function SearchResults ({ searchResults, setSearchResults }) {
         }
 
         updateQueue({ variables: {sessionID: sessionID, song: songData}});
-
         setSearchResults(null);
     }
 

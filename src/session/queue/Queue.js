@@ -3,11 +3,17 @@ import './Queue.css'
 
 
 
-function Queue ({ session, songsVotedFor }) {
+function Queue ({ session, votes }) {
 
-  // const checkVotedFor = (song, songsVotedFor) => {
+  const checkVotedFor = (song) => {
+    console.log("song: " + song);
+    if(votes){
+      console.log("votes when rendering song: " + votes);
+      return votes.includes(song);
+    }
+    return false;
+  }
 
-  // }
 
   if(!session.queue){
     return null;
@@ -16,7 +22,7 @@ function Queue ({ session, songsVotedFor }) {
   return (
       <div className='queue'>
           {session.queue.map(song => (
-            <QueueItem key={song.id} song={song} sessionID={session.id} showDecrement={true} votedFor={true} />
+            <QueueItem key={song.id} song={song} sessionID={session.id} showDecrement={false} votedFor={checkVotedFor(song.id)} />
           ))}
       </div>
   );
