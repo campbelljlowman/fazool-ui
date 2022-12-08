@@ -74,7 +74,8 @@ const GET_VOTER = gql`
   query voter ($sessionID: Int!){
     voter (sessionID: $sessionID){
       type
-      songsVotedFor
+      songsUpVoted
+      songsDownVoted
       bonusVotes
     }
   }
@@ -91,7 +92,8 @@ function Session() {
     return token !== null;
   })();
 
-  const [votes, setVotes] = useState();
+  const [upVotes, setUpVotes] = useState();
+  const [downVotes, setDownVotes] = useState();
 
   useQuery(GET_VOTER_TOKEN, {
     skip: haveVoterToken,
@@ -104,8 +106,8 @@ function Session() {
   const [ voterQuery, {error: voterError}] = useLazyQuery(GET_VOTER, {
     variables: {sessionID: sessionID},
     onCompleted(voter){
-      setVotes(voter.voter.songsVotedFor);
-      console.log("votes after query: " + voter.voter.songsVotedFor);
+      setUpVotes(voter.voter.songsUpVoted);
+      setDownVotes(voter.voter.songsDownVoted);
     }
   });
 
@@ -161,7 +163,7 @@ function Session() {
         <Col xs={6}>
           <div className='main-column'>
             <MusicPlayer session={sessionData.session}/>
-            <Queue  session={sessionData.session} votes={votes} />
+            <Queue  session={sessionData.session} upVotes={upVotes} downVotes={downVotes} />
             <SearchBox />
           </div>
         </Col>

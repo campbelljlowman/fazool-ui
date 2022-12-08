@@ -43,7 +43,8 @@ function SearchResults ({ searchResults, setSearchResults, refetchVoter}) {
             'title': song.title,
             'artist': song.artist,
             'image': song.image,
-            'vote': 1
+            'vote': 'UP',
+            'action': 'ADD'
         }
 
         updateQueue({ variables: {sessionID: sessionID, song: songData}});

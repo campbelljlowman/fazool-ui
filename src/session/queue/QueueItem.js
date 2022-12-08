@@ -24,58 +24,44 @@ const GET_VOTER = gql`
 
 `
 
-function QueueItem ({ song, sessionID, showDecrement, votedFor }) {
+function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }) {
 
   const [updateQueue] = useMutation(UPDATE_QUEUE, {
     refetchQueries: [
         {query: GET_VOTER},
         'voter' 
       ]
-});
+  });
 
   if(!song){
     return null;
   }
 
-  const addUpvote = () => {
-    incrementVote();
-  }
-
-  const removeUpvote = () => {
-    decrementVote();
-  }
-
-  const incrementVote = () => {
+  const vote = (direction, action) => {
     const songData = {
       'id': song.id,
-      'vote': 1
+      'vote': direction,
+      'action': action
   }
-  updateQueue({ variables: {sessionID: sessionID, song: songData}});
-  };
+    updateQueue({ variables: {sessionID: sessionID, song: songData}});
+  }
 
-  const decrementVote = () => {
-    const songData = {
-      'id': song.id,
-      'vote': -1
-  }
-  updateQueue({ variables: {sessionID: sessionID, song: songData}});
-  };
 
   const upvote = () => {
-    if (votedFor) {
-      return <button className="transparent-button upvoted-for" onClick={removeUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
+    if (upVotedFor) {
+      return <button className="transparent-button upvoted-for" onClick={() => vote("UP", "REMOVE")}><FontAwesomeIcon icon={faAngleUp} /></button>
     } else {
-      return <button className="transparent-button" onClick={addUpvote}><FontAwesomeIcon icon={faAngleUp} /></button>
+      return <button className="transparent-button" onClick={() => vote("UP", "ADD")}><FontAwesomeIcon icon={faAngleUp} /></button>
     }
   };
 
   const downVote = () => {
     // TODO: This needs separate increment and decrement functions
     if (showDecrement) {
-      if (votedFor) {
-        return <button className="transparent-button downvoted-for" onClick={incrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
+      if (downVotedFor) {
+        return <button className="transparent-button downvoted-for" onClick={() => vote("DOWN", "REMOVE")}><FontAwesomeIcon icon={faAngleDown} /></button>
       } else {
-        return <button className="transparent-button" onClick={decrementVote}><FontAwesomeIcon icon={faAngleDown} /></button>
+        return <button className="transparent-button" onClick={() => vote("DOWN", "ADD")}><FontAwesomeIcon icon={faAngleDown} /></button>
       }
     } else {
       return null
