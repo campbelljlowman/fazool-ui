@@ -86,14 +86,14 @@ const GET_VOTER = gql`
 function Session() {
   const params = useParams();
   const sessionID = params.sessionID;
+
   // TODO: This keeps token from refreshing, since it will be true if a bad token is already in storage. Old token should be removed if session is expired
   let haveVoterToken = (() => {
-    let token = sessionStorage.getItem('jwt');
+    const token = sessionStorage.getItem('jwt');
     return token !== null;
   })();
 
-  const [upVotes, setUpVotes] = useState();
-  const [downVotes, setDownVotes] = useState();
+  const [voter, setVoter] = useState();
 
   useQuery(GET_VOTER_TOKEN, {
     skip: haveVoterToken,
@@ -106,8 +106,8 @@ function Session() {
   const [ voterQuery, {error: voterError}] = useLazyQuery(GET_VOTER, {
     variables: {sessionID: sessionID},
     onCompleted(voter){
-      setUpVotes(voter.voter.songsUpVoted);
-      setDownVotes(voter.voter.songsDownVoted);
+      console.log("Voter: ", voter.voter);
+      setVoter(voter.voter);
     }
   });
 
@@ -163,7 +163,7 @@ function Session() {
         <Col xs={6}>
           <div className='main-column'>
             <MusicPlayer session={sessionData.session}/>
-            <Queue  session={sessionData.session} upVotes={upVotes} downVotes={downVotes} />
+            <Queue  session={sessionData.session} voter={voter} />
             <SearchBox />
           </div>
         </Col>

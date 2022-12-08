@@ -26,18 +26,22 @@ const GET_VOTER = gql`
 
 function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }) {
 
-  const [updateQueue] = useMutation(UPDATE_QUEUE, {
+  const [updateQueue, {error: mutationError}] = useMutation(UPDATE_QUEUE, {
     refetchQueries: [
         {query: GET_VOTER},
         'voter' 
       ]
   });
 
+  if(mutationError){
+    console.log("Error updating queue: " + mutationError);
+  }
   if(!song){
     return null;
   }
 
   const vote = (direction, action) => {
+    console.log("Voting for song :" + song);
     const songData = {
       'id': song.id,
       'vote': direction,

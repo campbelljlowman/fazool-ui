@@ -26,29 +26,29 @@ const GET_VOTER = gql`
 
 `
 
-function SearchResults ({ searchResults, setSearchResults, refetchVoter}) {
+function SearchResults ({ searchResults, setSearchResults }) {
     const params = useParams();
     const sessionID = params.sessionID;
 
     const [updateQueue] = useMutation(UPDATE_QUEUE, {
-        refetchQueries: [
-            {query: GET_VOTER},
-            'voter' 
-          ]
+      refetchQueries: [
+          {query: GET_VOTER},
+          'voter' 
+        ]
     });
 
     const addSongToQueue = (song) => {
-        const songData = {
-            'id': song.id,
-            'title': song.title,
-            'artist': song.artist,
-            'image': song.image,
-            'vote': 'UP',
-            'action': 'ADD'
-        }
+      const songData = {
+          'id': song.id,
+          'title': song.title,
+          'artist': song.artist,
+          'image': song.image,
+          'vote': 'UP',
+          'action': 'ADD'
+      }
 
-        updateQueue({ variables: {sessionID: sessionID, song: songData}});
-        setSearchResults(null);
+      updateQueue({ variables: {sessionID: sessionID, song: songData}});
+      setSearchResults(null);
     }
 
     if(!searchResults){
