@@ -124,7 +124,7 @@ function Session() {
           if(!subscriptionData.data) return prev;
           // TODO: There's probably a better way to merge these resulst
           const returnSession = structuredClone(prev);
-          returnSession.session.queue = subscriptionData.data.sessionUpdated.queue;
+          returnSession.session = subscriptionData.data.sessionUpdated;
           return returnSession;
         }
       });
