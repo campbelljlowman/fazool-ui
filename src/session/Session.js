@@ -5,6 +5,7 @@ import JoinLink from './join-sidebar/JoinLink'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
+import { ADMIN_VOTER_TYPE } from '../constants'
 import SearchBox from './search-box/SearchBox'
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import { useParams } from "react-router-dom";
@@ -82,7 +83,6 @@ const GET_VOTER = gql`
 
 `
 
-
 function Session() {
   const params = useParams();
   const sessionID = params.sessionID;
@@ -92,6 +92,14 @@ function Session() {
     const token = sessionStorage.getItem('jwt');
     return token !== null;
   })();
+
+  const isAdmin = (voter) => {
+    if (voter.type === ADMIN_VOTER_TYPE){
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const [voter, setVoter] = useState();
 
@@ -153,6 +161,9 @@ function Session() {
   if(!sessionData.session){
     return null;
   }
+  if(!voter){
+    return null;
+  }
 
   return (
     <>
@@ -163,7 +174,7 @@ function Session() {
         </Col>
         <Col xs={6}>
           <div className='main-column'>
-            <MusicPlayer session={sessionData.session}/>
+            <MusicPlayer session={sessionData.session} showMediaButtons={isAdmin(voter)} />
             <Queue  session={sessionData.session} voter={voter} />
             <SearchBox />
           </div>
