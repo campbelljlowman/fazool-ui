@@ -95,7 +95,7 @@ function Session() {
 
   const [voter, setVoter] = useState();
 
-  useQuery(GET_VOTER_TOKEN, {
+  const {error: getVoterTokenError} = useQuery(GET_VOTER_TOKEN, {
     skip: haveVoterToken,
     onCompleted(voterTokenData){
       sessionStorage.setItem('jwt', voterTokenData.voterToken);
@@ -124,7 +124,7 @@ function Session() {
           if(!subscriptionData.data) return prev;
           // TODO: There's probably a better way to merge these resulst
           const returnSession = structuredClone(prev);
-          returnSession.session = subscriptionData.data.sessionUpdated;
+          returnSession.session.queue = subscriptionData.data.sessionUpdated.queue;
           return returnSession;
         }
       });
@@ -148,6 +148,7 @@ function Session() {
   if (sessionError) return `Error! ${sessionError.message}`;
   // TODO: This is the error if session is full! Should figure out what to display
   if (voterError) return `Error! ${voterError.message}`;
+  if (getVoterTokenError) console.log("Error getting voter token: " + getVoterTokenError);
 
   if(!sessionData.session){
     return null;

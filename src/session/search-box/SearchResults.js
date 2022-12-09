@@ -30,7 +30,7 @@ function SearchResults ({ searchResults, setSearchResults }) {
     const params = useParams();
     const sessionID = params.sessionID;
 
-    const [updateQueue] = useMutation(UPDATE_QUEUE, {
+    const [updateQueue, {error: updateError}] = useMutation(UPDATE_QUEUE, {
       refetchQueries: [
           {query: GET_VOTER},
           'voter' 
@@ -51,6 +51,9 @@ function SearchResults ({ searchResults, setSearchResults }) {
       setSearchResults(null);
     }
 
+    if(updateError){
+      console.log("Error updating session: " + updateError);
+    }
     if(!searchResults){
         return null;
     }
