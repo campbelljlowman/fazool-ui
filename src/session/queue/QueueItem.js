@@ -21,7 +21,6 @@ const GET_VOTER = gql`
       bonusVotes
     }
   }
-
 `
 
 function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }) {

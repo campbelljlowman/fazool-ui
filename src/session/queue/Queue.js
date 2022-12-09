@@ -6,7 +6,6 @@ const adminVoterType = "admin"
 function Queue ({ session, voter }) {
 
   const checkVotedFor = (song, votes) => {
-    console.log("Voter type: " + voter.type);
     if (voter.type === adminVoterType){
       return false
     }
