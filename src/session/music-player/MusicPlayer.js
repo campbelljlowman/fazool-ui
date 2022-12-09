@@ -50,14 +50,23 @@ function MusicPlayer ({ session, showMediaButtons }) {
     }
   }
 
+  const mediaButtons = () => {
+    if (!showMediaButtons){
+      return null;
+    }
+    return (
+      <div className="media-buttons">
+        {playPause()}
+        <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="music-player" >
           <Song song={session.currentlyPlaying} />
-          <div className="media-buttons">
-              {playPause()}
-              <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
-          </div>
+          {mediaButtons()}
       </div>
       {/*Render this here to allow queue to scroll properly*/}
       <QueueHeader></QueueHeader>
