@@ -26,17 +26,21 @@ import { useEffect, useState } from 'react';
     session(sessionID: $sessionID){
       id
       currentlyPlaying {
-        id
-        title
-        artist
-        image
+        simpleSong{
+          id
+          title
+          artist
+          image
+        }
         playing
       }
       queue {
-        id
-        title
-        artist
-        image
+        simpleSong {
+          id
+          title
+          artist
+          image
+        }
         votes
       }
     }
@@ -48,17 +52,21 @@ const SUBSCRIBE_SESSION = gql`
     sessionUpdated(sessionID: $sessionID){
       id
       currentlyPlaying {
-        id
-        title
-        artist
-        image
+        simpleSong {
+          id
+          title
+          artist
+          image
+        }
         playing
       }
       queue{
-        id
-        title
-        artist
-        image
+        simpleSong {
+          id
+          title
+          artist
+          image
+        }
         votes
       }
     }
@@ -131,6 +139,7 @@ function Session() {
         updateQuery: (prev, {subscriptionData}) => {
           if(!subscriptionData.data) return prev;
           // TODO: There's probably a better way to merge these resulst
+          console.log("receiving session update");
           const returnSession = structuredClone(prev);
           returnSession.session = subscriptionData.data.sessionUpdated;
           return returnSession;

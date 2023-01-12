@@ -23,7 +23,7 @@ const GET_VOTER = gql`
   }
 `
 
-function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }) {
+function QueueItem ({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }) {
 
   const [updateQueue, {error: mutationError}] = useMutation(UPDATE_QUEUE, {
     refetchQueries: [
@@ -35,14 +35,14 @@ function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }
   if(mutationError){
     console.log("Error updating queue: " + mutationError);
   }
-  if(!song){
+  if(!queuedSong){
     return null;
   }
 
   const vote = (direction, action) => {
-    console.log("Voting for song :" + song);
+    console.log("Voting for song :" + queuedSong.simpleSong);
     const songData = {
-      'id': song.id,
+      'id': queuedSong.simpleSong.id,
       'vote': direction,
       'action': action
   }
@@ -73,8 +73,8 @@ function QueueItem ({ song, sessionID, showDecrement, upVotedFor, downVotedFor }
 
   return (
     <div className="queue-item">
-        <Song song={song}></Song>
-        <div className='vote'> {song.votes} </div>
+        <Song song={queuedSong.simpleSong}></Song>
+        <div className='vote'> {queuedSong.votes} </div>
         <div className="voter">
           {upvote()}
           {downVote()}

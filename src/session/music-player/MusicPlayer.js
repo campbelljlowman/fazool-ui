@@ -65,7 +65,7 @@ function MusicPlayer ({ session, showMediaButtons }) {
   return (
     <div>
       <div className="music-player" >
-          <Song song={session.currentlyPlaying} />
+          <Song song={session.currentlyPlaying.simpleSong} />
           {mediaButtons()}
       </div>
       {/*Render this here to allow queue to scroll properly*/}

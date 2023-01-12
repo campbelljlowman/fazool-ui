@@ -46,8 +46,8 @@ function Queue ({ session, voter }) {
 
   return (
       <div className='queue'>
-          {session.queue.map(song => (
-            <QueueItem key={song.id} song={song} sessionID={session.id} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(song.id)} downVotedFor={checkDownVotedFor(song.id)} />
+          {session.queue.map(queuedSong => (
+            <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={session.id} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
           ))}
       </div>
   );
