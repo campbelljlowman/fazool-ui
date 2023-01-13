@@ -15,63 +15,63 @@ mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
   }
 `
 
-function MusicPlayer ({ session, showMediaButtons }) {
-  const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
+function MusicPlayer({ session, showMediaButtons }) {
+    const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
-  const play = () => {
-    console.log("Play/Pause");
-    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "PLAY"}})
-  };
+    const play = () => {
+        console.log("Play/Pause");
+        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "PLAY" } })
+    };
 
-  const pause = () => {
-    console.log("Play/Pause");
-    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "PAUSE"}})
-  };
+    const pause = () => {
+        console.log("Play/Pause");
+        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "PAUSE" } })
+    };
 
-  const advance = () => {
-    console.log("Skip to next track");
-    updateCurrentlyPlayingMutation({variables: {sessionID: session.id, action: "ADVANCE"}})
-  }
-
-  if (mutationError) return `Error! ${mutationError.message}`;
-  if(!session.currentlyPlaying){
-    return null;
-  }
-
-  const playPause = () => {
-    if (session.currentlyPlaying.playing === false) {
-      return(
-        <button className="transparent-button" onClick={play}><FontAwesomeIcon icon={faPlay}/></button>
-      )
-    } else {
-      return (
-        <button className="transparent-button" onClick={pause}><FontAwesomeIcon icon={faPause}/></button>
-      )
+    const advance = () => {
+        console.log("Skip to next track");
+        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "ADVANCE" } })
     }
-  }
 
-  const mediaButtons = () => {
-    if (!showMediaButtons){
-      return null;
+    if (mutationError) return `Error! ${mutationError.message}`;
+    if (!session.currentlyPlaying) {
+        return null;
     }
+
+    const playPause = () => {
+        if (session.currentlyPlaying.playing === false) {
+            return (
+                <button className="transparent-button" onClick={play}><FontAwesomeIcon icon={faPlay} /></button>
+            )
+        } else {
+            return (
+                <button className="transparent-button" onClick={pause}><FontAwesomeIcon icon={faPause} /></button>
+            )
+        }
+    }
+
+    const mediaButtons = () => {
+        if (!showMediaButtons) {
+            return null;
+        }
+        return (
+            <div className="media-buttons">
+                {playPause()}
+                <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward} /></button>
+            </div>
+        )
+    }
+
     return (
-      <div className="media-buttons">
-        {playPause()}
-        <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward}/></button>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <div className="music-player" >
-          <Song song={session.currentlyPlaying.simpleSong} />
-          {mediaButtons()}
-      </div>
-      {/*Render this here to allow queue to scroll properly*/}
-      <QueueHeader></QueueHeader>
-    </div>
-  );
+        <div>
+            <div className="music-player" >
+                <Song song={session.currentlyPlaying.simpleSong} />
+                {mediaButtons()}
+            </div>
+            {/*Render this here to allow queue to scroll properly*/}
+            <QueueHeader></QueueHeader>
+        </div>
+    );
 }
 
 export default MusicPlayer;

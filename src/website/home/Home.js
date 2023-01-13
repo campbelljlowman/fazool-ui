@@ -32,70 +32,70 @@ client_id=${spotifyClientId}
 `
 
 function Home() {
-  const navigate = useNavigate();
-  const {loading, error: queryError, data} = useQuery(GET_USER);
-  const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
-    onCompleted(data){
-      console.log(data);
-      data.sessionID = data.createSession.sessionID;
-    },
-    refetchQueries: [
-      {query: GET_USER}
-    ]
-  });
+    const navigate = useNavigate();
+    const { loading, error: queryError, data } = useQuery(GET_USER);
+    const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
+        onCompleted(data) {
+            console.log(data);
+            data.sessionID = data.createSession.sessionID;
+        },
+        refetchQueries: [
+            { query: GET_USER }
+        ]
+    });
 
-  const createSession = () => {
-    createSessionMutation();
-  }
-
-  const launchSession = (e) => {
-    e.preventDefault();
-    navigate(`/session/${data.user.sessionID}`);  
-  }
-
-  if (loading) return 'Loading...';
-  if (mutationError) return `Error! ${mutationError.message}`;
-  if (queryError) return `Error! ${queryError.message}`;
-    
-  if(!data){
-    console.log(data);
-    return "Please register or login";
-  }
-
-  const sessionInfo = () => {
-    if (data.user.sessionID === 0){
-      return (
-        <div>
-          <div>No Current Session</div>
-          <button onClick={createSession}>Create Session</button>
-        </div>
-      )
-    } else {
-      return (
-        <div>
-          <div>Current Session: {data.user.sessionID}</div>
-          <button onClick={launchSession}>Launch Session</button>
-        </div>
-      )
+    const createSession = () => {
+        createSessionMutation();
     }
-  }
 
-  const spotifyInfo = () => {
+    const launchSession = (e) => {
+        e.preventDefault();
+        navigate(`/session/${data.user.sessionID}`);
+    }
+
+    if (loading) return 'Loading...';
+    if (mutationError) return `Error! ${mutationError.message}`;
+    if (queryError) return `Error! ${queryError.message}`;
+
+    if (!data) {
+        console.log(data);
+        return "Please register or login";
+    }
+
+    const sessionInfo = () => {
+        if (data.user.sessionID === 0) {
+            return (
+                <div>
+                    <div>No Current Session</div>
+                    <button onClick={createSession}>Create Session</button>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    <div>Current Session: {data.user.sessionID}</div>
+                    <button onClick={launchSession}>Launch Session</button>
+                </div>
+            )
+        }
+    }
+
+    const spotifyInfo = () => {
+        return (
+            <div>
+                <a href={spotifyLoginURL}>Register Spotify</a>
+            </div>
+        )
+    }
+
     return (
-      <div>
-        <a href={spotifyLoginURL}>Register Spotify</a>
-      </div>
+        <div>
+            <div>Home</div>
+            <div>Welcome {data.user.firstName}</div>
+            <div>{sessionInfo()}</div>
+            <div>{spotifyInfo()}</div>
+        </div>
     )
-  }
-
-  return (
-    <div>
-      <div>Home</div>
-      <div>Welcome {data.user.firstName}</div>
-      <div>{sessionInfo()}</div>
-      <div>{spotifyInfo()}</div>
-    </div>
-  )
 }
 
 export default Home

@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -10,84 +10,84 @@ const CREATE_USER = gql`
 `;
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  // TODO: Get errors variable here and check 
-  const [createUser, { error }] = useMutation(CREATE_USER, {
-    onCompleted(data){
-      sessionStorage.setItem("jwt", data.createUser)
+    // TODO: Get errors variable here and check 
+    const [createUser, { error }] = useMutation(CREATE_USER, {
+        onCompleted(data) {
+            sessionStorage.setItem("jwt", data.createUser)
 
-      navigate("/home");
+            navigate("/home");
+        }
+    });
+
+
+    const handleFirstName = (e) => {
+        setFirstName(e.target.value);
     }
-  });
+
+    const handleLastName = (e) => {
+        setLastName(e.target.value);
+    }
+
+    const handleEmail = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+    }
+
+    const submitRegistration = (e) => {
+        e.preventDefault();
+
+        const newUser = {
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+            "password": password
+        };
+
+        createUser({ variables: { newUser: newUser } });
+    }
+
+    // TODO: parse error message and don't replace form
+    if (error) return `Error! ${error.message}`;
 
 
-  const handleFirstName = (e) => {
-    setFirstName(e.target.value);
-  }
-  
-  const handleLastName = (e) => {
-    setLastName(e.target.value);
-  }
+    return (
+        <Container>
+            <Row className="justify-content-md-center">
+                <Col xs={8}>
+                    <div>Sign Up!</div>
+                    <form>
+                        <label>First name:<br />
+                            <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
+                        </label><br />
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  }
+                        <label>Last name:<br />
+                            <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
+                        </label><br />
 
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  }
+                        <label>Email:<br />
+                            <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
+                        </label><br />
 
-  const submitRegistration = (e) => {
-    e.preventDefault();
+                        <label >Password:<br />
+                            <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
+                        </label><br />
 
-    const newUser = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "email": email,
-      "password": password
-    };
-
-    createUser({ variables: {newUser: newUser}});
-  }
-
-  // TODO: parse error message and don't replace form
-  if (error) return `Error! ${error.message}`;
-
-
-  return (
-    <Container>
-    <Row className="justify-content-md-center">
-      <Col xs={8}>
-        <div>Sign Up!</div>
-        <form>
-          <label>First name:<br />
-            <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
-          </label><br />
-
-          <label>Last name:<br />
-            <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
-          </label><br />
-
-          <label>Email:<br />
-            <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
-          </label><br />
-
-          <label >Password:<br />
-            <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
-          </label><br />
-
-          <button className="transparent-button" onClick={submitRegistration}>Submit</button>
-        </form>
-      </Col>
-    </Row>
-  </Container>
-  )
+                        <button className="transparent-button" onClick={submitRegistration}>Submit</button>
+                    </form>
+                </Col>
+            </Row>
+        </Container>
+    )
 }
 
 export default Register

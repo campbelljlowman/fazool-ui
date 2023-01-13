@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Ad () {
-  return (
-    <div>Ad</div>
+function Ad() {
+    return (
+        <div>Ad</div>
     );
 }
 
