@@ -1,87 +1,65 @@
-import React,  { useState, useEffect, useCallback } from 'react';
-import {Buffer} from 'buffer';
+import React, { useState } from 'react';
+// import {Buffer} from 'buffer';
 import SearchResults from './SearchResults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { gql, useLazyQuery } from '@apollo/client';
 import './SearchBox.css'
 
-const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
+const EXECUTE_SEARCH = gql`
+    query musicSearch ($sessionID: Int!, $query: String!){
+        musicSearch (sessionID: $sessionID, query: $query){
+            id
+            title
+            artist
+            image
+        }
+    }
+`
 
-function SearchBox ({ refetchVoter }) {
+function SearchBox({ refetchVoter, sessionID }) {
     const [searchValue, setSearchValue] = useState("");
-    const [spotifyAccessToken, setSpotifyAccessToken] = useState();
     const [searchResults, setSearchResults] = useState();
+
+    const [searchResultQuery, { error: searchResultError }] = useLazyQuery(EXECUTE_SEARCH, {
+        variables: {
+            sessionID: sessionID,
+            query: searchValue
+        },
+        onCompleted(searchResults) {
+            console.log("Search Results: ", searchResults);
+            setSearchResults(searchResults);
+        }
+    });
 
     const handleChange = (e) => {
         setSearchValue(e.target.value);
     }
 
-    // TODO: Cache this value somehow. Currently it gets a new token every time it rerenders
-    const getClientToken = useCallback(async () => {
-        const requestOptions = {
-            method: "Post",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                "Authorization": "Basic " + Buffer.from(`${spotifyClientId}:${spotifyClientSecret}`).toString("base64")
-            },
-            body: "grant_type=client_credentials",
-        }
-        const rsp = await fetch("https://accounts.spotify.com/api/token", requestOptions);
-        if(!rsp.ok){
-            console.log(`Request error body: ${await rsp.text()}`);
-        } else{
-            const rspJson = await rsp.json();
-            setSpotifyAccessToken(rspJson.access_token);
-            console.log(rspJson.access_token);
-        }
-    }, []) 
-
     const searchForSong = async (e) => {
         e.preventDefault();
-        const requestOptions = {
-            method: "Get",
-            headers: {
-                // 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + spotifyAccessToken
-            },
-        }
-        const rsp = await fetch(`https://api.spotify.com/v1/search?type=track&limit=5&q=${searchValue}`, requestOptions);
-        if(!rsp.ok){
-            console.log(`Request error body: ${await rsp.text()}`);
-            // If request error json body.error.message = "The access token expired", then refresh
-            setSearchResults(null);
+        searchResultQuery();
+    }
+
+    if (searchResultError) {
+        console.log("Error executing search: " + searchResultError)
+    }
+
+    const showSearchResults = () => {
+        if (searchResults) {
+            return <SearchResults searchResults={searchResults.musicSearch} setSearchResults={setSearchResults} refetchVoter={refetchVoter} />;
         } else {
-            const rspJson = await rsp.json();
-            const songs = await rspJson.tracks.items;
-            // console.log(songs);
-            // TODO: Loop through artists names
-            const songObjects = []
-            songs.forEach(e => {
-                const song = {
-                    'id': e.id,
-                    'title': e.name,
-                    'artist': e.artists[0].name,
-                    'image': e.album.images[0].url
-                }
-                songObjects.push(song);
-            });
-            // console.log(songObjects);
-            setSearchResults(songObjects);
+            return null;
         }
     }
 
-    useEffect(() => {
-        getClientToken();
-    }, [getClientToken]);
-
-    return(
+    return (
         <div className='search-box'>
-        <form>
-            <input className='search-box-input' type="text" placeholder="Song" value={searchValue} onChange={handleChange} /> 
-            <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
-        </form>
-        <SearchResults searchResults={searchResults} setSearchResults={setSearchResults} refetchVoter={refetchVoter}/>
+            <form>
+                <input className='search-box-input' type="text" placeholder="Song" value={searchValue} onChange={handleChange} />
+                <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+            </form>
+            {showSearchResults()}
         </div>
     );
 }
