@@ -20,7 +20,7 @@ function Register() {
     // TODO: Get errors variable here and check 
     const [createUser, { error }] = useMutation(CREATE_USER, {
         onCompleted(data) {
-            sessionStorage.setItem("jwt", data.createUser)
+            sessionStorage.setItem("account-token", data.createUser)
 
             navigate("/home");
         }

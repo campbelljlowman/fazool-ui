@@ -29,12 +29,14 @@ const splitLink = split(
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const token = sessionStorage.getItem('jwt');
+    const account_token = sessionStorage.getItem('account-token');
+    const voter_token = sessionStorage.getItem('voter-token');
     // return the headers to the context so httpLink can read them
     return {
         headers: {
             ...headers,
-            authentication: token ? `Bearer ${token}` : "",
+            AccountAuthentication: account_token ? `Bearer ${account_token}` : "",
+            VoterAuthentication: voter_token ? `Bearer ${voter_token}` : "",
         }
     }
 });

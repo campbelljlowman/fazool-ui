@@ -95,10 +95,10 @@ function Session() {
     const sessionID = params.sessionID;
 
     // TODO: This keeps token from refreshing, since it will be true if a bad token is already in storage. Old token should be removed if session is expired
-    let haveVoterToken = (() => {
-        const token = sessionStorage.getItem('jwt');
-        return token !== null;
-    })();
+    // let haveVoterToken = (() => {
+    //     const token = sessionStorage.getItem('jwt');
+    //     return token !== null;
+    // })();
 
     const isAdmin = (voter) => {
         if (voter.type === ADMIN_VOTER_TYPE) {
@@ -111,10 +111,9 @@ function Session() {
     const [voter, setVoter] = useState();
 
     const { error: getVoterTokenError } = useQuery(GET_VOTER_TOKEN, {
-        skip: haveVoterToken,
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('jwt', voterTokenData.voterToken);
-            haveVoterToken = true;
+            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
+            voterQuery();
         }
     });
 
@@ -149,15 +148,15 @@ function Session() {
     }, [subscribeToMore, sessionID]);
 
     // Get a voter token if there's no user token in localstorage
-    useEffect(() => {
-        const joinVoters = () => {
-            if (haveVoterToken) {
-                // Call join voters mutation
-                voterQuery();
-            }
-        }
-        joinVoters();
-    }, [haveVoterToken, voterQuery]);
+    // useEffect(() => {
+    //     const joinVoters = () => {
+    //         if (haveVoterToken) {
+    //             // Call join voters mutation
+    //             voterQuery();
+    //         }
+    //     }
+    //     joinVoters();
+    // }, [haveVoterToken, voterQuery]);
 
     // This error should keep whole session from loading, not just queue
     if (sessionLoading) return 'Loading...';

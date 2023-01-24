@@ -17,7 +17,7 @@ function Login() {
 
     const [loginMutation, { error }] = useMutation(LOGIN, {
         onCompleted(data) {
-            sessionStorage.setItem("jwt", data.login)
+            sessionStorage.setItem("account-token", data.login)
 
             navigate("/home");
         }
