@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import { ADMIN_VOTER_TYPE } from '../constants'
 import SearchBox from './search-box/SearchBox'
-import { useQuery, gql, useLazyQuery } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
@@ -73,9 +73,9 @@ const SUBSCRIBE_SESSION = gql`
   }
 `;
 
-const GET_VOTER_TOKEN = gql`
-  query voterToken {
-    voterToken
+const JOIN_VOTERS = gql`
+  mutation joinVoters {
+    joinVoters
   }
 `
 
@@ -93,6 +93,8 @@ const GET_VOTER = gql`
 function Session() {
     const params = useParams();
     const sessionID = params.sessionID;
+    // const haveVoterToken = () => {return sessionStorage.getItem('jwt') == null};
+    const [haveVoterToken, setHaveVoterToken] = useState(false);
 
     // TODO: This keeps token from refreshing, since it will be true if a bad token is already in storage. Old token should be removed if session is expired
     // let haveVoterToken = (() => {
@@ -100,25 +102,34 @@ function Session() {
     //     return token !== null;
     // })();
 
-    const isAdmin = (voter) => {
-        if (voter.type === ADMIN_VOTER_TYPE) {
-            return true;
-        } else {
-            return false;
-        }
-    };
+    // const isAdmin = (voter) => {
+    //     if (voter.type === ADMIN_VOTER_TYPE) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // };
 
     const [voter, setVoter] = useState();
 
-    const { error: getVoterTokenError } = useQuery(GET_VOTER_TOKEN, {
+    const [ joinVotersMutation, {error: getVoterTokenError }] = useMutation(JOIN_VOTERS, {
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
-            voterQuery();
-        }
+            // console.log("Voter token: " + voterTokenData.joinVoters);
+            sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
+            setHaveVoterToken(true);
+            // voterQuery();
+        },
+        refetchQueries: [
+            // { query: GET_VOTER },
+            // 'voter',
+            // { query: GET_SESSION},
+            // 'getSession'
+        ]
     });
 
-    const [voterQuery, { error: voterError }] = useLazyQuery(GET_VOTER, {
+    const { error: voterError } = useQuery(GET_VOTER, {
         variables: { sessionID: sessionID },
+        skip: !haveVoterToken,
         onCompleted(voter) {
             console.log("Voter: ", voter.voter);
             setVoter(voter.voter);
@@ -126,7 +137,8 @@ function Session() {
     });
 
     const { subscribeToMore, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, {
-        variables: { sessionID: sessionID }
+        variables: { sessionID: sessionID },
+        skip: !haveVoterToken,
     });
 
     useEffect(() => {
@@ -147,6 +159,14 @@ function Session() {
         subscribeToSession();
     }, [subscribeToMore, sessionID]);
 
+    useEffect(() => {
+        const getVoterToken = () => {
+            joinVotersMutation();
+        };
+        getVoterToken();
+    }, [joinVotersMutation]);
+
+
     // Get a voter token if there's no user token in localstorage
     // useEffect(() => {
     //     const joinVoters = () => {
@@ -160,12 +180,12 @@ function Session() {
 
     // This error should keep whole session from loading, not just queue
     if (sessionLoading) return 'Loading...';
-    if (sessionError) return `Error! ${sessionError.message}`;
+    if (sessionError) return `Error getting session! ${sessionError.message}`;
     // TODO: This is the error if session is full! Should figure out what to display
-    if (voterError) return `Error! ${voterError.message}`;
+    if (voterError) return `Error getting voter! ${voterError.message}`;
     if (getVoterTokenError) console.log("Error getting voter token: " + getVoterTokenError);
 
-    if (!sessionData.session) {
+    if (!sessionData) {
         return null;
     }
     if (!voter) {
@@ -181,7 +201,7 @@ function Session() {
                     </Col>
                     <Col xs={6}>
                         <div className='main-column'>
-                            <MusicPlayer session={sessionData.session} showMediaButtons={isAdmin(voter)} />
+                            <MusicPlayer session={sessionData.session} showMediaButtons={true} />
                             <Queue session={sessionData.session} voter={voter} />
                             <SearchBox sessionID={sessionData.session.id} />
                         </div>

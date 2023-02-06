@@ -40,7 +40,8 @@ function Home() {
             data.sessionID = data.createSession.sessionID;
         },
         refetchQueries: [
-            { query: GET_USER }
+            { query: GET_USER },
+            'user'
         ]
     });
 
