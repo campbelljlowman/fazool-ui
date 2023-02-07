@@ -19,6 +19,11 @@ mutation createSession {
 }
 `
 
+const JOIN_VOTERS = gql`
+  mutation joinVoters {
+    joinVoters
+  }
+`
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const redirectURI = 'http://localhost:3000/callback'
 var scope = 'user-modify-playback-state user-read-playback-state';
@@ -33,16 +38,23 @@ client_id=${spotifyClientId}
 
 function Home() {
     const navigate = useNavigate();
-    const { loading, error: queryError, data } = useQuery(GET_USER);
+    const { loading, error: queryError, data: userData } = useQuery(GET_USER);
+
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
-        onCompleted(data) {
-            console.log(data);
-            data.sessionID = data.createSession.sessionID;
+        onCompleted(userData) {
+            console.log(userData);
+            userData.sessionID = userData.createSession.sessionID;
         },
         refetchQueries: [
             { query: GET_USER },
             'user'
         ]
+    });
+    const [joinVotersMutation, { error: joinVotersMutationError }] = useMutation(JOIN_VOTERS, {
+        onCompleted(voterTokenData) {
+            sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
+            navigate(`/session/${userData.user.sessionID}`);
+        },
     });
 
     const createSession = () => {
@@ -51,20 +63,21 @@ function Home() {
 
     const launchSession = (e) => {
         e.preventDefault();
-        navigate(`/session/${data.user.sessionID}`);
+        joinVotersMutation();
     }
 
     if (loading) return 'Loading...';
     if (mutationError) return `Error! ${mutationError.message}`;
     if (queryError) return `Error! ${queryError.message}`;
+    if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
 
-    if (!data) {
-        console.log(data);
+    if (!userData) {
+        console.log(userData);
         return "Please register or login";
     }
 
     const sessionInfo = () => {
-        if (data.user.sessionID === 0) {
+        if (userData.user.sessionID === 0) {
             return (
                 <div>
                     <div>No Current Session</div>
@@ -74,7 +87,7 @@ function Home() {
         } else {
             return (
                 <div>
-                    <div>Current Session: {data.user.sessionID}</div>
+                    <div>Current Session: {userData.user.sessionID}</div>
                     <button onClick={launchSession}>Launch Session</button>
                 </div>
             )
@@ -92,7 +105,7 @@ function Home() {
     return (
         <div>
             <div>Home</div>
-            <div>Welcome {data.user.firstName}</div>
+            <div>Welcome {userData.user.firstName}</div>
             <div>{sessionInfo()}</div>
             <div>{spotifyInfo()}</div>
         </div>
