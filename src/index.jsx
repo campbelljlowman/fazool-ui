@@ -8,11 +8,11 @@ import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws';
 
 const httpLink = new HttpLink({
-    uri: `http${process.env.REACT_APP_BACKEND_SERVER}/query`,
+    uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,
 });
 
 const wsLink = new GraphQLWsLink(createClient({
-    url: `ws${process.env.REACT_APP_BACKEND_SERVER}/query`,
+    url: `ws://${import.meta.env.VITE_BACKEND_SERVER}/query`,
 }));
 
 const splitLink = split(
