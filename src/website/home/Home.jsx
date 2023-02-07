@@ -2,9 +2,9 @@ import React from 'react'
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
-const GET_USER = gql`
-query getUser {
-  user{
+const GET_ACCOUNT = gql`
+query getAccount {
+  account{
 		id
     firstName
     sessionID
@@ -38,22 +38,22 @@ client_id=${spotifyClientId}
 
 function Home() {
     const navigate = useNavigate();
-    const { loading, error: queryError, data: userData } = useQuery(GET_USER);
+    const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
 
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
-        onCompleted(userData) {
-            console.log(userData);
-            userData.sessionID = userData.createSession.sessionID;
+        onCompleted(accountData) {
+            console.log(accountData);
+            accountData.sessionID = accountData.createSession.sessionID;
         },
         refetchQueries: [
-            { query: GET_USER },
-            'user'
+            { query: GET_ACCOUNT },
+            'account'
         ]
     });
     const [joinVotersMutation, { error: joinVotersMutationError }] = useMutation(JOIN_VOTERS, {
         onCompleted(voterTokenData) {
             sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
-            navigate(`/session/${userData.user.sessionID}`);
+            navigate(`/session/${accountData.account.sessionID}`);
         },
     });
 
@@ -71,13 +71,13 @@ function Home() {
     if (queryError) return `Error! ${queryError.message}`;
     if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
 
-    if (!userData) {
-        console.log(userData);
+    if (!accountData) {
+        console.log(accountData);
         return "Please register or login";
     }
 
     const sessionInfo = () => {
-        if (userData.user.sessionID === 0) {
+        if (accountData.account.sessionID === 0) {
             return (
                 <div>
                     <div>No Current Session</div>
@@ -87,7 +87,7 @@ function Home() {
         } else {
             return (
                 <div>
-                    <div>Current Session: {userData.user.sessionID}</div>
+                    <div>Current Session: {accountData.account.sessionID}</div>
                     <button onClick={launchSession}>Launch Session</button>
                 </div>
             )
@@ -105,7 +105,7 @@ function Home() {
     return (
         <div>
             <div>Home</div>
-            <div>Welcome {userData.user.firstName}</div>
+            <div>Welcome {accountData.account.firstName}</div>
             <div>{sessionInfo()}</div>
             <div>{spotifyInfo()}</div>
         </div>

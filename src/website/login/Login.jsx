@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const LOGIN = gql`
-  mutation login ($userLogin: UserLogin!) {
-    login(userLogin:$userLogin)
+  mutation login ($accountLogin: AccountLogin!) {
+    login(accountLogin:$accountLogin)
   }
 `;
 
@@ -33,12 +33,12 @@ function Login() {
 
     const login = (e) => {
         e.preventDefault();
-        const userLogin = {
+        const accountLogin = {
             "email": email,
             "password": password
         };
 
-        loginMutation({ variables: { userLogin: userLogin } });
+        loginMutation({ variables: { accountLogin: accountLogin } });
     }
 
     // TODO: parse error message and don't replace form
