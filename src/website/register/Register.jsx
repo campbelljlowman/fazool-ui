@@ -3,9 +3,9 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
-const CREATE_USER = gql`
-  mutation createUser ($newUser: NewUser!) {
-    createUser(newUser: $newUser)
+const CREATE_ACCOUNT = gql`
+  mutation createAccount ($newAccount: NewAccount!) {
+    createAccount(newAccount: $newAccount)
   }
 `;
 
@@ -18,9 +18,9 @@ function Register() {
     const navigate = useNavigate();
 
     // TODO: Get errors variable here and check 
-    const [createUser, { error }] = useMutation(CREATE_USER, {
+    const [createAccount, { error }] = useMutation(CREATE_ACCOUNT, {
         onCompleted(data) {
-            sessionStorage.setItem("account-token", data.createUser)
+            sessionStorage.setItem("account-token", data.createAccount)
 
             navigate("/home");
         }
@@ -46,14 +46,14 @@ function Register() {
     const submitRegistration = (e) => {
         e.preventDefault();
 
-        const newUser = {
+        const newAccount = {
             "firstName": firstName,
             "lastName": lastName,
             "email": email,
             "password": password
         };
 
-        createUser({ variables: { newUser: newUser } });
+        createAccount({ variables: { newAccount: newAccount } });
     }
 
     // TODO: parse error message and don't replace form
