@@ -2,7 +2,6 @@ import MusicPlayer from './music-player/MusicPlayer'
 import Queue from './queue/Queue'
 import Ad from './ads/Ad'
 import JoinLink from './join-sidebar/JoinLink'
-import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import { ADMIN_VOTER_TYPE } from '../constants'
@@ -111,23 +110,29 @@ function Session() {
 
     return (
         <>
-            <Container>
-                <Row>
-                    <Col xs={3}>
-                        <JoinLink />
-                    </Col>
-                    <Col xs={6}>
+                {/* <div className='row'>
+                    <div>
+                    Placeholder css grid row for bonus vote and account upgrade
+                    Don't need a css grid if only displaying on mobile
+                    </div>
+                </div> */}
+            <div className='container'>
+                <div className='row'>
+                    <div className='d-none d-md-block col-md-3'>
+                            <JoinLink />
+                    </div>
+                    <div className='col-sm-12 col-xs-12 col-md-6'>
                         <div className='main-column'>
                             <MusicPlayer session={sessionData.session} showMediaButtons={isAdmin(voter)} />
                             <Queue session={sessionData.session} voter={voter} />
                             <SearchBox sessionID={sessionData.session.id} />
                         </div>
-                    </Col>
-                    <Col xs={3}>
+                    </div>
+                    <div className='d-none d-md-block col-md-3'>
                         <Ad />
-                    </Col>
-                </Row>
-            </Container>
+                    </div>
+                </div>
+            </div>
         </>);
 }
 

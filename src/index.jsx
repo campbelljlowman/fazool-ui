@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import "bootstrap/dist/css/bootstrap.min.css";
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@apollo/client';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws';
+
 
 const httpLink = new HttpLink({
     uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,

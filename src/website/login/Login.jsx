@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+// import { Container, Row, Col } from 'react-bootstrap'
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,9 +45,9 @@ function Login() {
     if (error) return `Error! ${error.message}`;
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col xs={8}>
+        <div>
+            <div className="justify-content-md-center">
+                <div xs={8}>
                     <div>Login</div>
                     <form>
                         <label>Email:<br />
@@ -59,9 +59,9 @@ function Login() {
                         </label><br />
                         <button className="transparent-button" onClick={login}>Login</button>
                     </form>
-                </Col>
-            </Row>
-        </Container>
+                </div>
+            </div>
+        </div>
     )
 }
 
