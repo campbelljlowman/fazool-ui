@@ -1,7 +1,7 @@
 import MusicPlayer from './music-player/MusicPlayer'
 import Queue from './queue/Queue'
 import Ad from './ads/Ad'
-import JoinLink from './join-sidebar/JoinLink'
+import JoinSidebar from './join-sidebar/JoinSidebar'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import { ADMIN_VOTER_TYPE } from '../constants'
@@ -116,10 +116,10 @@ function Session() {
                     Don't need a css grid if only displaying on mobile
                     </div>
                 </div> */}
-            <div className='container'>
+            <div className='container-fluid session'>
                 <div className='row'>
                     <div className='d-none d-md-block col-md-3'>
-                            <JoinLink />
+                            <JoinSidebar currentNumberOfVoters={57} maxNumberOfVoters={100}/>
                     </div>
                     <div className='col-sm-12 col-xs-12 col-md-6'>
                         <div className='main-column'>

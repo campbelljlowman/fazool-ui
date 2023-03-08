@@ -1,0 +1,24 @@
+.logo {
+    position: absolute;
+    max-width: 100%;
+    top: 4vh;
+}
+
+.logo-wrapper {
+    position: relative;
+}
+
+.number-of-voters {
+    color: var(--text-primary-color);
+    position: absolute;
+    top: 20vh;
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    left: 0px;
+    width: 100%;
+}
+
+/* .join-sidebar {
+    text-align: center;
+} */

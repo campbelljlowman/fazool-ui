@@ -1,0 +1,16 @@
+/* Units: 
+Font size: rem
+width: percent (relative to parent) or VH (percent of screen) 
+height: only use min height - percent (relative to parent) or VH (percent of screen)
+padding: rem
+*/
+
+:root {
+    --background-primary-color: #242424;
+    --accent-primary-color: #800000;
+    --text-primary-color: #E7E7E7;
+}
+
+body {
+    font-family: 'Nunito';
+}

@@ -5,7 +5,7 @@
     height: 100px;
     display: flex;
     border-radius: 25px;
-    background: #ff794d;
+    background:  var(--accent-primary-color);
     flex: 0 0 auto;
 }
 

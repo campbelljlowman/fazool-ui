@@ -8,3 +8,7 @@
     border: none;
     background-color: transparent;
 }
+
+.session {
+    background-color: var(--background-primary-color);
+}
