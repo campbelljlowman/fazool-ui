@@ -38,31 +38,6 @@ const GET_SESSION = gql`
   }
 `;
 
-const SUBSCRIBE_SESSION = gql`
-  subscription sessionSubscription($sessionID: Int!) {
-    sessionUpdated(sessionID: $sessionID){
-      id
-      currentlyPlaying {
-        simpleSong {
-          id
-          title
-          artist
-          image
-        }
-        playing
-      }
-      queue{
-        simpleSong {
-          id
-          title
-          artist
-          image
-        }
-        votes
-      }
-    }
-  }
-`;
 
 const GET_VOTER = gql`
   query voter ($sessionID: Int!){
@@ -89,7 +64,6 @@ function Session() {
         }
     };
 
-
     const { error: voterError } = useQuery(GET_VOTER, {
         variables: { sessionID: sessionID },
         onCompleted(voter) {
@@ -98,8 +72,9 @@ function Session() {
         }
     });
 
-    const { subscribeToMore, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, {
+    const { startPolling, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, {
         variables: { sessionID: sessionID },
+        pollInterval: 2000,
     });
 
     useEffect(() => {
@@ -111,24 +86,13 @@ function Session() {
       checkForVoterToken();
   });
 
-
+  // Can remove once bug in apollo is fixed, should be v 3.7.11
     useEffect(() => {
-        const subscribeToSession = () => {
-            subscribeToMore({
-                document: SUBSCRIBE_SESSION,
-                variables: { sessionID: sessionID },
-                updateQuery: (prev, { subscriptionData }) => {
-                    if (!subscriptionData.data) return prev;
-                    // TODO: There's probably a better way to merge these resulst
-                    // console.log("receiving session update");
-                    const returnSession = structuredClone(prev);
-                    returnSession.session = subscriptionData.data.sessionUpdated;
-                    return returnSession;
-                }
-            });
-        }
-        subscribeToSession();
-    }, [subscribeToMore, sessionID]);
+      const startThePolling = () => {
+        startPolling(2000);
+      };
+      startThePolling();
+    });
 
 
 
