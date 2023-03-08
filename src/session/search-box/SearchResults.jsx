@@ -15,16 +15,6 @@ const UPDATE_QUEUE = gql`
   }
 `;
 
-const GET_VOTER = gql`
-  query voter ($sessionID: Int!){
-    voter (sessionID: $sessionID){
-      type
-      songsVotedFor
-      bonusVotes
-    }
-  }
-
-`
 
 function SearchResults({ searchResults, setSearchResults }) {
     const params = useParams();
@@ -32,8 +22,8 @@ function SearchResults({ searchResults, setSearchResults }) {
 
     const [updateQueue, { error: updateError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
-            { query: GET_VOTER },
-            'voter'
+            'voter',
+            'getSession',
         ]
     });
 
