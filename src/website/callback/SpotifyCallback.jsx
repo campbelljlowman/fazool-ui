@@ -15,7 +15,8 @@ const UPSERT_SPOTIFY_CREDENTIALS = gql`
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
-const redirectURI = 'http://localhost:3000/callback'
+// TODO: find a way to not have to hard code its own address
+const redirectURI = 'http://localhost:5173/callback'
 
 function SpotifyCallback() {
     const [searchParams] = useSearchParams();

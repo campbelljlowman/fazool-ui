@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 
 const GET_ACCOUNT = gql`
 query getAccount {
-  account{
-		id
+  account {
+    id
     firstName
-    sessionID
+    activeSession
   }
 }`
 
 const CREATE_SESSION = gql`
 mutation createSession {
   createSession{
-    sessionID
+    activeSession
   }
 }
 `
@@ -25,7 +25,7 @@ const JOIN_VOTERS = gql`
   }
 `
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const redirectURI = 'http://localhost:3000/callback'
+const redirectURI = 'http://localhost:5173/callback'
 var scope = 'user-modify-playback-state user-read-playback-state';
 
 //TODO: Add state to request
@@ -43,7 +43,7 @@ function Home() {
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
         onCompleted(accountData) {
             console.log(accountData);
-            accountData.sessionID = accountData.createSession.sessionID;
+            accountData.activeSession = accountData.createSession.activeSession;
         },
         refetchQueries: [
             { query: GET_ACCOUNT },
@@ -53,7 +53,7 @@ function Home() {
     const [joinVotersMutation, { error: joinVotersMutationError }] = useMutation(JOIN_VOTERS, {
         onCompleted(voterTokenData) {
             sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
-            navigate(`/session/${accountData.account.sessionID}`);
+            navigate(`/session/${accountData.account.activeSession}`);
         },
     });
 
@@ -77,7 +77,7 @@ function Home() {
     }
 
     const sessionInfo = () => {
-        if (accountData.account.sessionID === 0) {
+        if (accountData.account.activeSession === 0) {
             return (
                 <div>
                     <div>No Current Session</div>
@@ -87,7 +87,7 @@ function Home() {
         } else {
             return (
                 <div>
-                    <div>Current Session: {accountData.account.sessionID}</div>
+                    <div>Current Session: {accountData.account.activeSession}</div>
                     <button onClick={launchSession}>Launch Session</button>
                 </div>
             )
