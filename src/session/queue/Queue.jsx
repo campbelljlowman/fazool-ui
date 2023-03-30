@@ -3,7 +3,7 @@ import './Queue.css'
 import { ADMIN_VOTER_TYPE, REGULAR_VOTER_TYPE } from '../../constants'
 
 
-function Queue({ session, voter }) {
+function Queue({ sessionID, sessionState, voter }) {
 
     const checkVotedFor = (song, votes) => {
         if (voter.type === ADMIN_VOTER_TYPE) {
@@ -39,15 +39,15 @@ function Queue({ session, voter }) {
         }
     }
 
-    if (!session.queue) {
+    if (!sessionState.queue) {
         return null;
     }
 
 
     return (
         <div className='queue'>
-            {session.queue.map(queuedSong => (
-                <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={session.id} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
+            {sessionState.queue.map(queuedSong => (
+                <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
             ))}
         </div>
     );

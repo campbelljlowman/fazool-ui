@@ -10,36 +10,36 @@ import { useMutation, gql } from '@apollo/client';
 const UPDATE_CURRENTLY_PLAYING = gql`
 mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
     updateCurrentlyPlaying(sessionID:$sessionID, action:$action){
-        id
+        numberOfVoters
     }
   }
 `
 
-function MusicPlayer({ session, showMediaButtons }) {
+function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }) {
     const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
     const play = () => {
         console.log("Play/Pause");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "PLAY" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "PLAY" } })
     };
 
     const pause = () => {
         console.log("Play/Pause");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "PAUSE" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "PAUSE" } })
     };
 
     const advance = () => {
         console.log("Skip to next track");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: session.id, action: "ADVANCE" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "ADVANCE" } })
     }
 
     if (mutationError) return `Error! ${mutationError.message}`;
-    if (!session.currentlyPlaying) {
+    if (!currentlyPlaying) {
         return null;
     }
 
     const playPause = () => {
-        if (session.currentlyPlaying.playing === false) {
+        if (currentlyPlaying.playing === false) {
             return (
                 <button className="transparent-button" onClick={play}><FontAwesomeIcon icon={faPlay} /></button>
             )
@@ -65,7 +65,7 @@ function MusicPlayer({ session, showMediaButtons }) {
     return (
         <div>
             <div className="music-player" >
-                <Song song={session.currentlyPlaying.simpleSong} />
+                <Song song={currentlyPlaying.simpleSong} />
                 {mediaButtons()}
             </div>
             {/*Render this here to allow queue to scroll properly*/}
