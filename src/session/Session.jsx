@@ -12,10 +12,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 
-const GET_SESSION = gql`
-  query getSession($sessionID: Int!){
-    session(sessionID: $sessionID){
-      id
+const GET_SESSION_STATE = gql`
+  query getSessionState($sessionID: Int!){
+    sessionState(sessionID: $sessionID){
       currentlyPlaying {
         simpleSong{
           id
@@ -34,6 +33,17 @@ const GET_SESSION = gql`
         }
         votes
       }
+      numberOfVoters
+    }
+  }
+`;
+
+const GET_SESSION_CONFIG = gql`
+  query getSessionConfig($sessionID: Int!){
+    sessionConfig(sessionID: $sessionID){
+      id
+      adminAccountID
+      maximumVoters
     }
   }
 `;
@@ -48,7 +58,7 @@ const GET_VOTER = gql`
       bonusVotes
     }
   }
-`
+`;
 
 function Session() {
     const params = useParams();
@@ -72,9 +82,13 @@ function Session() {
         }
     });
 
-    const { startPolling, loading: sessionLoading, error: sessionError, data: sessionData } = useQuery(GET_SESSION, {
+    const { startPolling, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
         variables: { sessionID: sessionID },
         pollInterval: 2000,
+    });
+
+    const { data: sessionConfig } = useQuery(GET_SESSION_CONFIG, {
+        variables: { sessionID: sessionID }
     });
 
     useEffect(() => {
@@ -97,12 +111,12 @@ function Session() {
 
 
     // This error should keep whole session from loading, not just queue
-    if (sessionLoading) return 'Loading...';
-    if (sessionError) return `Error getting session! ${sessionError.message}`;
+    if (sessionStateLoading) return 'Loading...';
+    if (sessionStateError) return `Error getting session state! ${sessionError.message}`;
     // TODO: This is the error if session is full! Should figure out what to display
     if (voterError) return `Error getting voter! ${voterError.message}`;
 
-    if (!sessionData) {
+    if (!sessionState) {
         return null;
     }
     if (!voter) {
@@ -118,9 +132,9 @@ function Session() {
                     </Col>
                     <Col xs={6}>
                         <div className='main-column'>
-                            <MusicPlayer session={sessionData.session} showMediaButtons={isAdmin(voter)} />
-                            <Queue session={sessionData.session} voter={voter} />
-                            <SearchBox sessionID={sessionData.session.id} />
+                            <MusicPlayer sessionID={sessionID} currentlyPlaying={sessionState.sessionState.currentlyPlaying} showMediaButtons={isAdmin(voter)} />
+                            <Queue sessionID={sessionID} sessionState={sessionState.sessionState} voter={voter} />
+                            <SearchBox sessionID={sessionID} />
                         </div>
                     </Col>
                     <Col xs={3}>

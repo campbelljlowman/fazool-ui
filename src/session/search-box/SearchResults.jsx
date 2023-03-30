@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 const UPDATE_QUEUE = gql`
   mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
     updateQueue(sessionID: $sessionID, song: $song) {
-      id
+      numberOfVoters
     }
   }
 `;

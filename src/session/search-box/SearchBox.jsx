@@ -17,7 +17,7 @@ const EXECUTE_SEARCH = gql`
     }
 `
 
-function SearchBox({ refetchVoter, sessionID }) {
+function SearchBox({ sessionID }) {
     const [searchValue, setSearchValue] = useState("");
     const [searchResults, setSearchResults] = useState();
 
@@ -44,10 +44,11 @@ function SearchBox({ refetchVoter, sessionID }) {
     if (searchResultError) {
         console.log("Error executing search: " + searchResultError)
     }
+    console.log("Session id in search box" + sessionID)
 
     const showSearchResults = () => {
         if (searchResults) {
-            return <SearchResults searchResults={searchResults.musicSearch} setSearchResults={setSearchResults} refetchVoter={refetchVoter} />;
+            return <SearchResults searchResults={searchResults.musicSearch} setSearchResults={setSearchResults} />;
         } else {
             return null;
         }

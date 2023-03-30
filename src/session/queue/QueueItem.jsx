@@ -8,27 +8,18 @@ import { useMutation, gql } from '@apollo/client';
 const UPDATE_QUEUE = gql`
   mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
     updateQueue(sessionID: $sessionID, song: $song) {
-      id
+        numberOfVoters
     }
   }
 `;
 
-const GET_VOTER = gql`
-  query voter ($sessionID: Int!){
-    voter (sessionID: $sessionID){
-      type
-      songsVotedFor
-      bonusVotes
-    }
-  }
-`
 
 function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }) {
 
     const [updateQueue, { error: mutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
-            'getSession',
+            'getSessionState',
         ]
     });
 
@@ -46,6 +37,11 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
             'vote': direction,
             'action': action
         }
+        console.log("Song data for vote:" + songData);
+        console.log("id:" + songData.id);
+        console.log("vote:" + songData.vote);
+        console.log("action:" + songData.action);
+        console.log("session:" + sessionID);
         updateQueue({ variables: { sessionID: sessionID, song: songData } });
     }
 

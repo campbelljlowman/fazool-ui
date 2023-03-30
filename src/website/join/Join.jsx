@@ -26,6 +26,7 @@ function Join() {
     const joinSession = (e) => {
         e.preventDefault();
         joinVotersMutation();
+        
     }
 
     if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
