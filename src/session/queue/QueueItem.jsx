@@ -19,7 +19,6 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
     const [updateQueue, { error: mutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
-            'getSessionState',
         ]
     });
 

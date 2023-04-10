@@ -23,7 +23,6 @@ function SearchResults({ searchResults, setSearchResults }) {
     const [updateQueue, { error: updateError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
-            'getSession',
         ]
     });
 
