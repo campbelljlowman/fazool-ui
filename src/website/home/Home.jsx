@@ -1,5 +1,5 @@
 import React from 'react'
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
 const GET_ACCOUNT = gql`
@@ -19,10 +19,10 @@ mutation createSession {
 }
 `
 
-const JOIN_VOTERS = gql`
-  mutation joinVoters {
-    joinVoters
-  }
+const GET_VOTER_TOKEN = gql`
+    query getVoterToken {
+        voterToken
+    }
 `
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const redirectURI = 'http://localhost:5173/callback'
@@ -50,9 +50,9 @@ function Home() {
             'account'
         ]
     });
-    const [joinVotersMutation, { error: joinVotersMutationError }] = useMutation(JOIN_VOTERS, {
+    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
+            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
             navigate(`/session/${accountData.account.activeSession}`);
         },
     });
@@ -63,7 +63,7 @@ function Home() {
 
     const launchSession = (e) => {
         e.preventDefault();
-        joinVotersMutation();
+        joinVotersQuery();
     }
 
     if (loading) return 'Loading...';

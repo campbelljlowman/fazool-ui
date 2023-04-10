@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom";
-import { useMutation, gql } from '@apollo/client';
+import { useLazyQuery, gql } from '@apollo/client';
 
-const JOIN_VOTERS = gql`
-  mutation joinVoters {
-    joinVoters
-  }
+const GET_VOTER_TOKEN = gql`
+    query getVoterToken {
+        voterToken
+    }
 `
 
 function Join() {
     const navigate = useNavigate();
     const [sessionID, setSessionID] = useState("");
-    const [joinVotersMutation, { error: joinVotersMutationError }] = useMutation(JOIN_VOTERS, {
+    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.joinVoters);
+            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
             navigate(`/session/${sessionID}`);
         },
     });
@@ -25,7 +25,7 @@ function Join() {
 
     const joinSession = (e) => {
         e.preventDefault();
-        joinVotersMutation();
+        joinVotersQuery();
         
     }
 

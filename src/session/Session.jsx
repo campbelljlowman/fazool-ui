@@ -11,6 +11,31 @@ import { useQuery, gql } from '@apollo/client';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
+const SUBSCRIBE_SESSION_STATE = gql`
+  subscription subscribeSessionState($sessionID: Int!){
+      subscribeSessionState(sessionID: $sessionID){
+          currentlyPlaying {
+              simpleSong{
+                  id
+                  title
+                  artist
+                  image
+              }
+              playing
+          }
+          queue {
+              simpleSong {
+                  id
+                  title
+                  artist
+                  image
+              }
+              votes
+          }
+          numberOfVoters
+      }
+  }
+`;
 
 const GET_SESSION_STATE = gql`
   query getSessionState($sessionID: Int!){
@@ -82,9 +107,8 @@ function Session() {
         }
     });
 
-    const { startPolling, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
+    const { subscribeToMore, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
         variables: { sessionID: sessionID },
-        pollInterval: 2000,
     });
 
     const { data: sessionConfig } = useQuery(GET_SESSION_CONFIG, {
@@ -100,13 +124,24 @@ function Session() {
       checkForVoterToken();
   });
 
-  // Can remove once bug in apollo is fixed, should be v 3.7.11
     useEffect(() => {
-      const startThePolling = () => {
-        startPolling(2000);
-      };
-      startThePolling();
-    });
+        const subscribeToSession = () => {
+            subscribeToMore({
+                document: SUBSCRIBE_SESSION_STATE,
+                variables: { sessionID: sessionID },
+                updateQuery: (prev, { subscriptionData }) => {
+                    if (!subscriptionData.data) return prev;
+                    // TODO: There's probably a better way to merge these resulst
+                    console.log("receiving session update");
+                    console.log(JSON.stringify(subscriptionData));
+                    const returnSession = structuredClone(prev);
+                    returnSession.sessionState = subscriptionData.data.subscribeSessionState;
+                    return returnSession;
+                }
+            });
+        }
+        subscribeToSession();
+    }, [subscribeToMore, sessionID]);
 
 
 
