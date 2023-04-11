@@ -11,8 +11,12 @@ const httpLink = new HttpLink({
     uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,
 });
 
+// TODO: Pass voter token on this dynamically
 const wsLink = new GraphQLWsLink(createClient({
     url: `ws://${import.meta.env.VITE_BACKEND_SERVER}/query`,
+    connectionParams: {
+        SubscriptionAuthentication: "Subscription-Allowed",
+    },
 }));
 
 const splitLink = split(
@@ -28,15 +32,13 @@ const splitLink = split(
 );
 
 const authLink = setContext((_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const account_token = sessionStorage.getItem('account-token');
-    const voter_token = sessionStorage.getItem('voter-token');
-    // return the headers to the context so httpLink can read them
+    const accountToken = sessionStorage.getItem('account-token');
+    const voterToken = sessionStorage.getItem('voter-token');
     return {
         headers: {
             ...headers,
-            AccountAuthentication: account_token ? `Bearer ${account_token}` : "",
-            VoterAuthentication: voter_token ? `Bearer ${voter_token}` : "",
+            AccountAuthentication: accountToken ? `Bearer ${accountToken}` : "",
+            VoterAuthentication: voterToken ? `Bearer ${voterToken}` : "",
         }
     }
 });
