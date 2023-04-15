@@ -1,12 +1,11 @@
-import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
 import './MusicPlayer.css'
 import QueueHeader from '../queue/QueueHeader';
 import { useMutation, } from '@apollo/client';
-import { graphql } from '../../gql'
-
+import { graphql } from '../../gql';
+import { CurrentlyPlayingSong, QueueAction } from '../../gql/graphql';
 
 
 const UPDATE_CURRENTLY_PLAYING = graphql(`
@@ -17,22 +16,28 @@ const UPDATE_CURRENTLY_PLAYING = graphql(`
     }
 `)
 
-function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }) {
+interface MusicPlayerProps {
+    sessionID:          number,
+    currentlyPlaying:   CurrentlyPlayingSong,
+    showMediaButtons:   boolean
+}
+
+function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPlayerProps) {
     const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
     const play = () => {
         console.log("Play/Pause");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "PLAY" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Play } })
     };
 
     const pause = () => {
         console.log("Play/Pause");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "PAUSE" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Pause } })
     };
 
     const advance = () => {
         console.log("Skip to next track");
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "ADVANCE" } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Advance } })
     }
 
     if (mutationError) {
