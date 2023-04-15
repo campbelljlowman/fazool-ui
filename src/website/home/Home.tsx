@@ -1,29 +1,32 @@
 import React from 'react'
-import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
+import { graphql } from '../../gql'
 
-const GET_ACCOUNT = gql`
-query getAccount {
-  account {
-    id
-    firstName
-    activeSession
-  }
-}`
+const GET_ACCOUNT = graphql(`
+    query getAccount {
+    account {
+        id
+        firstName
+        activeSession
+    }
+    }
+`)
 
-const CREATE_SESSION = gql`
-mutation createSession {
-  createSession{
-    activeSession
-  }
-}
-`
+const CREATE_SESSION = graphql(`
+    mutation createSession {
+    createSession{
+        activeSession
+    }
+    }
+`)
 
-const GET_VOTER_TOKEN = gql`
+const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
         voterToken
     }
-`
+`)
+
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const redirectURI = 'http://localhost:5173/callback'
 var scope = 'user-modify-playback-state user-read-playback-state';

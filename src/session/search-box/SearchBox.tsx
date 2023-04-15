@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import SearchResults from './SearchResults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import './SearchBox.css'
+import { graphql } from '../../gql'
 
-const EXECUTE_SEARCH = gql`
+const EXECUTE_SEARCH = graphql(`
     query musicSearch ($sessionID: Int!, $query: String!){
         musicSearch (sessionID: $sessionID, query: $query){
             id
@@ -15,7 +16,7 @@ const EXECUTE_SEARCH = gql`
             image
         }
     }
-`
+`)
 
 function SearchBox({ sessionID }) {
     const [searchValue, setSearchValue] = useState("");

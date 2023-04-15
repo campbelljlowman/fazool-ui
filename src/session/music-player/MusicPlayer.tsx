@@ -4,16 +4,18 @@ import { faPlay, faPause, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
 import './MusicPlayer.css'
 import QueueHeader from '../queue/QueueHeader';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, } from '@apollo/client';
+import { graphql } from '../../gql'
 
 
-const UPDATE_CURRENTLY_PLAYING = gql`
-mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
-    updateCurrentlyPlaying(sessionID:$sessionID, action:$action){
-        numberOfVoters
+
+const UPDATE_CURRENTLY_PLAYING = graphql(`
+    mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {
+        updateCurrentlyPlaying(sessionID:$sessionID, action:$action){
+            numberOfVoters
+        }
     }
-  }
-`
+`)
 
 function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }) {
     const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
