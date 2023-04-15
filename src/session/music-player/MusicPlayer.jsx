@@ -33,7 +33,9 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }) {
         updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: "ADVANCE" } })
     }
 
-    if (mutationError) return `Error! ${mutationError.message}`;
+    if (mutationError) {
+        console.log(`Error! ${mutationError.message}`);
+    }
     if (!currentlyPlaying) {
         return null;
     }
