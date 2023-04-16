@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import { graphql } from '../../gql'
 
-const CREATE_ACCOUNT = gql`
-  mutation createAccount ($newAccount: NewAccount!) {
-    createAccount(newAccount: $newAccount)
-  }
-`;
+
+const CREATE_ACCOUNT = graphql(`
+    mutation createAccount ($newAccount: NewAccount!) {
+        createAccount(newAccount: $newAccount)
+    }
+`)
 
 function Register() {
     const [firstName, setFirstName] = useState("");
@@ -27,23 +29,23 @@ function Register() {
     });
 
 
-    const handleFirstName = (e) => {
+    const handleFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);
     }
 
-    const handleLastName = (e) => {
+    const handleLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLastName(e.target.value);
     }
 
-    const handleEmail = (e) => {
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     }
 
-    const handlePassword = (e) => {
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     }
 
-    const submitRegistration = (e) => {
+    const submitRegistration = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         const newAccount = {

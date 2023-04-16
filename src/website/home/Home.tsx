@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import { graphql } from '../../gql'
@@ -41,13 +40,14 @@ client_id=${spotifyClientId}
 
 function Home() {
     const navigate = useNavigate();
+
     const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
+    if (!accountData) {
+        console.log(accountData);
+        return "Please register or login";
+    }
 
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
-        onCompleted(accountData) {
-            console.log(accountData);
-            accountData.activeSession = accountData.createSession.activeSession;
-        },
         refetchQueries: [
             { query: GET_ACCOUNT },
             'account'
@@ -64,7 +64,7 @@ function Home() {
         createSessionMutation();
     }
 
-    const launchSession = (e) => {
+    const launchSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         joinVotersQuery();
     }
@@ -73,11 +73,6 @@ function Home() {
     if (mutationError) return `Error! ${mutationError.message}`;
     if (queryError) return `Error! ${queryError.message}`;
     if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
-
-    if (!accountData) {
-        console.log(accountData);
-        return "Please register or login";
-    }
 
     const sessionInfo = () => {
         if (accountData.account.activeSession === 0) {

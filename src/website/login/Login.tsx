@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import { graphql } from '../../gql'
 
 
-const LOGIN = gql`
-  mutation login ($accountLogin: AccountLogin!) {
-    login(accountLogin:$accountLogin)
-  }
-`;
+const LOGIN = graphql(`
+    mutation login ($accountLogin: AccountLogin!) {
+        login(accountLogin:$accountLogin)
+    }
+`)
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -23,15 +24,15 @@ function Login() {
         }
     });
 
-    const handleEmail = (e) => {
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     }
 
-    const handlePassword = (e) => {
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
     }
 
-    const login = (e) => {
+    const login = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const accountLogin = {
             "email": email,
