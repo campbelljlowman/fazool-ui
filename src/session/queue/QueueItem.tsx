@@ -1,20 +1,28 @@
-import React from 'react'
 import Song from '../song/Song'
 import './QueueItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { graphql } from '../../gql'
+import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
 
-const UPDATE_QUEUE = gql`
-  mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
-    updateQueue(sessionID: $sessionID, song: $song) {
-        numberOfVoters
+const UPDATE_QUEUE = graphql(`
+    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
+        updateQueue(sessionID: $sessionID, song: $song) {
+            numberOfVoters
+        }
     }
-  }
-`;
+`)
 
+interface QueueItemProps {
+    queuedSong:     QueuedSong,
+    sessionID:      number,
+    showDecrement:  boolean,
+    upVotedFor:     boolean,
+    downVotedFor:   boolean
+}
 
-function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }) {
+function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }: QueueItemProps) {
 
     const [updateQueue, { error: mutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
@@ -29,7 +37,7 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         return null;
     }
 
-    const vote = (direction, action) => {
+    const vote = (direction: SongVoteDirection, action: SongVoteAction) => {
         console.log("Voting for song :" + queuedSong.simpleSong);
         const songData = {
             'id': queuedSong.simpleSong.id,
@@ -47,9 +55,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button upvoted-for" onClick={() => vote("UP", "REMOVE")}><FontAwesomeIcon icon={faAngleUp} /></button>
+            return <button className="transparent-button upvoted-for" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><FontAwesomeIcon icon={faAngleUp} /></button>
         } else {
-            return <button className="transparent-button" onClick={() => vote("UP", "ADD")}><FontAwesomeIcon icon={faAngleUp} /></button>
+            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><FontAwesomeIcon icon={faAngleUp} /></button>
         }
     };
 
@@ -57,9 +65,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button downvoted-for" onClick={() => vote("DOWN", "REMOVE")}><FontAwesomeIcon icon={faAngleDown} /></button>
+                return <button className="transparent-button downvoted-for" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><FontAwesomeIcon icon={faAngleDown} /></button>
             } else {
-                return <button className="transparent-button" onClick={() => vote("DOWN", "ADD")}><FontAwesomeIcon icon={faAngleDown} /></button>
+                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><FontAwesomeIcon icon={faAngleDown} /></button>
             }
         } else {
             return null
