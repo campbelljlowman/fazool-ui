@@ -20,7 +20,7 @@ const documents = {
     "\n    mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {\n        updateCurrentlyPlaying(sessionID:$sessionID, action:$action){\n            numberOfVoters\n        }\n    }\n": types.UpdateCurrentlyPlayingDocument,
     "\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n": types.UpdateQueueDocument,
     "\n    query musicSearch ($sessionID: Int!, $query: String!){\n        musicSearch (sessionID: $sessionID, query: $query){\n            id\n            title\n            artist\n            image\n        }\n    }\n": types.MusicSearchDocument,
-    "\n  mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n    updateQueue(sessionID: $sessionID, song: $song) {\n      numberOfVoters\n    }\n  }\n": types.UpdateQueueDocument,
+    "\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n        numberOfVoters\n        }\n    }\n": types.UpdateQueueDocument,
     "\n  mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {\n    upsertSpotifyToken(spotifyCreds:$spotifyCreds){\n        id\n    }\n  }\n": types.UpsertSpotifyCredentialsDocument,
     "\n    query getAccount {\n    account {\n        id\n        firstName\n        activeSession\n    }\n    }\n": types.GetAccountDocument,
     "\n    mutation createSession {\n    createSession{\n        activeSession\n    }\n    }\n": types.CreateSessionDocument,
@@ -74,7 +74,7 @@ export function graphql(source: "\n    query musicSearch ($sessionID: Int!, $que
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n    updateQueue(sessionID: $sessionID, song: $song) {\n      numberOfVoters\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n    updateQueue(sessionID: $sessionID, song: $song) {\n      numberOfVoters\n    }\n  }\n"];
+export function graphql(source: "\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n        numberOfVoters\n        }\n    }\n"): (typeof documents)["\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n        numberOfVoters\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

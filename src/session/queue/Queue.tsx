@@ -4,7 +4,7 @@ import { SessionState, VoterInfo, VoterType } from '../../gql/graphql'
 
 interface QueueProps {
     sessionID:      number,
-    sessionState:   SessionState,
+    sessionState:   SessionState | null | undefined,
     voter:          VoterInfo
 
 }
@@ -44,7 +44,7 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
         }
     }
 
-    if (!sessionState.queue) {
+    if (!sessionState || !sessionState.queue) {
         return null;
     }
 

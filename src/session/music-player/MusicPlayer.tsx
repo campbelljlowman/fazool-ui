@@ -18,7 +18,7 @@ const UPDATE_CURRENTLY_PLAYING = graphql(`
 
 interface MusicPlayerProps {
     sessionID:          number,
-    currentlyPlaying:   CurrentlyPlayingSong,
+    currentlyPlaying:   CurrentlyPlayingSong | null | undefined,
     showMediaButtons:   boolean
 }
 

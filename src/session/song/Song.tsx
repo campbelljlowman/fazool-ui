@@ -1,6 +1,10 @@
 import './Song.css'
+import { SimpleSong } from '../../gql/graphql';
 
-function Song({ song }) {
+interface SongProps {
+    song: SimpleSong
+}
+function Song({ song }: SongProps) {
     if (!song) {
         return null;
     }

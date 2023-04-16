@@ -5,13 +5,16 @@ import JoinLink from './join-sidebar/JoinLink'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
-import { ADMIN_VOTER_TYPE } from '../constants'
+// import { ADMIN_VOTER_TYPE } from '../constants'
 import SearchBox from './search-box/SearchBox'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
+import { graphql } from '../gql'
+import { VoterInfo, VoterType } from '../gql/graphql'
 
-const SUBSCRIBE_SESSION_STATE = gql`
+
+const SUBSCRIBE_SESSION_STATE = graphql(`
   subscription subscribeSessionState($sessionID: Int!){
       subscribeSessionState(sessionID: $sessionID){
           currentlyPlaying {
@@ -35,9 +38,9 @@ const SUBSCRIBE_SESSION_STATE = gql`
           numberOfVoters
       }
   }
-`;
+`)
 
-const GET_SESSION_STATE = gql`
+const GET_SESSION_STATE = graphql(`
   query getSessionState($sessionID: Int!){
     sessionState(sessionID: $sessionID){
       currentlyPlaying {
@@ -61,9 +64,9 @@ const GET_SESSION_STATE = gql`
       numberOfVoters
     }
   }
-`;
+`)
 
-const GET_SESSION_CONFIG = gql`
+const GET_SESSION_CONFIG = graphql(`
   query getSessionConfig($sessionID: Int!){
     sessionConfig(sessionID: $sessionID){
       id
@@ -71,10 +74,10 @@ const GET_SESSION_CONFIG = gql`
       maximumVoters
     }
   }
-`;
+`)
 
 
-const GET_VOTER = gql`
+const GET_VOTER = graphql(`
   query voter ($sessionID: Int!){
     voter (sessionID: $sessionID){
       type
@@ -83,16 +86,20 @@ const GET_VOTER = gql`
       bonusVotes
     }
   }
-`;
+`)
 
 function Session() {
     const params = useParams();
-    const navigate = useNavigate();
-    const sessionID = params.sessionID;
-    const [voter, setVoter] = useState();
+    if (!params.sessionID) {
+        throw new Error("Unexpected error: Missing name");
+    }
 
-    const isAdmin = (voter) => {
-        if (voter.type === ADMIN_VOTER_TYPE) {
+    const navigate = useNavigate();
+    const sessionID = parseInt(params.sessionID)
+    const [voter, setVoter] = useState<VoterInfo>();
+
+    const isAdmin = (voter: VoterInfo) => {
+        if (voter.type === VoterType.Admin) {
             return true;
         } else {
             return false;
@@ -147,7 +154,7 @@ function Session() {
 
     // This error should keep whole session from loading, not just queue
     if (sessionStateLoading) return 'Loading...';
-    if (sessionStateError) return `Error getting session state! ${sessionError.message}`;
+    if (sessionStateError) return `Error getting session state! ${sessionStateError.message}`;
     // TODO: This is the error if session is full! Should figure out what to display
     if (voterError) return `Error getting voter! ${voterError.message}`;
 
@@ -158,6 +165,10 @@ function Session() {
         return null;
     }
 
+    if (!sessionState.sessionState) {
+        return null;
+    }
+    
     return (
         <>
             <Container>
