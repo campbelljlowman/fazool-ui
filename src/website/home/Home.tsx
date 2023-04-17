@@ -42,10 +42,6 @@ function Home() {
     const navigate = useNavigate();
 
     const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
-    if (!accountData) {
-        console.log(accountData);
-        return <div>Please register or login</div>
-    }
 
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
         refetchQueries: [
@@ -53,10 +49,11 @@ function Home() {
             'account'
         ]
     });
+
     const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
             sessionStorage.setItem('voter-token', voterTokenData.voterToken);
-            navigate(`/session/${accountData.account.activeSession}`);
+            navigate(`/session/${accountData!.account.activeSession}`);
         },
     });
 
@@ -67,6 +64,12 @@ function Home() {
     const launchSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         joinVotersQuery();
+    }
+
+    
+    if (!accountData) {
+        console.log(accountData);
+        return <div>Please register or login</div>
     }
 
     if (loading) return <div>Loading...</div>
