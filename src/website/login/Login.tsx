@@ -43,7 +43,7 @@ function Login() {
     }
 
     // TODO: parse error message and don't replace form
-    if (error) return `Error! ${error.message}`;
+    if (error) console.log(`Error! ${error.message}`)
 
     return (
         <Container>

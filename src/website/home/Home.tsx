@@ -44,7 +44,7 @@ function Home() {
     const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
     if (!accountData) {
         console.log(accountData);
-        return "Please register or login";
+        return <div>Please register or login</div>
     }
 
     const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
@@ -69,10 +69,10 @@ function Home() {
         joinVotersQuery();
     }
 
-    if (loading) return 'Loading...';
-    if (mutationError) return `Error! ${mutationError.message}`;
-    if (queryError) return `Error! ${queryError.message}`;
-    if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
+    if (loading) return <div>Loading...</div>
+    if (mutationError) return <div>Error! {mutationError.message}</div>
+    if (queryError) return <div>Error! {queryError.message}</div>
+    if (joinVotersMutationError) return <div>Error joining voters: {joinVotersMutationError.message}</div>
 
     const sessionInfo = () => {
         if (accountData.account.activeSession === 0) {

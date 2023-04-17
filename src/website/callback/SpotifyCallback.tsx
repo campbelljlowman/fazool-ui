@@ -70,7 +70,7 @@ function SpotifyCallback() {
     });
 
 
-    if (mutationError) return `Error! ${mutationError.message}`;
+    if (mutationError) return <div>Error! {mutationError.message}</div>
 
     return (
         <div>Saving Credentials</div>

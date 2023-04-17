@@ -91,7 +91,7 @@ const GET_VOTER = graphql(`
 function Session() {
     const params = useParams();
     if (!params.sessionID) {
-        throw new Error("Unexpected error: Missing name");
+        throw new Error("Unexpected error: Missing sessionID");
     }
 
     const navigate = useNavigate();
@@ -153,10 +153,10 @@ function Session() {
 
 
     // This error should keep whole session from loading, not just queue
-    if (sessionStateLoading) return 'Loading...';
-    if (sessionStateError) return `Error getting session state! ${sessionStateError.message}`;
+    if (sessionStateLoading) return <div>Loading...</div>
+    if (sessionStateError) return <div>Error getting session state! {sessionStateError.message}</div>
     // TODO: This is the error if session is full! Should figure out what to display
-    if (voterError) return `Error getting voter! ${voterError.message}`;
+    if (voterError) return <div>Error getting voter! {voterError.message}</div>
 
     if (!sessionState) {
         return null;
@@ -168,7 +168,7 @@ function Session() {
     if (!sessionState.sessionState) {
         return null;
     }
-    
+
     return (
         <>
             <Container>

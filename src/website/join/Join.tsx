@@ -30,7 +30,7 @@ function Join() {
         
     }
 
-    if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
+    if (joinVotersMutationError) console.log(`Error joining voters: ${joinVotersMutationError.message}`)
 
     return (
         <Container>
