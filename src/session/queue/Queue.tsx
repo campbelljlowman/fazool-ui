@@ -1,12 +1,17 @@
 import QueueItem from './QueueItem'
 import './Queue.css'
-import { ADMIN_VOTER_TYPE, REGULAR_VOTER_TYPE } from '../../constants'
+import { SessionState, VoterInfo, VoterType } from '../../gql/graphql'
 
+interface QueueProps {
+    sessionID:      number,
+    sessionState:   SessionState | null | undefined,
+    voter:          VoterInfo
 
-function Queue({ sessionID, sessionState, voter }) {
+}
+function Queue({ sessionID, sessionState, voter }: QueueProps) {
 
-    const checkVotedFor = (song, votes) => {
-        if (voter.type === ADMIN_VOTER_TYPE) {
+    const checkVotedFor = (song: string, votes: string[]) => {
+        if (voter.type === VoterType.Admin) {
             return false
         }
         if (votes) {
@@ -16,14 +21,14 @@ function Queue({ sessionID, sessionState, voter }) {
     }
 
     const checkPrivilegedVoter = () => {
-        if (voter.type === REGULAR_VOTER_TYPE) {
+        if (voter.type === VoterType.Free) {
             return false;
         } else {
             return true;
         }
     }
 
-    const checkUpVotedFor = (song) => {
+    const checkUpVotedFor = (song: string) => {
         if (voter.songsUpVoted) {
             return checkVotedFor(song, voter.songsUpVoted)
         } else {
@@ -31,7 +36,7 @@ function Queue({ sessionID, sessionState, voter }) {
         }
     }
 
-    const checkDownVotedFor = (song) => {
+    const checkDownVotedFor = (song: string) => {
         if (voter.songsDownVoted) {
             return checkVotedFor(song, voter.songsDownVoted)
         } else {
@@ -39,7 +44,7 @@ function Queue({ sessionID, sessionState, voter }) {
         }
     }
 
-    if (!sessionState.queue) {
+    if (!sessionState || !sessionState.queue) {
         return null;
     }
 

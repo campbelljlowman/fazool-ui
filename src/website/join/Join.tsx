@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom";
-import { useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import { graphql } from '../../gql'
 
-const GET_VOTER_TOKEN = gql`
+const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
         voterToken
     }
-`
+`)
 
 function Join() {
     const navigate = useNavigate();
@@ -19,17 +20,17 @@ function Join() {
         },
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSessionID(e.target.value);
     }
 
-    const joinSession = (e) => {
+    const joinSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         joinVotersQuery();
         
     }
 
-    if (joinVotersMutationError) return `Error joining voters: ${joinVotersMutationError.message}`;
+    if (joinVotersMutationError) console.log(`Error joining voters: ${joinVotersMutationError.message}`)
 
     return (
         <Container>

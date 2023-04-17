@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import SearchResults from './SearchResults';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import './SearchBox.css'
+import { graphql } from '../../gql'
+import { MusicSearchQuery } from '../../gql/graphql';
 
-const EXECUTE_SEARCH = gql`
+const EXECUTE_SEARCH = graphql(`
     query musicSearch ($sessionID: Int!, $query: String!){
         musicSearch (sessionID: $sessionID, query: $query){
             id
@@ -15,11 +17,15 @@ const EXECUTE_SEARCH = gql`
             image
         }
     }
-`
+`)
 
-function SearchBox({ sessionID }) {
+interface SearchBoxProps {
+    sessionID: number
+}
+
+function SearchBox({ sessionID }: SearchBoxProps) {
     const [searchValue, setSearchValue] = useState("");
-    const [searchResults, setSearchResults] = useState();
+    const [searchResults, setSearchResults] = useState<MusicSearchQuery>();
 
     const [searchResultQuery, { error: searchResultError }] = useLazyQuery(EXECUTE_SEARCH, {
         variables: {
@@ -32,11 +38,11 @@ function SearchBox({ sessionID }) {
         }
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> ) => {
         setSearchValue(e.target.value);
     }
 
-    const searchForSong = async (e) => {
+    const searchForSong = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         searchResultQuery();
     }
