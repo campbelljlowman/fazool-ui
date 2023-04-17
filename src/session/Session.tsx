@@ -5,7 +5,6 @@ import JoinLink from './join-sidebar/JoinLink'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
-// import { ADMIN_VOTER_TYPE } from '../constants'
 import SearchBox from './search-box/SearchBox'
 import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from "react-router-dom";

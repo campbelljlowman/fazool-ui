@@ -6,7 +6,6 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws'
-// import 'vite/client'
 
 const httpLink = new HttpLink({
     uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,

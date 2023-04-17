@@ -1,3 +1,0 @@
-export const ADMIN_VOTER_TYPE = "ADMIN"
-export const PRIVILEGED_VOTER_TYPE = "PRIVILEGED"
-export const REGULAR_VOTER_TYPE = "FREE"
