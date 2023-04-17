@@ -6,6 +6,21 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws'
+import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
+
+const urqlClient = new Client({
+    url: import.meta.env.VITE_GRAPHQL_SERVER,
+    exchanges: [cacheExchange, fetchExchange],
+    fetchOptions: () => {
+        const accountToken = sessionStorage.getItem('account-token');
+        const voterToken = sessionStorage.getItem('voter-token');
+        return {
+          headers: {  AccountAuthentication: accountToken ? `Bearer ${accountToken}` : '' ,
+                      VoterAuthentication: voterToken ? `Bearer ${voterToken}` : '' },
+        };
+      },
+});
+
 
 const httpLink = new HttpLink({
     uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,
@@ -52,7 +67,9 @@ const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
-            <App />
+            <Provider value={urqlClient}>
+                <App />
+            </Provider>
         </ApolloProvider>
     </React.StrictMode>
 );

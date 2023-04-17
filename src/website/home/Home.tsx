@@ -1,33 +1,34 @@
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+// import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from 'urql';
 import { useNavigate } from "react-router-dom";
-import { graphql } from '../../gql'
+import { graphql } from '../../gql';
 
 const GET_ACCOUNT = graphql(`
     query getAccount {
-    account {
-        id
-        firstName
-        activeSession
+        account {
+            id
+            firstName
+            activeSession
+        }
     }
-    }
-`)
+`);
 
 const CREATE_SESSION = graphql(`
     mutation createSession {
-    createSession{
-        activeSession
+        createSession{
+            activeSession
+        }
     }
-    }
-`)
+`);
 
 const GET_VOTER_TOKEN = graphql(`
-    query getVoterToken {
+    mutation getVoterToken {
         voterToken
     }
-`)
+`);
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const redirectURI = 'http://localhost:5173/callback'
+const redirectURI = 'http://localhost:5173/callback';
 var scope = 'user-modify-playback-state user-read-playback-state';
 
 //TODO: Add state to request
@@ -41,29 +42,27 @@ client_id=${spotifyClientId}
 function Home() {
     const navigate = useNavigate();
 
-    const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
-
-    const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
-        refetchQueries: [
-            { query: GET_ACCOUNT },
-            'account'
-        ]
-    });
-
-    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
-        onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
-            navigate(`/session/${accountData!.account.activeSession}`);
-        },
-    });
+    const [{ fetching, error: queryError, data: accountData }] = useQuery({query: GET_ACCOUNT});
+    const [createSessionResult, createSessionMutation] = useMutation(CREATE_SESSION);
+    const [getVoterTokenResult, getVoterTokenMutation] = useMutation(GET_VOTER_TOKEN);
 
     const createSession = () => {
-        createSessionMutation();
+        createSessionMutation({}).then(result => {
+            if(result.error){
+                console.log("Error creating session!");
+            }
+        });
     }
 
     const launchSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        joinVotersQuery();
+        getVoterTokenMutation({}).then(result => {
+            if(result.error){
+                console.log("Error getting voter token");
+            }
+            sessionStorage.setItem('voter-token', result.data!.voterToken);
+            navigate(`/session/${accountData!.account.activeSession}`);    
+        });
     }
 
     
@@ -72,10 +71,8 @@ function Home() {
         return <div>Please register or login</div>
     }
 
-    if (loading) return <div>Loading...</div>
-    if (mutationError) return <div>Error! {mutationError.message}</div>
+    if (fetching) return <div>Loading...</div>
     if (queryError) return <div>Error! {queryError.message}</div>
-    if (joinVotersMutationError) return <div>Error joining voters: {joinVotersMutationError.message}</div>
 
     const sessionInfo = () => {
         if (accountData.account.activeSession === 0) {

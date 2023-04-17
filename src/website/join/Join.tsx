@@ -5,10 +5,10 @@ import { useLazyQuery } from '@apollo/client';
 import { graphql } from '../../gql'
 
 const GET_VOTER_TOKEN = graphql(`
-    query getVoterToken {
+    mutation getVoterToken {
         voterToken
     }
-`)
+`);
 
 function Join() {
     const navigate = useNavigate();
