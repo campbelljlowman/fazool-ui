@@ -45,7 +45,7 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
     }
 
     if (!sessionState || !sessionState.queue) {
-        return null;
+        return <div className='queue'>no queue</div>;
     }
 
 

@@ -37,7 +37,7 @@ const SUBSCRIBE_SESSION_STATE = graphql(`
           numberOfVoters
       }
   }
-`)
+`);
 
 const GET_SESSION_STATE = graphql(`
   query getSessionState($sessionID: Int!){
@@ -63,7 +63,7 @@ const GET_SESSION_STATE = graphql(`
       numberOfVoters
     }
   }
-`)
+`);
 
 const GET_SESSION_CONFIG = graphql(`
   query getSessionConfig($sessionID: Int!){
@@ -73,7 +73,7 @@ const GET_SESSION_CONFIG = graphql(`
       maximumVoters
     }
   }
-`)
+`);
 
 
 const GET_VOTER = graphql(`
@@ -85,7 +85,7 @@ const GET_VOTER = graphql(`
       bonusVotes
     }
   }
-`)
+`);
 
 function Session() {
     const params = useParams();
@@ -106,15 +106,7 @@ function Session() {
 
     const [{ error: voterError, data: voter }] = useQuery({query: GET_VOTER, variables: { sessionID: sessionID }});
 
-    // const handleSubscription = (currentState: SubscribeSessionStateSubscription, newState: ) => {
-    //   currentState.subscribeSessionState.
-    // };
-    
     const [sessionState] = useSubscription({ query: SUBSCRIBE_SESSION_STATE, variables: { sessionID: sessionID } });
-
-    // const { subscribeToMore, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
-    //     variables: { sessionID: sessionID },
-    // });
 
     // const [{ data: sessionConfig }] = useQuery({query: GET_SESSION_CONFIG, variables: { sessionID: sessionID }});
 
@@ -122,46 +114,17 @@ function Session() {
       const checkForVoterToken = () => {
         if (sessionStorage.getItem('voter-token') == null) {
           navigate("/join");
+          console.log("Running effect")
         }
       };
       checkForVoterToken();
   });
 
-    // useEffect(() => {
-    //     const subscribeToSession = () => {
-    //         subscribeToMore({
-    //             document: SUBSCRIBE_SESSION_STATE,
-    //             variables: { sessionID: sessionID },
-    //             updateQuery: (prev, { subscriptionData }) => {
-    //                 if (!subscriptionData.data) return prev;
-    //                 // TODO: There's probably a better way to merge these resulst
-    //                 console.log("receiving session update");
-    //                 console.log(JSON.stringify(subscriptionData));
-    //                 const returnSession = structuredClone(prev);
-    //                 returnSession.sessionState = subscriptionData.data.subscribeSessionState;
-    //                 return returnSession;
-    //             }
-    //         });
-    //     }
-    //     subscribeToSession();
-    // }, [subscribeToMore, sessionID]);
 
-
-
-    // This error should keep whole session from loading, not just queue
-    // if (sessionStateLoading) return <div>Loading...</div>
-    // if (sessionStateError) return <div>Error getting session state! {sessionStateError.message}</div>
     // TODO: This is the error if session is full! Should figure out what to display
     if (voterError) return <div>Error getting voter! {voterError.message}</div>
 
-    if (!sessionState) {
-        return null;
-    }
     if (!voter) {
-        return null;
-    }
-
-    if (!sessionState.data) {
         return null;
     }
 

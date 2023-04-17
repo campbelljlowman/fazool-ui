@@ -100,6 +100,7 @@ function Home() {
         )
     }
 
+    // TODO: Figure out the best way to do this conditional rendering
     return (
         <div>
             <div>Home</div>
