@@ -1,11 +1,11 @@
 import QueueItem from './QueueItem'
 import './Queue.css'
-import { SessionState, VoterInfo, VoterType } from '../../gql/graphql'
+import { SessionState, Voter, VoterType } from '../../gql/graphql'
 
 interface QueueProps {
     sessionID:      number,
     sessionState:   SessionState | null | undefined,
-    voter:          VoterInfo
+    voter:          Voter
 
 }
 function Queue({ sessionID, sessionState, voter }: QueueProps) {

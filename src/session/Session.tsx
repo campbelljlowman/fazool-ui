@@ -10,7 +10,7 @@ import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { graphql } from '../gql'
-import { VoterInfo, VoterType } from '../gql/graphql'
+import { Voter, VoterType } from '../gql/graphql'
 
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
@@ -95,9 +95,9 @@ function Session() {
 
     const navigate = useNavigate();
     const sessionID = parseInt(params.sessionID)
-    const [voter, setVoter] = useState<VoterInfo>();
+    const [voter, setVoter] = useState<Voter>();
 
-    const isAdmin = (voter: VoterInfo) => {
+    const isAdmin = (voter: Voter) => {
         if (voter.type === VoterType.Admin) {
             return true;
         } else {

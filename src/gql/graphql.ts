@@ -136,9 +136,9 @@ export type Query = {
   account: Account;
   musicSearch?: Maybe<Array<SimpleSong>>;
   playlists?: Maybe<Array<Playlist>>;
-  sessionConfig?: Maybe<SessionConfig>;
-  sessionState?: Maybe<SessionState>;
-  voter: VoterInfo;
+  sessionConfig: SessionConfig;
+  sessionState: SessionState;
+  voter: Voter;
   voterToken: Scalars['String'];
 };
 
@@ -236,8 +236,8 @@ export type SubscriptionSubscribeSessionStateArgs = {
   sessionID: Scalars['Int'];
 };
 
-export type VoterInfo = {
-  __typename?: 'VoterInfo';
+export type Voter = {
+  __typename?: 'Voter';
   bonusVotes?: Maybe<Scalars['Int']>;
   songsDownVoted?: Maybe<Array<Scalars['String']>>;
   songsUpVoted?: Maybe<Array<Scalars['String']>>;
@@ -262,21 +262,21 @@ export type GetSessionStateQueryVariables = Exact<{
 }>;
 
 
-export type GetSessionStateQuery = { __typename?: 'Query', sessionState?: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying?: { __typename?: 'CurrentlyPlayingSong', playing: boolean, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } } | null, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } | null };
+export type GetSessionStateQuery = { __typename?: 'Query', sessionState: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying?: { __typename?: 'CurrentlyPlayingSong', playing: boolean, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } } | null, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } };
 
 export type GetSessionConfigQueryVariables = Exact<{
   sessionID: Scalars['Int'];
 }>;
 
 
-export type GetSessionConfigQuery = { __typename?: 'Query', sessionConfig?: { __typename?: 'SessionConfig', id: number, adminAccountID: number, maximumVoters: number } | null };
+export type GetSessionConfigQuery = { __typename?: 'Query', sessionConfig: { __typename?: 'SessionConfig', id: number, adminAccountID: number, maximumVoters: number } };
 
 export type VoterQueryVariables = Exact<{
   sessionID: Scalars['Int'];
 }>;
 
 
-export type VoterQuery = { __typename?: 'Query', voter: { __typename?: 'VoterInfo', type: VoterType, songsUpVoted?: Array<string> | null, songsDownVoted?: Array<string> | null, bonusVotes?: number | null } };
+export type VoterQuery = { __typename?: 'Query', voter: { __typename?: 'Voter', type: VoterType, songsUpVoted?: Array<string> | null, songsDownVoted?: Array<string> | null, bonusVotes?: number | null } };
 
 export type UpdateCurrentlyPlayingMutationVariables = Exact<{
   sessionID: Scalars['Int'];
