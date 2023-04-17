@@ -6,17 +6,39 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws'
-import { Client, Provider, cacheExchange, fetchExchange } from 'urql';
+import { Client, Provider, cacheExchange, fetchExchange, subscriptionExchange } from 'urql';
+// import { WebSocket}  from 'ws';
+
+const wsClient = createClient({
+    url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
+    // webSocketImpl: WebSocket
+});
 
 const urqlClient = new Client({
-    url: import.meta.env.VITE_GRAPHQL_SERVER,
-    exchanges: [cacheExchange, fetchExchange],
-    fetchOptions: () => {
+    url: import.meta.env.VITE_GRAPHQL_HTTP_SERVER,
+    exchanges: [
+        cacheExchange, 
+        fetchExchange,
+        subscriptionExchange({
+            forwardSubscription(request) {
+              const input = { ...request, query: request.query || '' }
+              return {
+                subscribe(sink) {
+                  const unsubscribe = wsClient.subscribe(input, sink)
+                  return { unsubscribe };
+                },
+              };
+            },
+          }),
+        ],
+        fetchOptions: () => {
         const accountToken = sessionStorage.getItem('account-token');
         const voterToken = sessionStorage.getItem('voter-token');
         return {
-          headers: {  AccountAuthentication: accountToken ? `Bearer ${accountToken}` : '' ,
-                      VoterAuthentication: voterToken ? `Bearer ${voterToken}` : '' },
+            headers: {  
+                AccountAuthentication: accountToken ? `Bearer ${accountToken}` : '' ,
+                VoterAuthentication: voterToken ? `Bearer ${voterToken}` : ''
+            },
         };
       },
 });
@@ -28,7 +50,7 @@ const httpLink = new HttpLink({
 
 // TODO: Pass voter token on this dynamically
 const wsLink = new GraphQLWsLink(createClient({
-    url: `ws://${import.meta.env.VITE_BACKEND_SERVER}/query`,
+    url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
     connectionParams: {
         SubscriptionAuthentication: "Subscription-Allowed",
     },

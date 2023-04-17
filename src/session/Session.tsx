@@ -6,11 +6,11 @@ import { Container, Row, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import SearchBox from './search-box/SearchBox'
-import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from 'urql';
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { graphql } from '../gql'
-import { Voter, VoterType } from '../gql/graphql'
+import { Voter, VoterType, SubscribeSessionStateSubscription } from '../gql/graphql'
 
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
@@ -95,7 +95,6 @@ function Session() {
 
     const navigate = useNavigate();
     const sessionID = parseInt(params.sessionID)
-    const [voter, setVoter] = useState<Voter>();
 
     const isAdmin = (voter: Voter) => {
         if (voter.type === VoterType.Admin) {
@@ -105,21 +104,19 @@ function Session() {
         }
     };
 
-    const { error: voterError } = useQuery(GET_VOTER, {
-        variables: { sessionID: sessionID },
-        onCompleted(voter) {
-            console.log("Voter: ", voter.voter);
-            setVoter(voter.voter);
-        }
-    });
+    const [{ error: voterError, data: voter }] = useQuery({query: GET_VOTER, variables: { sessionID: sessionID }});
 
-    const { subscribeToMore, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
-        variables: { sessionID: sessionID },
-    });
+    // const handleSubscription = (currentState: SubscribeSessionStateSubscription, newState: ) => {
+    //   currentState.subscribeSessionState.
+    // };
+    
+    const [sessionState] = useSubscription({ query: SUBSCRIBE_SESSION_STATE, variables: { sessionID: sessionID } });
 
-    const { data: sessionConfig } = useQuery(GET_SESSION_CONFIG, {
-        variables: { sessionID: sessionID }
-    });
+    // const { subscribeToMore, loading: sessionStateLoading, error: sessionStateError, data: sessionState } = useQuery(GET_SESSION_STATE, {
+    //     variables: { sessionID: sessionID },
+    // });
+
+    // const [{ data: sessionConfig }] = useQuery({query: GET_SESSION_CONFIG, variables: { sessionID: sessionID }});
 
     useEffect(() => {
       const checkForVoterToken = () => {
@@ -130,30 +127,30 @@ function Session() {
       checkForVoterToken();
   });
 
-    useEffect(() => {
-        const subscribeToSession = () => {
-            subscribeToMore({
-                document: SUBSCRIBE_SESSION_STATE,
-                variables: { sessionID: sessionID },
-                updateQuery: (prev, { subscriptionData }) => {
-                    if (!subscriptionData.data) return prev;
-                    // TODO: There's probably a better way to merge these resulst
-                    console.log("receiving session update");
-                    console.log(JSON.stringify(subscriptionData));
-                    const returnSession = structuredClone(prev);
-                    returnSession.sessionState = subscriptionData.data.subscribeSessionState;
-                    return returnSession;
-                }
-            });
-        }
-        subscribeToSession();
-    }, [subscribeToMore, sessionID]);
+    // useEffect(() => {
+    //     const subscribeToSession = () => {
+    //         subscribeToMore({
+    //             document: SUBSCRIBE_SESSION_STATE,
+    //             variables: { sessionID: sessionID },
+    //             updateQuery: (prev, { subscriptionData }) => {
+    //                 if (!subscriptionData.data) return prev;
+    //                 // TODO: There's probably a better way to merge these resulst
+    //                 console.log("receiving session update");
+    //                 console.log(JSON.stringify(subscriptionData));
+    //                 const returnSession = structuredClone(prev);
+    //                 returnSession.sessionState = subscriptionData.data.subscribeSessionState;
+    //                 return returnSession;
+    //             }
+    //         });
+    //     }
+    //     subscribeToSession();
+    // }, [subscribeToMore, sessionID]);
 
 
 
     // This error should keep whole session from loading, not just queue
-    if (sessionStateLoading) return <div>Loading...</div>
-    if (sessionStateError) return <div>Error getting session state! {sessionStateError.message}</div>
+    // if (sessionStateLoading) return <div>Loading...</div>
+    // if (sessionStateError) return <div>Error getting session state! {sessionStateError.message}</div>
     // TODO: This is the error if session is full! Should figure out what to display
     if (voterError) return <div>Error getting voter! {voterError.message}</div>
 
@@ -164,7 +161,7 @@ function Session() {
         return null;
     }
 
-    if (!sessionState.sessionState) {
+    if (!sessionState.data) {
         return null;
     }
 
@@ -177,8 +174,8 @@ function Session() {
                     </Col>
                     <Col xs={6}>
                         <div className='main-column'>
-                            <MusicPlayer sessionID={sessionID} currentlyPlaying={sessionState.sessionState.currentlyPlaying} showMediaButtons={isAdmin(voter)} />
-                            <Queue sessionID={sessionID} sessionState={sessionState.sessionState} voter={voter} />
+                            <MusicPlayer sessionID={sessionID} currentlyPlaying={sessionState.data?.subscribeSessionState.currentlyPlaying} showMediaButtons={isAdmin(voter.voter)} />
+                            <Queue sessionID={sessionID} sessionState={sessionState.data?.subscribeSessionState} voter={voter.voter} />
                             <SearchBox sessionID={sessionID} />
                         </div>
                     </Col>
