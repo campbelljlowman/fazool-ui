@@ -1,8 +1,9 @@
 import { Buffer } from 'buffer';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
-import { useMutation } from '@apollo/client'
+import { useMutation } from 'urql';
 import { graphql } from '../../gql'
+
 
 
 const UPSERT_SPOTIFY_CREDENTIALS = graphql(`
@@ -19,6 +20,7 @@ const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
 const redirectURI = 'http://localhost:5173/callback'
 
 function SpotifyCallback() {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const spotifyCode = searchParams.get("code")
     if (!spotifyCode) {
@@ -26,12 +28,7 @@ function SpotifyCallback() {
         return null
     }
 
-    const [updateSpotifyCredsMutation, { error: mutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
-        onCompleted(data) {
-            console.log(data);
-            // TODO: Nav to back to account page
-        }
-    });
+    const [upsertSpotifyCredentialsResult, upsertSpotifyCredentialsMutation] = useMutation(UPSERT_SPOTIFY_CREDENTIALS)
 
     if (!spotifyCode) {
         console.log("Spotify authorization failed!")
@@ -63,14 +60,16 @@ function SpotifyCallback() {
                     "accessToken": rspJson.access_token,
                     "refreshToken": rspJson.refresh_token
                 }
-                updateSpotifyCredsMutation({ variables: { spotifyCreds: spotifyCreds } });
+                upsertSpotifyCredentialsMutation({ spotifyCreds: spotifyCreds }).then(result => {
+                    if(result.error){
+                        console.log(`Error storing spotify credentials: ${result.error.message}`)
+                    }
+                    navigate("/home");
+                });
             }
         };
         processCredentials();
     });
-
-
-    if (mutationError) return <div>Error! {mutationError.message}</div>
 
     return (
         <div>Saving Credentials</div>

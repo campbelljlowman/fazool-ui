@@ -49,7 +49,7 @@ function Home() {
     const createSession = () => {
         createSessionMutation({}).then(result => {
             if(result.error){
-                console.log("Error creating session!");
+                console.log(`Error creating session: ${result.error.message}`);
             }
         });
     }
@@ -58,7 +58,7 @@ function Home() {
         e.preventDefault();
         getVoterTokenMutation({}).then(result => {
             if(result.error){
-                console.log("Error getting voter token");
+                console.log(`Error getting voter token: ${result.error.message}`);
             }
             sessionStorage.setItem('voter-token', result.data!.voterToken);
             navigate(`/session/${accountData!.account.activeSession}`);    

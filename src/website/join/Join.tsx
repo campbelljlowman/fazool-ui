@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useNavigate } from "react-router-dom";
-import { useLazyQuery } from '@apollo/client';
+import { useMutation } from 'urql';
 import { graphql } from '../../gql'
 
 const GET_VOTER_TOKEN = graphql(`
@@ -13,12 +13,7 @@ const GET_VOTER_TOKEN = graphql(`
 function Join() {
     const navigate = useNavigate();
     const [sessionID, setSessionID] = useState("");
-    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
-        onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
-            navigate(`/session/${sessionID}`);
-        },
-    });
+    const [getVoterTokenResult, getVoterTokenMutation] = useMutation(GET_VOTER_TOKEN);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSessionID(e.target.value);
@@ -26,11 +21,15 @@ function Join() {
 
     const joinSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        joinVotersQuery();
+        getVoterTokenMutation({}).then(result => {
+            if(result.error){
+                console.log(`Error getting voter token: ${result.error.message}`);
+            }
+            sessionStorage.setItem('voter-token', result.data!.voterToken);
+            navigate(`/session/${sessionID}`);  
+        });
         
     }
-
-    if (joinVotersMutationError) console.log(`Error joining voters: ${joinVotersMutationError.message}`)
 
     return (
         <Container>
