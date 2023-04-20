@@ -21,14 +21,6 @@ function Register() {
 
     // TODO: Get errors variable here and check 
     const [createAccountResult, createAccountMutation] = useMutation(CREATE_ACCOUNT)
-    // const [createAccount, { error }] = useMutation(CREATE_ACCOUNT, {
-    //     onCompleted(data) {
-    //         sessionStorage.setItem("account-token", data.createAccount)
-
-    //         navigate("/home");
-    //     }
-    // });
-
 
     const handleFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(e.target.value);

@@ -8,9 +8,9 @@ import './Session.css'
 import SearchBox from './search-box/SearchBox'
 import { useQuery, useSubscription } from 'urql';
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { graphql } from '../gql'
-import { Voter, VoterType, SubscribeSessionStateSubscription } from '../gql/graphql'
+import { Voter, VoterType } from '../gql/graphql'
 
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
@@ -39,32 +39,6 @@ const SUBSCRIBE_SESSION_STATE = graphql(`
   }
 `);
 
-const GET_SESSION_STATE = graphql(`
-  query getSessionState($sessionID: Int!){
-    sessionState(sessionID: $sessionID){
-      currentlyPlaying {
-        simpleSong{
-          id
-          title
-          artist
-          image
-        }
-        playing
-      }
-      queue {
-        simpleSong {
-          id
-          title
-          artist
-          image
-        }
-        votes
-      }
-      numberOfVoters
-    }
-  }
-`);
-
 const GET_SESSION_CONFIG = graphql(`
   query getSessionConfig($sessionID: Int!){
     sessionConfig(sessionID: $sessionID){
@@ -79,6 +53,7 @@ const GET_SESSION_CONFIG = graphql(`
 const GET_VOTER = graphql(`
   query voter ($sessionID: Int!){
     voter (sessionID: $sessionID){
+      id
       type
       songsUpVoted
       songsDownVoted
@@ -108,7 +83,7 @@ function Session() {
 
     const [sessionState] = useSubscription({ query: SUBSCRIBE_SESSION_STATE, variables: { sessionID: sessionID } });
 
-    // const [{ data: sessionConfig }] = useQuery({query: GET_SESSION_CONFIG, variables: { sessionID: sessionID }});
+    const [{ data: sessionConfig }] = useQuery({query: GET_SESSION_CONFIG, variables: { sessionID: sessionID }});
 
     useEffect(() => {
       const checkForVoterToken = () => {

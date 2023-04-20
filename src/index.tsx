@@ -6,18 +6,31 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws'
-import { Client, Provider, cacheExchange, fetchExchange, subscriptionExchange } from 'urql';
-// import { WebSocket}  from 'ws';
+import { Client, Provider, fetchExchange, subscriptionExchange } from 'urql';
+import { cacheExchange } from '@urql/exchange-graphcache';
+
 
 const wsClient = createClient({
     url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
-    // webSocketImpl: WebSocket
+    connectionParams: {
+        SubscriptionAuthentication: "Subscription-Allowed",
+    },
 });
 
 const urqlClient = new Client({
     url: import.meta.env.VITE_GRAPHQL_HTTP_SERVER,
     exchanges: [
-        cacheExchange, 
+        cacheExchange({
+            updates: {
+                Mutation: {
+                    updateQueue(_result, args, cache, _info) {
+                        cache.invalidate({ 
+                            __typename: 'Voter'
+                        });
+                    }
+                }
+            }
+        }), 
         fetchExchange,
         subscriptionExchange({
             forwardSubscription(request) {
