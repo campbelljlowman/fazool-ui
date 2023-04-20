@@ -1,31 +1,31 @@
 import Song from '../song/Song';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import './SearchResult.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import './SearchResult.css';
 import { useMutation } from '@apollo/client';
 import { useParams } from "react-router-dom";
-import { graphql } from '../../gql'
-import { MusicSearchQuery, SimpleSong, SongUpdate, SongVoteAction, SongVoteDirection } from '../../gql/graphql';
+import { graphql } from '../../gql';
+import { SimpleSong, SongUpdate, SongVoteAction, SongVoteDirection } from '../../gql/graphql';
 
 
 const UPDATE_QUEUE = graphql(`
     mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
         updateQueue(sessionID: $sessionID, song: $song) {
-        numberOfVoters
+            numberOfVoters
         }
     }
-`)
+`);
 
 interface SearchResultProps {
     searchResults: SimpleSong[] | null | undefined,
-    setSearchResults: React.Dispatch<React.SetStateAction<MusicSearchQuery | undefined>>
-}
+    clearSearchResults: () => void
+};
 
-function SearchResults({ searchResults, setSearchResults }: SearchResultProps) {
+function SearchResults({ searchResults, clearSearchResults }: SearchResultProps) {
     const params = useParams();
     const sessionID = parseInt(params.sessionID!)
 
-    const [updateQueue, { error: updateError }] = useMutation(UPDATE_QUEUE, {
+    const [updateQueueMutation, { error: updateQueueMutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
         ]
@@ -41,12 +41,12 @@ function SearchResults({ searchResults, setSearchResults }: SearchResultProps) {
             'action': SongVoteAction.Add
         }
 
-        updateQueue({ variables: { sessionID: sessionID, song: songData } });
-        setSearchResults(undefined);
+        updateQueueMutation({ variables: { sessionID: sessionID, song: songData } });
+        clearSearchResults();
     }
 
-    if (updateError) {
-        console.log("Error updating session: " + updateError);
+    if (updateQueueMutationError) {
+        console.log("Error updating session: " + updateQueueMutationError);
     }
     if (!searchResults) {
         return null;

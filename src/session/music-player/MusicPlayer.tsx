@@ -23,7 +23,7 @@ interface MusicPlayerProps {
 }
 
 function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPlayerProps) {
-    const [updateCurrentlyPlayingMutation, { error: mutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
+    const [updateCurrentlyPlayingMutation, { error: updateCurrentlyPlayingMutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
 
     const play = () => {
         console.log("Play/Pause");
@@ -40,8 +40,8 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
         updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Advance } })
     }
 
-    if (mutationError) {
-        console.log(`Error! ${mutationError.message}`);
+    if (updateCurrentlyPlayingMutationError) {
+        console.log(`Error! ${updateCurrentlyPlayingMutationError.message}`);
     }
     if (!currentlyPlaying) {
         return null;
@@ -72,14 +72,14 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
     }
 
     return (
-        <div>
+        <>
             <div className="music-player" >
                 <Song song={currentlyPlaying.simpleSong} />
                 {mediaButtons()}
             </div>
             {/*Render this here to allow queue to scroll properly*/}
             <QueueHeader></QueueHeader>
-        </div>
+        </>
     );
 }
 

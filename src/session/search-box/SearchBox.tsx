@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-// import {Buffer} from 'buffer';
 import SearchResults from './SearchResults';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useLazyQuery } from '@apollo/client';
-import './SearchBox.css'
-import { graphql } from '../../gql'
-import { MusicSearchQuery } from '../../gql/graphql';
+import './SearchBox.css';
+import { graphql } from '../../gql';
 
-const EXECUTE_SEARCH = graphql(`
+const MUSIC_SEARCH  = graphql(`
     query musicSearch ($sessionID: Int!, $query: String!){
         musicSearch (sessionID: $sessionID, query: $query){
             id
@@ -17,44 +15,40 @@ const EXECUTE_SEARCH = graphql(`
             image
         }
     }
-`)
+`);
 
 interface SearchBoxProps {
     sessionID: number
-}
+};
 
 function SearchBox({ sessionID }: SearchBoxProps) {
-    const [searchValue, setSearchValue] = useState("");
-    const [searchResults, setSearchResults] = useState<MusicSearchQuery>();
+    const [showSearchResults, setShowSearchResults] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
-    const [searchResultQuery, { error: searchResultError }] = useLazyQuery(EXECUTE_SEARCH, {
+    const [searchResultQuery, { data: searchResultsQueryData, error: searchResultQueryError }] = useLazyQuery(MUSIC_SEARCH , {
         variables: {
             sessionID: sessionID,
-            query: searchValue
+            query: searchQuery
         },
-        onCompleted(searchResults) {
-            console.log("Search Results: ", searchResults);
-            setSearchResults(searchResults);
-        }
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> ) => {
-        setSearchValue(e.target.value);
+        setSearchQuery(e.target.value);
     }
 
     const searchForSong = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         searchResultQuery();
+        setShowSearchResults(true)
     }
 
-    if (searchResultError) {
-        console.log("Error executing search: " + searchResultError)
+    if (searchResultQueryError) {
+        console.log("Error executing search: " + searchResultQueryError)
     }
-    console.log("Session id in search box" + sessionID)
 
-    const showSearchResults = () => {
-        if (searchResults) {
-            return <SearchResults searchResults={searchResults.musicSearch} setSearchResults={setSearchResults} />;
+    const displaySearchResults  = () => {
+        if (showSearchResults && searchResultsQueryData) {
+            return <SearchResults searchResults={searchResultsQueryData.musicSearch} clearSearchResults={() => {setShowSearchResults(false)}} />;
         } else {
             return null;
         }
@@ -63,10 +57,10 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     return (
         <div className='search-box'>
             <form>
-                <input className='search-box-input' type="text" placeholder="Song" value={searchValue} onChange={handleChange} />
+                <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
                 <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
             </form>
-            {showSearchResults()}
+            {displaySearchResults ()}
         </div>
     );
 }
