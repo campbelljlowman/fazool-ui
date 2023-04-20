@@ -1,33 +1,33 @@
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
-import { graphql } from '../../gql'
+import { graphql } from '../../gql';
 
 const GET_ACCOUNT = graphql(`
     query getAccount {
-    account {
-        id
-        firstName
-        activeSession
+        account {
+            id
+            firstName
+            activeSession
+        }
     }
-    }
-`)
+`);
 
 const CREATE_SESSION = graphql(`
     mutation createSession {
-    createSession{
-        activeSession
+        createSession{
+            activeSession
+        }
     }
-    }
-`)
+`);
 
 const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
         voterToken
     }
-`)
+`);
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const redirectURI = 'http://localhost:5173/callback'
+const redirectURI = `${import.meta.env.VITE_BACKEND_HTTP_SERVER}/callback`
 var scope = 'user-modify-playback-state user-read-playback-state';
 
 //TODO: Add state to request
@@ -41,19 +41,18 @@ client_id=${spotifyClientId}
 function Home() {
     const navigate = useNavigate();
 
-    const { loading, error: queryError, data: accountData } = useQuery(GET_ACCOUNT);
+    const { error: getAccountQueryError, data: getAccountQueryData } = useQuery(GET_ACCOUNT);
 
-    const [createSessionMutation, { error: mutationError }] = useMutation(CREATE_SESSION, {
+    const [createSessionMutation, { error: createSessionMutationError }] = useMutation(CREATE_SESSION, {
         refetchQueries: [
             { query: GET_ACCOUNT },
-            'account'
         ]
     });
 
-    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
+    const [getVoterTokenQuery, { error: getVoterTokenQueryError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
             sessionStorage.setItem('voter-token', voterTokenData.voterToken);
-            navigate(`/session/${accountData!.account.activeSession}`);
+            navigate(`/session/${getAccountQueryData!.account.activeSession}`);
         },
     });
 
@@ -63,22 +62,22 @@ function Home() {
 
     const launchSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        joinVotersQuery();
+        getVoterTokenQuery();
     }
 
     
-    if (!accountData) {
-        console.log(accountData);
-        return <div>Please register or login</div>
+    if (!getAccountQueryData) {
+        console.log("No account data found, redirecting to login page");
+        return null;
+        // navigate("/login");
     }
 
-    if (loading) return <div>Loading...</div>
-    if (mutationError) return <div>Error! {mutationError.message}</div>
-    if (queryError) return <div>Error! {queryError.message}</div>
-    if (joinVotersMutationError) return <div>Error joining voters: {joinVotersMutationError.message}</div>
+    if (createSessionMutationError) console.log(`Error creating session: ${createSessionMutationError.message}`)
+    if (getAccountQueryError) return <div>Error! {getAccountQueryError.message}</div>
+    if (getVoterTokenQueryError) return <div>Error getting voter token: {getVoterTokenQueryError.message}</div>
 
     const sessionInfo = () => {
-        if (accountData.account.activeSession === 0) {
+        if (getAccountQueryData!.account.activeSession === 0) {
             return (
                 <div>
                     <div>No Current Session</div>
@@ -88,7 +87,7 @@ function Home() {
         } else {
             return (
                 <div>
-                    <div>Current Session: {accountData.account.activeSession}</div>
+                    <div>Current Session: {getAccountQueryData!.account.activeSession}</div>
                     <button onClick={launchSession}>Launch Session</button>
                 </div>
             )
@@ -104,12 +103,12 @@ function Home() {
     }
 
     return (
-        <div>
+        <>
             <div>Home</div>
-            <div>Welcome {accountData.account.firstName}</div>
+            <div>Welcome {getAccountQueryData!.account.firstName}</div>
             <div>{sessionInfo()}</div>
             <div>{spotifyInfo()}</div>
-        </div>
+        </>
     )
 }
 

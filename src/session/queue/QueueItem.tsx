@@ -24,14 +24,14 @@ interface QueueItemProps {
 
 function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }: QueueItemProps) {
 
-    const [updateQueue, { error: mutationError }] = useMutation(UPDATE_QUEUE, {
+    const [updateQueueMutation, { error: updateQueueMutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
         ]
     });
 
-    if (mutationError) {
-        console.log("Error updating queue: " + mutationError);
+    if (updateQueueMutationError) {
+        console.log("Error updating queue: " + updateQueueMutationError);
     }
     if (!queuedSong) {
         return null;
@@ -44,12 +44,7 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
             'vote': direction,
             'action': action
         }
-        console.log("Song data for vote:" + songData);
-        console.log("id:" + songData.id);
-        console.log("vote:" + songData.vote);
-        console.log("action:" + songData.action);
-        console.log("session:" + sessionID);
-        updateQueue({ variables: { sessionID: sessionID, song: songData } });
+        updateQueueMutation({ variables: { sessionID: sessionID, song: songData } });
     }
 
 

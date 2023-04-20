@@ -8,12 +8,12 @@ import { setContext } from '@apollo/client/link/context';
 import { createClient } from 'graphql-ws'
 
 const httpLink = new HttpLink({
-    uri: `http://${import.meta.env.VITE_BACKEND_SERVER}/query`,
+    uri: import.meta.env.VITE_GRAPHQL_HTTP_SERVER,
 });
 
-// TODO: Pass voter token on this dynamically
+// TODO: Pass voter token on this dynamically?
 const wsLink = new GraphQLWsLink(createClient({
-    url: `ws://${import.meta.env.VITE_BACKEND_SERVER}/query`,
+    url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
     connectionParams: {
         SubscriptionAuthentication: "Subscription-Allowed",
     },

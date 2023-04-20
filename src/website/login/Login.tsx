@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { graphql } from '../../gql'
+import { graphql } from '../../gql';
+import { AccountLogin } from '../../gql/graphql';
 
 
 const LOGIN = graphql(`
     mutation login ($accountLogin: AccountLogin!) {
         login(accountLogin:$accountLogin)
     }
-`)
+`);
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const [loginMutation, { error }] = useMutation(LOGIN, {
+    const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
         onCompleted(data) {
             sessionStorage.setItem("account-token", data.login)
-
             navigate("/home");
         }
     });
@@ -34,7 +34,7 @@ function Login() {
 
     const login = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const accountLogin = {
+        const accountLogin: AccountLogin = {
             "email": email,
             "password": password
         };
@@ -43,7 +43,7 @@ function Login() {
     }
 
     // TODO: parse error message and don't replace form
-    if (error) console.log(`Error! ${error.message}`)
+    if (loginMutationError) console.log(`Error! ${loginMutationError.message}`)
 
     return (
         <Container>

@@ -8,12 +8,13 @@ const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
         voterToken
     }
-`)
+`);
 
 function Join() {
     const navigate = useNavigate();
     const [sessionID, setSessionID] = useState("");
-    const [joinVotersQuery, { error: joinVotersMutationError }] = useLazyQuery(GET_VOTER_TOKEN, {
+
+    const [getVoterTokenQuery, { error: getVoterTokenQueryError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
             sessionStorage.setItem('voter-token', voterTokenData.voterToken);
             navigate(`/session/${sessionID}`);
@@ -26,11 +27,11 @@ function Join() {
 
     const joinSession = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        joinVotersQuery();
+        getVoterTokenQuery();
         
     }
 
-    if (joinVotersMutationError) console.log(`Error joining voters: ${joinVotersMutationError.message}`)
+    if (getVoterTokenQueryError) console.log(`Error joining voters: ${getVoterTokenQueryError.message}`)
 
     return (
         <Container>

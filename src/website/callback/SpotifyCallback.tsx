@@ -1,43 +1,39 @@
 import { Buffer } from 'buffer';
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
-import { useMutation } from '@apollo/client'
-import { graphql } from '../../gql'
+import { useMutation } from '@apollo/client';
+import { graphql } from '../../gql';
 
 
 const UPSERT_SPOTIFY_CREDENTIALS = graphql(`
-  mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {
-    upsertSpotifyToken(spotifyCreds:$spotifyCreds){
-        id
+    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {
+        upsertSpotifyToken(spotifyCreds:$spotifyCreds){
+            id
+        }
     }
-  }
-`)
+`);
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
 const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
 // TODO: find a way to not have to hard code its own address
-const redirectURI = 'http://localhost:5173/callback'
+const redirectURI = `${import.meta.env.VITE_BACKEND_HTTP_SERVER}/callback`
 
 function SpotifyCallback() {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const spotifyCode = searchParams.get("code")
     if (!spotifyCode) {
+        const error = searchParams.get("Error")
+        console.log(`Error updating spotify authorication: ${error}`)
         // TODO: Figure out what to do if this is null
         return null
     }
 
-    const [updateSpotifyCredsMutation, { error: mutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
-        onCompleted(data) {
-            console.log(data);
-            // TODO: Nav to back to account page
+    const [upsertSpotifyCredentialsMutation, { error: upsertSpotifyCredentialsMutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
+        onCompleted() {
+            navigate("/home");
         }
     });
-
-    if (!spotifyCode) {
-        console.log("Spotify authorization failed!")
-        const error = searchParams.get("Error")
-        console.log(error)
-    }
 
     useEffect(() => {
         const processCredentials = async () => {
@@ -63,14 +59,14 @@ function SpotifyCallback() {
                     "accessToken": rspJson.access_token,
                     "refreshToken": rspJson.refresh_token
                 }
-                updateSpotifyCredsMutation({ variables: { spotifyCreds: spotifyCreds } });
+                upsertSpotifyCredentialsMutation({ variables: { spotifyCreds: spotifyCreds } });
             }
         };
         processCredentials();
-    });
+    }, []);
 
 
-    if (mutationError) return <div>Error! {mutationError.message}</div>
+    if (upsertSpotifyCredentialsMutationError) return <div>Error! {upsertSpotifyCredentialsMutationError.message}</div>
 
     return (
         <div>Saving Credentials</div>

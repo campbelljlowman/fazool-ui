@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { graphql } from '../../gql'
+import { graphql } from '../../gql';
 
 
 const CREATE_ACCOUNT = graphql(`
     mutation createAccount ($newAccount: NewAccount!) {
         createAccount(newAccount: $newAccount)
     }
-`)
+`);
 
 function Register() {
     const [firstName, setFirstName] = useState("");
@@ -20,10 +20,9 @@ function Register() {
     const navigate = useNavigate();
 
     // TODO: Get errors variable here and check 
-    const [createAccount, { error }] = useMutation(CREATE_ACCOUNT, {
+    const [createAccountMutation, { error: createAccountMutationError }] = useMutation(CREATE_ACCOUNT, {
         onCompleted(data) {
             sessionStorage.setItem("account-token", data.createAccount)
-
             navigate("/home");
         }
     });
@@ -55,11 +54,11 @@ function Register() {
             "password": password
         };
 
-        createAccount({ variables: { newAccount: newAccount } });
+        createAccountMutation({ variables: { newAccount: newAccount } });
     }
 
     // TODO: parse error message and don't replace form
-    if (error) console.log(`Error! ${error.message}`)
+    if (createAccountMutationError) console.log(`Error! ${createAccountMutationError.message}`)
 
 
     return (
