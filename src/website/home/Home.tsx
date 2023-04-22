@@ -42,11 +42,9 @@ function Home() {
     const navigate = useNavigate();
 
     const { error: getAccountQueryError, data: getAccountQueryData } = useQuery(GET_ACCOUNT, {
-        onCompleted(getAccountQuery){
-            if(!getAccountQuery){
-                console.log("No account data found, redirecting to login page");
-                navigate("/login");
-            }
+        onError(){
+            console.log("No account data found, redirecting to login page");
+            navigate("/login");   
         }
     });
 

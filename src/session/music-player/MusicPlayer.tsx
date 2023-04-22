@@ -46,8 +46,8 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
         return null;
     }
 
-    const playPause = () => {
-        if (currentlyPlaying.playing === false) {
+    const playPause = (playing: boolean) => {
+        if (playing) {
             return (
                 <button className="transparent-button" onClick={play}><FontAwesomeIcon icon={faPlay} /></button>
             )
@@ -58,13 +58,16 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
         }
     }
 
-    const mediaButtons = () => {
+    interface MediaButtonsProps {
+        showMediaButtons: boolean
+    }
+    function MediaButtons ({showMediaButtons}: MediaButtonsProps) {
         if (!showMediaButtons) {
             return null;
         }
         return (
             <div className="media-buttons">
-                {playPause()}
+                {playPause(currentlyPlaying!.playing === false)}
                 <button className="transparent-button" onClick={advance}><FontAwesomeIcon icon={faForward} /></button>
             </div>
         )
@@ -74,7 +77,7 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
         <>
             <div className="music-player" >
                 <Song song={currentlyPlaying.simpleSong} />
-                {mediaButtons()}
+                <MediaButtons showMediaButtons={showMediaButtons} />
             </div>
         </>
     );
