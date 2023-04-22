@@ -41,7 +41,12 @@ client_id=${spotifyClientId}
 function Home() {
     const navigate = useNavigate();
 
-    const { error: getAccountQueryError, data: getAccountQueryData } = useQuery(GET_ACCOUNT);
+    const { error: getAccountQueryError, data: getAccountQueryData } = useQuery(GET_ACCOUNT, {
+        onError(){
+            console.log("No account data found, redirecting to login page");
+            navigate("/login");   
+        }
+    });
 
     const [createSessionMutation, { error: createSessionMutationError }] = useMutation(CREATE_SESSION, {
         refetchQueries: [
@@ -65,49 +70,40 @@ function Home() {
         getVoterTokenQuery();
     }
 
-    
-    if (!getAccountQueryData) {
-        console.log("No account data found, redirecting to login page");
-        return null;
-        // navigate("/login");
-    }
-
     if (createSessionMutationError) console.log(`Error creating session: ${createSessionMutationError.message}`)
     if (getAccountQueryError) return <div>Error! {getAccountQueryError.message}</div>
     if (getVoterTokenQueryError) return <div>Error getting voter token: {getVoterTokenQueryError.message}</div>
 
-    const sessionInfo = () => {
-        if (getAccountQueryData!.account.activeSession === 0) {
-            return (
-                <div>
-                    <div>No Current Session</div>
-                    <button onClick={createSession}>Create Session</button>
-                </div>
-            )
-        } else {
+    if (!getAccountQueryData) return <div>Please login</div>
+
+    interface SessionInfoProps {
+        hasActiveSession: boolean
+    }
+    function SessionInfo({ hasActiveSession}: SessionInfoProps ) {
+        if (hasActiveSession) {
             return (
                 <div>
                     <div>Current Session: {getAccountQueryData!.account.activeSession}</div>
                     <button onClick={launchSession}>Launch Session</button>
                 </div>
             )
-        }
-    }
+        } else {
+            return (
+                <div>
+                    <div>No Current Session</div>
+                    <button onClick={createSession}>Create Session</button>
+                </div>
+            )
 
-    const spotifyInfo = () => {
-        return (
-            <div>
-                <a href={spotifyLoginURL}>Register Spotify</a>
-            </div>
-        )
+        }
     }
 
     return (
         <>
             <div>Home</div>
-            <div>Welcome {getAccountQueryData!.account.firstName}</div>
-            <div>{sessionInfo()}</div>
-            <div>{spotifyInfo()}</div>
+            <div>Welcome {getAccountQueryData.account.firstName}</div>
+            <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
+            <a href={spotifyLoginURL}>Register Spotify</a>
         </>
     )
 }

@@ -3,7 +3,8 @@
     height: 50px;
     margin: auto;
     margin-top: 5px;
-    position: relative;
+    position: absolute;
+    bottom: 0px;
 }
 
 .search-box-input {

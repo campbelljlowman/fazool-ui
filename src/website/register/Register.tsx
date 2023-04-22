@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
@@ -62,32 +61,28 @@ function Register() {
 
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col xs={8}>
-                    <div>Sign Up!</div>
-                    <form>
-                        <label>First name:<br />
-                            <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
-                        </label><br />
+        <>
+            <div>Sign Up!</div>
+            <form>
+                <label>First name:<br />
+                    <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
+                </label><br />
 
-                        <label>Last name:<br />
-                            <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
-                        </label><br />
+                <label>Last name:<br />
+                    <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
+                </label><br />
 
-                        <label>Email:<br />
-                            <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
-                        </label><br />
+                <label>Email:<br />
+                    <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
+                </label><br />
 
-                        <label >Password:<br />
-                            <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
-                        </label><br />
+                <label >Password:<br />
+                    <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
+                </label><br />
 
-                        <button className="transparent-button" onClick={submitRegistration}>Submit</button>
-                    </form>
-                </Col>
-            </Row>
-        </Container>
+                <button className="transparent-button" onClick={submitRegistration}>Submit</button>
+            </form>
+        </>
     )
 }
 
