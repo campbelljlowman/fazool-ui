@@ -2,8 +2,6 @@ import MusicPlayer from './music-player/MusicPlayer'
 import Queue from './queue/Queue'
 import Ad from './ads/Ad'
 import JoinLink from './join-sidebar/JoinLink'
-import { Container, Row, Col } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './Session.css'
 import SearchBox from './search-box/SearchBox'
 import { useQuery } from '@apollo/client';
@@ -159,25 +157,19 @@ function Session() {
     }
 
     return (
-        <>
-            <Container>
-                <Row>
-                    <Col xs={3}>
-                        <JoinLink />
-                    </Col>
-                    <Col xs={6}>
-                        <div className='main-column'>
-                            <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
-                            <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
-                            <SearchBox sessionID={sessionID} />
-                        </div>
-                    </Col>
-                    <Col xs={3}>
-                        <Ad />
-                    </Col>
-                </Row>
-            </Container>
-        </>);
+        <div className='session'>
+            <div className='music-player-container'>
+                <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
+            </div>
+            <div className='queue-container'>
+                <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
+                <SearchBox sessionID={sessionID} />
+            </div>
+            <div className='join-link-container'>
+                <JoinLink></JoinLink>
+            </div>
+        </div>
+        );
 }
 
 export default Session;

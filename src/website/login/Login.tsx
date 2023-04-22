@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
@@ -46,23 +45,19 @@ function Login() {
     if (loginMutationError) console.log(`Error! ${loginMutationError.message}`)
 
     return (
-        <Container>
-            <Row className="justify-content-md-center">
-                <Col xs={8}>
-                    <div>Login</div>
-                    <form>
-                        <label>Email:<br />
-                            <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
-                        </label><br />
+        <>
+            <div>Login</div>
+            <form>
+                <label>Email:<br />
+                    <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
+                </label><br />
 
-                        <label >Password:<br />
-                            <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
-                        </label><br />
-                        <button className="transparent-button" onClick={login}>Login</button>
-                    </form>
-                </Col>
-            </Row>
-        </Container>
+                <label >Password:<br />
+                    <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
+                </label><br />
+                <button className="transparent-button" onClick={login}>Login</button>
+            </form>
+        </>
     )
 }
 

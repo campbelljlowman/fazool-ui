@@ -1,10 +1,27 @@
-.main-column {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
 .transparent-button {
     border: none;
     background-color: transparent;
+}
+
+.session {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+    "music-player queue"
+    "join-link queue";
+}
+
+.music-player-container {
+    grid-area: music-player;
+}
+
+.queue-container {
+    grid-area: queue;
+}
+
+.join-link-container {
+    grid-area: join-link;
 }

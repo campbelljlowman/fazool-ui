@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faForward } from '@fortawesome/free-solid-svg-icons'
 import Song from '../song/Song';
 import './MusicPlayer.css'
-import QueueHeader from '../queue/QueueHeader';
 import { useMutation, } from '@apollo/client';
 import { graphql } from '../../gql';
 import { CurrentlyPlayingSong, QueueAction } from '../../gql/graphql';
@@ -77,8 +76,6 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
                 <Song song={currentlyPlaying.simpleSong} />
                 {mediaButtons()}
             </div>
-            {/*Render this here to allow queue to scroll properly*/}
-            <QueueHeader></QueueHeader>
         </>
     );
 }
