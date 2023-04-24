@@ -1,4 +1,4 @@
-.music-player {
+/* .music-player {
     padding-left: 10px;
     padding-right: 10px;
     margin-top: 22.5px;
@@ -7,11 +7,13 @@
     border-radius: 25px;
     background: #ff794d;
     flex: 0 0 auto;
-}
+} */
 
-.media-buttons {
+.music-player {
+    height: 100%;
+    width: 100%;
+    
     display: flex;
-    gap: 10px;
-    margin: auto;
-    align-self: center;
+    flex-direction: column;
+    justify-content: center;
 }
