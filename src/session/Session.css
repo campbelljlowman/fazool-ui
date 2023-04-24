@@ -25,3 +25,18 @@
 .join-link-container {
     grid-area: join-link;
 }
+
+@media (max-width: 700px) {
+    .session {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: 
+        "queue";
+    }
+    .music-player-container {
+        display: none;
+    }
+    .join-link-container {
+        display: none;
+    }
+}
