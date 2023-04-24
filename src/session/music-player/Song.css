@@ -1,4 +1,18 @@
 .cp-song {
     background-color: aqua;
-    margin-top: 2.5%;
+    /* margin-top: 2.5%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-style: solid;
+    margin: 10px;
+    margin-right: 10%;
+    margin-left: 10%;
+    border-radius: 16px;
+}
+
+.cp-album-cover {
+    /* height: 20%; */
+    width: 30px;
 }
