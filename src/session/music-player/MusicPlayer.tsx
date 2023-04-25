@@ -21,16 +21,10 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
     return (
         <div className="music-player" >
             <Song song={currentlyPlaying.simpleSong} />
-            <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.playing} sessionID={sessionID}/>
-            <ProgressBar songProgress={50} songDuration={200}/>
+            <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.isPlaying} sessionID={sessionID}/>
+            <ProgressBar isPlaying={currentlyPlaying.isPlaying} songProgress={currentlyPlaying.songProgressSeconds} songDuration={currentlyPlaying.songDurationSeconds}/>
         </div>
     );
-    // return (
-    //     <div className="music-player" >
-    //         <Song song={currentlyPlaying.simpleSong} />
-    //         <MediaButtons showMediaButtons={showMediaButtons} />
-    //     </div>
-    // );
 }
 
 export default MusicPlayer;

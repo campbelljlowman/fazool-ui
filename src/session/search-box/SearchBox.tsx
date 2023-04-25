@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import SearchResults from './SearchResults';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useLazyQuery } from '@apollo/client';
 import './SearchBox.css';
 import { graphql } from '../../gql';
@@ -58,7 +56,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         <div className='search-box'>
             <form>
                 <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
-                <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                <button className="transparent-button" onClick={searchForSong}>search</button>
             </form>
             {displaySearchResults ()}
         </div>

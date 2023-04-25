@@ -1,24 +1,56 @@
+import { useEffect, useState } from 'react'
 import './ProgressBar.css'
 
 interface ProgressBarProps {
-    songProgress: number,
-    songDuration: number
+    isPlaying:      boolean,
+    songProgress:   number,
+    songDuration:   number
 }
-function ProgressBar({ songProgress, songDuration}: ProgressBarProps) {
+function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps) {
+    const [songProgressAdjusted, setSongProgressAdjusted] = useState(0)
+    const [timeoutID, setTimeoutID] = useState(0)
+
+    useEffect(() => {
+        const adjustProgress = () => {
+            if(isPlaying && (songProgressAdjusted < songDuration)) {
+                let timeoutID: number = window.setTimeout(() => setSongProgressAdjusted(songProgressAdjusted + 1), 1000);
+                setTimeoutID(timeoutID);
+            }
+        };
+        adjustProgress();
+    }, [songProgressAdjusted])
+
+    useEffect(() => {
+        const setProgress = () => {
+            setSongProgressAdjusted(songProgress);
+            console.log("timeout" + timeoutID);
+            clearTimeout(timeoutID);
+        };
+        setProgress();
+    }, [songProgress])
+
+    const getExtra0= (totalSeconds: number) => {
+        if (totalSeconds%60 < 10) {
+            return "0"
+        } else {
+            return ""
+        }
+    }
+
     const toMinutesAndSeconds = (totalSeconds: number) => {
         const totalMinutes = Math.floor(totalSeconds / 60);
       
         const seconds = totalSeconds % 60;
         const minutes = totalMinutes % 60;
       
-        return minutes.toString()+':'+seconds.toString();
-      }
+        return minutes.toString() + ':' + getExtra0(totalSeconds) + seconds.toString();
+    }
 
   return (
     <div className='progress-bar'>
-        <div>{toMinutesAndSeconds(songProgress)}</div>
+        <div>{toMinutesAndSeconds(songProgressAdjusted)}</div>
         <div className='duration-fill'>
-            <div className='progress-fill' style={{width: songProgress/songDuration*100+"%"}}></div>
+            <div className='progress-fill' style={{width: songProgressAdjusted/songDuration*100+"%"}}></div>
         </div>
         <div>{toMinutesAndSeconds(songDuration)}</div>
     </div>

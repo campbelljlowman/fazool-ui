@@ -21,7 +21,9 @@ const SUBSCRIBE_SESSION_STATE = graphql(`
                     artist
                     image
                 }
-                playing
+                isPlaying
+                songProgressSeconds
+                songDurationSeconds
             }
             queue {
                 simpleSong {
@@ -47,7 +49,9 @@ const GET_SESSION_STATE = graphql(`
                     artist
                     image
                 }
-                playing
+                isPlaying
+                songProgressSeconds
+                songDurationSeconds
             }
             queue {
                 simpleSong {
