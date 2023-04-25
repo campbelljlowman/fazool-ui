@@ -44,9 +44,14 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         console.log("Error executing search: " + searchResultQueryError)
     }
 
+    const clearSearchResults = () => {
+        setShowSearchResults(false);
+        setSearchQuery("");
+    };
+    
     const displaySearchResults  = () => {
         if (showSearchResults && searchResultsQueryData) {
-            return <SearchResults searchResults={searchResultsQueryData.musicSearch} clearSearchResults={() => {setShowSearchResults(false)}} />;
+            return <SearchResults searchResults={searchResultsQueryData.musicSearch} clearSearchResults={clearSearchResults} />;
         } else {
             return null;
         }
