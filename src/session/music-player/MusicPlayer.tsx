@@ -22,7 +22,7 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
         <div className="music-player" >
             <Song song={currentlyPlaying.simpleSong} />
             <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.playing} sessionID={sessionID}/>
-            <ProgressBar />
+            <ProgressBar songProgress={50} songDuration={200}/>
         </div>
     );
     // return (

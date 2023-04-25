@@ -4,10 +4,11 @@
     justify-content: space-between;
     align-items: center;
     border-style: solid;
-    margin-top: calc(8px + 1.5625vh);
+    /* margin-top: calc(8px + 1.5625vh); */
     margin-right: calc(8px + 3vw);
     margin-left: calc(8px + 3vw);
     border-radius: 20px;
+    /* width: 60%; */
 }
 
 .cp-album-cover {
@@ -16,7 +17,7 @@
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     height: auto;
-    width: 70%;
+    width: 60%;
     border-radius: 20px;
 }
 
