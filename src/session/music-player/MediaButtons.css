@@ -1,16 +1,8 @@
-/* .media-buttons {
-    display: flex;
-    gap: 10px;
-    margin: auto;
-    align-self: center;
-} */
-
 .media-buttons {
-    background-color: brown;
     display: flex;
     gap: 7.5%;
     justify-content: center;
-    height: 10%;
-    /* margin-top: 2.5%;
-    margin-bottom: 2.5%; */
+    min-height: 25px;
+    max-height: 7.5%;
+    margin: 1rem;
 }
