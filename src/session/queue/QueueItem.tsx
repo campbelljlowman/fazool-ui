@@ -1,7 +1,5 @@
 import Song from '../song/Song'
 import './QueueItem.css'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'

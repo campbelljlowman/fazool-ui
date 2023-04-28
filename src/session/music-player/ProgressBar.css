@@ -2,10 +2,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     margin-bottom: 1rem;
     font-weight: bold;
+    width: 90%;
 }
 
 .duration-fill {
