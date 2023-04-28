@@ -17,6 +17,7 @@
 
 .music-player-container {
     grid-area: music-player;
+    border-bottom: 2px solid black;
 }
 
 .queue-container {

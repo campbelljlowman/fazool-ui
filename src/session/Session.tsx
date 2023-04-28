@@ -1,7 +1,6 @@
 import MusicPlayer from './music-player/MusicPlayer'
 import Queue from './queue/Queue'
-import Ad from './ads/Ad'
-import JoinLink from './join-sidebar/JoinLink'
+import JoinLink from './join-link/JoinLink'
 import './Session.css'
 import SearchBox from './search-box/SearchBox'
 import { useQuery } from '@apollo/client';
@@ -70,7 +69,7 @@ const GET_SESSION_STATE = graphql(`
 const GET_SESSION_CONFIG = graphql(`
     query getSessionConfig($sessionID: Int!){
         sessionConfig(sessionID: $sessionID){
-            id
+            sessionID
             adminAccountID
             maximumVoters
         }
@@ -113,7 +112,7 @@ function Session() {
         variables: { sessionID: sessionID },
     });
 
-    const { data: getSessionConfigData } = useQuery(GET_SESSION_CONFIG, {variables: { sessionID: sessionID }});
+    const { data: getSessionConfigQueryData, error: getSessionConfigQueryError } = useQuery(GET_SESSION_CONFIG, {variables: { sessionID: sessionID }});
 
     useEffect(() => {
         const checkForVoterToken = () => {
@@ -146,6 +145,7 @@ function Session() {
 
     // This error should keep whole session from loading, not just queue
     if (getSessionStateQueryError) return <div>Error getting session state! {getSessionStateQueryError.message}</div>
+    if (getSessionConfigQueryError) return <div>Error getting session config! {getSessionConfigQueryError.message}</div>
     // TODO: This is the error if session is full! Should figure out what to display
     if (getVoterQueryError) return <div>Error getting voter! {getVoterQueryError.message}</div>
 
@@ -153,6 +153,10 @@ function Session() {
         return null;
     }
     if (!getVoterQueryData) {
+        return null;
+    }
+
+    if(!getSessionConfigQueryData) {
         return null;
     }
 
@@ -170,7 +174,7 @@ function Session() {
                 <SearchBox sessionID={sessionID} />
             </div>
             <div className='join-link-container'>
-                <JoinLink></JoinLink>
+                <JoinLink sessionID={sessionID} numberOfVoters={getSessionStateQueryData.sessionState.numberOfVoters} maximumVoters={getSessionConfigQueryData?.sessionConfig.maximumVoters}></JoinLink>
             </div>
         </div>
         );
