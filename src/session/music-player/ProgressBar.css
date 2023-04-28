@@ -1,0 +1,23 @@
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    width: 90%;
+}
+
+.duration-fill {
+    background-color: rgb(209, 207, 207);
+    height: 5px;
+    width: 70%;
+    border-radius: 50px;
+}
+
+.progress-fill {
+    background-color: black;
+    height: 5px;
+    border-radius: 50px;
+}

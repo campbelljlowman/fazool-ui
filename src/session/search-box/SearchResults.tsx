@@ -1,6 +1,4 @@
 import Song from '../song/Song';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import './SearchResult.css';
 import { useMutation } from '@apollo/client';
 import { useParams } from "react-router-dom";
@@ -57,7 +55,7 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
             {searchResults.map(song => (
                 <div className="search-result-item" key={song.id}>
                     <Song song={song} />
-                    <button className="transparent-button" onClick={() => addSongToQueue(song)}><FontAwesomeIcon icon={faPlus} /></button>
+                    <button className="transparent-button" onClick={() => addSongToQueue(song)}>+</button>
                 </div>
             ))}
         </div>

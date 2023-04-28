@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import SearchResults from './SearchResults';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useLazyQuery } from '@apollo/client';
 import './SearchBox.css';
 import { graphql } from '../../gql';
@@ -46,9 +44,14 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         console.log("Error executing search: " + searchResultQueryError)
     }
 
+    const clearSearchResults = () => {
+        setShowSearchResults(false);
+        setSearchQuery("");
+    };
+    
     const displaySearchResults  = () => {
         if (showSearchResults && searchResultsQueryData) {
-            return <SearchResults searchResults={searchResultsQueryData.musicSearch} clearSearchResults={() => {setShowSearchResults(false)}} />;
+            return <SearchResults searchResults={searchResultsQueryData.musicSearch} clearSearchResults={clearSearchResults} />;
         } else {
             return null;
         }
@@ -58,7 +61,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         <div className='search-box'>
             <form>
                 <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
-                <button className="transparent-button" onClick={searchForSong}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                <button className="transparent-button" onClick={searchForSong}>search</button>
             </form>
             {displaySearchResults ()}
         </div>

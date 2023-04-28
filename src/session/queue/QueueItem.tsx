@@ -1,7 +1,5 @@
 import Song from '../song/Song'
 import './QueueItem.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
@@ -50,9 +48,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button upvoted-for" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><FontAwesomeIcon icon={faAngleUp} /></button>
+            return <button className="transparent-button upvoted-for" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}>up</button>
         } else {
-            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><FontAwesomeIcon icon={faAngleUp} /></button>
+            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}>up</button>
         }
     };
 
@@ -60,9 +58,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button downvoted-for" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><FontAwesomeIcon icon={faAngleDown} /></button>
+                return <button className="transparent-button downvoted-for" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}>down</button>
             } else {
-                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><FontAwesomeIcon icon={faAngleDown} /></button>
+                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}>down</button>
             }
         } else {
             return null
