@@ -34,10 +34,12 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         setSearchQuery(e.target.value);
     }
 
-    const searchForSong = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const searchForSong = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        searchResultQuery();
-        setShowSearchResults(true)
+        if(searchQuery !== "") {
+            searchResultQuery();
+            setShowSearchResults(true)
+        }
     }
 
     if (searchResultQueryError) {
@@ -63,7 +65,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
                 <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
                 <button className="transparent-button" onClick={searchForSong}>search</button>
             </form>
-            {displaySearchResults ()}
+            {displaySearchResults()}
         </div>
     );
 }

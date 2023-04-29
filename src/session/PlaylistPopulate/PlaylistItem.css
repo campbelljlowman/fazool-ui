@@ -1,0 +1,19 @@
+.playlist-cover {
+    height: auto;
+    width: 10vw;
+}
+
+.playlist-item {
+    width: min-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.playlist-item:hover {
+    border-color: red;
+    border-style: solid;
+    border-radius: 20px;
+}
