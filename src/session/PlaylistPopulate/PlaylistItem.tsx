@@ -1,17 +1,20 @@
-import React from 'react'
-import { Playlist } from '../../gql/graphql'
+import './PlaylistItem.css'
 
 interface PlaylistItmeProps {
     image: string,
     name: string
 }
 function PlaylistItem({ image, name }: PlaylistItmeProps) {
-  return (
-    <div className='playlist-item'>
-        <img src={image} alt='playlist cover' />
-        <div>{name}</div>
-    </div>
-  )
+
+    const populatePlaylist = () => {
+        console.log("Adding playlist");
+    }
+    return (
+        <div className='playlist-item' onClick={populatePlaylist}>
+            <img className='playlist-cover' src={image} alt='playlist cover' />
+            <div>{name}</div>
+        </div>
+    )
 }
 
 export default PlaylistItem

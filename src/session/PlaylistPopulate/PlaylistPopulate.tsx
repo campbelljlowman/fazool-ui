@@ -22,6 +22,9 @@ function PlaylistPopulate({ sessionID }: PlaylistPopulateProps) {
         variables: {
             sessionID: sessionID
         },
+        onCompleted(data){
+            console.log(JSON.stringify(data));
+        }
     });
 
     
@@ -44,12 +47,11 @@ function PlaylistPopulate({ sessionID }: PlaylistPopulateProps) {
     }
 
     return (
-        <>
-            <div>Playlists:</div>
+        <div className='playlist-results'>
             {playlistSearchQueryData!.playlists!.map(playlist => (
-                <PlaylistItem key={playlist.id} image={playlist.name} name={playlist.name} />
+                <PlaylistItem key={playlist.id} image={playlist.image} name={playlist.name} />
             ))}
-        </>
+        </div>
     )
 }
 
