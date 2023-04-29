@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { graphql } from '../gql'
 import { Voter, VoterType } from '../gql/graphql'
+import PlaylistPopulate from './PlaylistPopulate/PlaylistPopulate'
 
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
@@ -164,13 +165,26 @@ function Session() {
         return null;
     }
 
+    const QueueOrPlaylistPopulate = (queueIsEmpty: Boolean) => {
+        console.log("Is queue empty?" + queueIsEmpty);
+        if (queueIsEmpty) {
+            return (
+                <PlaylistPopulate sessionID={sessionID}/>
+            )
+        } else {
+            return (
+                <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
+            )
+        }
+    }
+
     return (
         <div className='session'>
             <div className='music-player-container'>
                 <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
             </div>
             <div className='queue-container'>
-                <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
+                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null)}
                 <SearchBox sessionID={sessionID} />
             </div>
             <div className='join-link-container'>
