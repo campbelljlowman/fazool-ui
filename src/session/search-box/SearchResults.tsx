@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import { useParams } from "react-router-dom";
 import { graphql } from '../../gql';
 import { SimpleSong, SongUpdate, SongVoteAction, SongVoteDirection } from '../../gql/graphql';
+import { ReactComponent as PlusIcon }  from '../../assets/vectors/plus-icon.svg'
 
 
 const UPDATE_QUEUE = graphql(`
@@ -55,7 +56,7 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
             {searchResults.map(song => (
                 <div className="search-result-item" key={song.id}>
                     <Song song={song} />
-                    <button className="transparent-button" onClick={() => addSongToQueue(song)}>+</button>
+                    <button className="transparent-button plus-icon" onClick={() => addSongToQueue(song)}><PlusIcon/></button>
                 </div>
             ))}
         </div>

@@ -3,6 +3,7 @@ import SearchResults from './SearchResults';
 import { useLazyQuery } from '@apollo/client';
 import './SearchBox.css';
 import { graphql } from '../../gql';
+import { ReactComponent as SearchIcon }  from '../../assets/vectors/search-icon.svg'
 
 const MUSIC_SEARCH  = graphql(`
     query musicSearch ($sessionID: Int!, $query: String!){
@@ -63,7 +64,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         <div className='search-box'>
             <form>
                 <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
-                <button className="transparent-button" onClick={searchForSong}>search</button>
+                <button className="transparent-button search-icon" onClick={searchForSong}><SearchIcon/></button>
             </form>
             {displaySearchResults()}
         </div>
