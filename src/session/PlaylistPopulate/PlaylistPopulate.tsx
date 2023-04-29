@@ -49,7 +49,7 @@ function PlaylistPopulate({ sessionID }: PlaylistPopulateProps) {
     return (
         <div className='playlist-results'>
             {playlistSearchQueryData!.playlists!.map(playlist => (
-                <PlaylistItem key={playlist.id} image={playlist.image} name={playlist.name} />
+                <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
             ))}
         </div>
     )

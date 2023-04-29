@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {\n        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {\n            numberOfVoters\n        }\n    }\n": types.SetPlaylistDocument,
     "\n    query playlists ($sessionID: Int!){\n        playlists (sessionID: $sessionID){\n            id\n            name\n            image\n        }\n    }\n": types.PlaylistsDocument,
     "\n    subscription subscribeSessionState($sessionID: Int!){\n        subscribeSessionState(sessionID: $sessionID){\n            currentlyPlaying {\n                simpleSong{\n                    id\n                    title\n                    artist\n                    image\n                }\n                isPlaying\n                songProgressSeconds\n                songDurationSeconds\n            }\n            queue {\n                simpleSong {\n                    id\n                    title\n                    artist\n                    image\n                }\n                votes\n            }\n            numberOfVoters\n        }\n    }\n": types.SubscribeSessionStateDocument,
     "\n    query getSessionState($sessionID: Int!){\n        sessionState(sessionID: $sessionID){\n            currentlyPlaying {\n                simpleSong{\n                    id\n                    title\n                    artist\n                    image\n                }\n                isPlaying\n                songProgressSeconds\n                songDurationSeconds\n            }\n            queue {\n                simpleSong {\n                    id\n                    title\n                    artist\n                    image\n                }\n                votes\n            }\n            numberOfVoters\n        }\n    }\n": types.GetSessionStateDocument,
@@ -43,6 +44,10 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {\n        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {\n            numberOfVoters\n        }\n    }\n"): (typeof documents)["\n    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {\n        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {\n            numberOfVoters\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -165,9 +165,9 @@ function Session() {
         return null;
     }
 
-    const QueueOrPlaylistPopulate = (queueIsEmpty: Boolean) => {
+    const QueueOrPlaylistPopulate = (queueIsEmpty: boolean, isAdmin: boolean) => {
         console.log("Is queue empty?" + queueIsEmpty);
-        if (queueIsEmpty) {
+        if (queueIsEmpty && isAdmin) {
             return (
                 <PlaylistPopulate sessionID={sessionID}/>
             )
@@ -184,7 +184,7 @@ function Session() {
                 <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
             </div>
             <div className='queue-container'>
-                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null)}
+                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null, isAdmin(getVoterQueryData.voter))}
                 <SearchBox sessionID={sessionID} />
             </div>
             <div className='join-link-container'>

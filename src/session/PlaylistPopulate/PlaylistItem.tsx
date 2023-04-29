@@ -1,18 +1,40 @@
+import { graphql } from '../../gql';
+import { Playlist } from '../../gql/graphql';
 import './PlaylistItem.css'
+import { useMutation } from '@apollo/client';
+
+const SET_PLAYLIST = graphql(`
+    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {
+        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {
+            numberOfVoters
+        }
+    }
+`);
 
 interface PlaylistItmeProps {
-    image: string,
-    name: string
+    sessionID: number,
+    playlist: Playlist
 }
-function PlaylistItem({ image, name }: PlaylistItmeProps) {
+function PlaylistItem({ sessionID, playlist }: PlaylistItmeProps) {
+
+    const [setPlaylistMutation, { error: setPlaylistMutationError }] = useMutation(SET_PLAYLIST, {
+        variables: {
+            sessionID: sessionID,
+            playlistID: playlist.id
+        },
+    });
 
     const populatePlaylist = () => {
-        console.log("Adding playlist");
+        setPlaylistMutation();
+    }
+
+    if(setPlaylistMutationError) {
+        console.log(`Error setting playlist: ${setPlaylistMutationError.message}`);
     }
     return (
         <div className='playlist-item' onClick={populatePlaylist}>
-            <img className='playlist-cover' src={image} alt='playlist cover' />
-            <div>{name}</div>
+            <img className='playlist-cover' src={playlist.image} alt='playlist cover' />
+            <div>{playlist.name}</div>
         </div>
     )
 }
