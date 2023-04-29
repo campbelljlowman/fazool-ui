@@ -1,4 +1,4 @@
-.queue-item {
+/* .queue-item {
     display: flex;
     margin-top: 22.5px;
 
@@ -24,4 +24,44 @@
 
 .downvoted-for {
     color: blue
+} */
+
+.queue-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-style: solid;
+    margin: 1rem;
+    border-radius: 20px;
+    /* width: auto; */
+}
+
+.queue-item-album-cover {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem; 
+    height: auto;
+    width: 7vw;
+}
+
+.queue-item-song-title {
+    text-overflow: clip;
+    font-weight: bold;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    margin-left: 1rem;
+    width: 7vw;
+    height: 1rem;
+    /* TODO: Make this text scroll automatically if it overflows */
+    /* height: 1rem; */
+}
+
+.queue-item-song-artist {
+    font-size: 0.75rem;
+    margin-bottom: 1.5em;
+    margin-left: 1rem;
+    width: 7vw;
+    height: 1rem;
+    text-overflow: clip;
 }

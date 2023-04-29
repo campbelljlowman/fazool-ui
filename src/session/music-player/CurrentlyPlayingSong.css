@@ -1,4 +1,4 @@
-.cp-song {
+.currently-playing-song {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -10,7 +10,7 @@
     width: auto;
 }
 
-.cp-album-cover {
+.currently-playing-album-cover {
     margin-top: 1.5rem;
     margin-left: 1.5rem;
     margin-right: 1.5rem; 
@@ -18,7 +18,7 @@
     width: 10vw;
 }
 
-.cp-song-title {
+.currently-playing-song-title {
     font-weight: bold;
     font-size: 1rem;
     margin-top: 0.5rem;
@@ -29,7 +29,7 @@
     /* height: 1rem; */
 }
 
-.cp-song-artist {
+.currently-playing-song-artist {
     font-size: 0.75rem;
     margin-bottom: 1.5em;
     margin-left: 1.5rem;

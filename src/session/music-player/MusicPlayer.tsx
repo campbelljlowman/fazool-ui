@@ -1,4 +1,4 @@
-import Song from './Song';
+import Song from './CurrentlyPlayingSong';
 import MediaButtons from './MediaButtons'
 import './MusicPlayer.css'
 import { CurrentlyPlayingSong } from '../../gql/graphql';
