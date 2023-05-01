@@ -45,7 +45,9 @@
 }
 
 .queue-item-song-title {
-    text-overflow: clip;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     font-weight: bold;
     font-size: 0.75rem;
     margin-top: 0.5rem;
@@ -63,5 +65,7 @@
     margin-left: 1rem;
     width: 7vw;
     height: 1rem;
-    text-overflow: clip;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
