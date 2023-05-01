@@ -33,7 +33,7 @@
     border-style: solid;
     margin: 1rem;
     border-radius: 20px;
-    /* width: auto; */
+    background-color: white;
 }
 
 .queue-item-album-cover {
