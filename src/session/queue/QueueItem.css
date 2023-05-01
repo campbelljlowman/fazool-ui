@@ -30,18 +30,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     border-style: solid;
     margin: 1rem;
     border-radius: 20px;
     background-color: white;
+    width: 9rem;
+    padding: 1rem;
 }
 
 .queue-item-album-cover {
-    margin-top: 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem; 
     height: auto;
-    width: 7vw;
+    width: 100%;
 }
 
 .queue-item-song-title {
@@ -52,18 +52,14 @@
     font-size: 0.75rem;
     margin-top: 0.5rem;
     margin-bottom: 0.25rem;
-    margin-left: 1rem;
-    width: 7vw;
+    width: 100%;
     height: 1rem;
     /* TODO: Make this text scroll automatically if it overflows */
-    /* height: 1rem; */
 }
 
 .queue-item-song-artist {
     font-size: 0.75rem;
-    margin-bottom: 1.5em;
-    margin-left: 1rem;
-    width: 7vw;
+    width: 100%;
     height: 1rem;
     text-overflow: ellipsis;
     overflow: hidden;
