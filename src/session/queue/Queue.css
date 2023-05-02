@@ -7,3 +7,10 @@
     align-items: center;
     background-color: black;
 }
+
+
+@media (max-width: 700px) {
+    .queue {
+        grid-template-columns: repeat(3, 33%);
+    }
+}
