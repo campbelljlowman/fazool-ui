@@ -51,7 +51,7 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button upvoted-for" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon/></button>
+            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon color='orange'/></button>
         } else {
             return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><UpvoteIcon/></button>
         }
@@ -61,7 +61,7 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button downvoted-for" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon/></button>
+                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon color='blue'/></button>
             } else {
                 return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><DownvoteIcon/></button>
             }
@@ -76,10 +76,10 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
             <div className="queue-item-song-title">{queuedSong.simpleSong.title}</div>
             <div className="queue-item-song-artist">{queuedSong.simpleSong.artist}</div>
             <div className='votes'>{queuedSong.votes}</div>
-            {/* <div className="voter">
-                {upvote()}
+            <div className="vote-buttons">
                 {downVote()}
-            </div> */}
+                {upvote()}
+            </div>
         </div>
     );
 }
