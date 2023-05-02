@@ -1,6 +1,6 @@
 .queue {
     overflow-y: scroll;
-    height: 90vh;
+    height: 92vh;
     display: grid;
     grid-template-columns: repeat(6, 16.6%);
     justify-items: center;
