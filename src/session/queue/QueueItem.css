@@ -34,6 +34,10 @@
     position: relative;
 }
 
+.queue-item:first-child {
+    border: 10px sandybrown solid;
+}
+
 .queue-item-album-cover {
     height: auto;
     width: 100%;
