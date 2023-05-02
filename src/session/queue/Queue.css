@@ -2,7 +2,7 @@
     overflow-y: scroll;
     height: 90vh;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 16.6%);
     justify-items: center;
     align-items: center;
     background-color: black;
