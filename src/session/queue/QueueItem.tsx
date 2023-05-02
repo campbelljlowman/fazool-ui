@@ -3,6 +3,9 @@ import './QueueItem.css'
 import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
+import { ReactComponent as UpvoteIcon }  from '../../assets/vectors/upvote-icon.svg'
+import { ReactComponent as DownvoteIcon }  from '../../assets/vectors/downvote-icon.svg'
+
 
 const UPDATE_QUEUE = graphql(`
     mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
@@ -48,9 +51,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button upvoted-for" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}>up</button>
+            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon color='orange'/></button>
         } else {
-            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}>up</button>
+            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><UpvoteIcon/></button>
         }
     };
 
@@ -58,9 +61,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button downvoted-for" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}>down</button>
+                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon color='blue'/></button>
             } else {
-                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}>down</button>
+                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><DownvoteIcon/></button>
             }
         } else {
             return null
@@ -69,11 +72,13 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     return (
         <div className="queue-item">
-            <Song song={queuedSong.simpleSong}></Song>
-            <div className='vote'> {queuedSong.votes} </div>
-            <div className="voter">
-                {upvote()}
+            <img className="queue-item-album-cover" src={queuedSong.simpleSong.image} alt="Album Cover"  />
+            <div className="queue-item-song-title">{queuedSong.simpleSong.title}</div>
+            <div className="queue-item-song-artist">{queuedSong.simpleSong.artist}</div>
+            <div className='votes'>{queuedSong.votes}</div>
+            <div className="vote-buttons">
                 {downVote()}
+                {upvote()}
             </div>
         </div>
     );

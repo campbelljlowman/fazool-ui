@@ -1,13 +1,9 @@
 .queue {
     overflow-y: scroll;
-    flex: 1;
-    border: black;
-    border-style: solid;
-    padding: 5px;
-    border-radius: 15px;
     height: 90vh;
-}
-
-.queue::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-items: center;
+    align-items: center;
+    background-color: black;
 }

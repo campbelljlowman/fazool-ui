@@ -13,6 +13,7 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
     useEffect(() => {
         const adjustProgress = () => {
             if(isPlaying && (songProgressAdjusted < songDuration)) {
+                console.log("Ticking");
                 let timeoutID: number = window.setTimeout(() => setSongProgressAdjusted(songProgressAdjusted + 1), 1000);
                 setTimeoutID(timeoutID);
             }
@@ -22,8 +23,9 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
 
     useEffect(() => {
         const setProgress = () => {
+            console.log(`song progress: ${songProgress}`);
+            console.log(`adjusted progress: ${songProgressAdjusted}`)
             setSongProgressAdjusted(songProgress);
-            console.log("timeout" + timeoutID);
             clearTimeout(timeoutID);
         };
         setProgress();

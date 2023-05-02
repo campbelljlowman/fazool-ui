@@ -1,37 +1,38 @@
-.cp-song {
+.currently-playing-song {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     border-style: solid;
     margin-top: 1.5rem;
     margin-right: 1.5rem;
     margin-left: 1.5rem;
     border-radius: 20px;
-    width: auto;
+    padding: 1.5rem;
+    width: 13rem;
 }
 
-.cp-album-cover {
-    margin-top: 1.5rem;
-    margin-left: 1.5rem;
-    margin-right: 1.5rem; 
+.currently-playing-album-cover {
     height: auto;
-    width: 10vw;
+    width: 100%;
 }
 
-.cp-song-title {
+.currently-playing-song-title {
     font-weight: bold;
     font-size: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.25rem;
-    margin-left: 1.5rem;
-    width: 10vw;
+    width: 100%;
     /* TODO: Make this text scroll automatically if it overflows */
-    /* height: 1rem; */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.cp-song-artist {
+.currently-playing-song-artist {
     font-size: 0.75rem;
-    margin-bottom: 1.5em;
-    margin-left: 1.5rem;
-    width: 10vw;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

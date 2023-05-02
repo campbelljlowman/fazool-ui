@@ -22,6 +22,7 @@
 
 .queue-container {
     grid-area: queue;
+    align-items: center;
 }
 
 .join-link-container {
