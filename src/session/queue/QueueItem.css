@@ -2,23 +2,32 @@
     display: flex;
     margin-top: 22.5px;
 
-}
+} */
 
-.vote {
+.votes {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    font-weight: bolder;
+    background-color: white;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 100px;
+    border: 1px solid black;
     display: flex;
-    align-self: center;
-    margin-right: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
-.voter {
+/* .voter {
     display: flex;
     gap: 10px;
     margin: auto;
     align-self: center;
     height: 2vh;
-}
+} */
 
-.upvoted-for {
+/* .upvoted-for {
     color: orange
 }
 
@@ -37,6 +46,7 @@
     background-color: white;
     width: 9rem;
     padding: 1rem;
+    position: relative;
 }
 
 .queue-item-album-cover {

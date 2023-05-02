@@ -75,8 +75,8 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
             <img className="queue-item-album-cover" src={queuedSong.simpleSong.image} alt="Album Cover"  />
             <div className="queue-item-song-title">{queuedSong.simpleSong.title}</div>
             <div className="queue-item-song-artist">{queuedSong.simpleSong.artist}</div>
-            {/* <div className='vote'> {queuedSong.votes} </div>
-            <div className="voter">
+            <div className='votes'>{queuedSong.votes}</div>
+            {/* <div className="voter">
                 {upvote()}
                 {downVote()}
             </div> */}
