@@ -19,7 +19,7 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
             }
         };
         adjustProgress();
-    }, [songProgressAdjusted])
+    }, [songProgressAdjusted, songProgress])
 
     useEffect(() => {
         const setProgress = () => {
@@ -32,7 +32,7 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
     }, [songProgress])
 
     const getExtra0= (totalSeconds: number) => {
-        if (totalSeconds%60 < 10) {
+        if (totalSeconds % 60 < 10) {
             return "0"
         } else {
             return ""

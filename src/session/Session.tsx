@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { graphql } from '../gql'
 import { Voter, VoterType } from '../gql/graphql'
-import PlaylistPopulate from './PlaylistPopulate/PlaylistPopulate'
+import PlaylistPopulate from './playlist-populate/PlaylistPopulate'
 
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
