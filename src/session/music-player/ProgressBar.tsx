@@ -8,25 +8,20 @@ interface ProgressBarProps {
 }
 function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps) {
     const [songProgressAdjusted, setSongProgressAdjusted] = useState(0)
-    const [timeoutID, setTimeoutID] = useState(0)
 
     useEffect(() => {
-        const adjustProgress = () => {
+        const interval = setInterval(() => {
             if(isPlaying && (songProgressAdjusted < songDuration)) {
-                console.log("Ticking");
-                let timeoutID: number = window.setTimeout(() => setSongProgressAdjusted(songProgressAdjusted + 1), 1000);
-                setTimeoutID(timeoutID);
+                setSongProgressAdjusted(songProgressAdjusted + 1)
             }
-        };
-        adjustProgress();
-    }, [songProgressAdjusted, songProgress])
+        }, 1000)
+
+        return () => clearInterval(interval);
+    }, [isPlaying, songProgressAdjusted, songDuration])
 
     useEffect(() => {
         const setProgress = () => {
-            console.log(`song progress: ${songProgress}`);
-            console.log(`adjusted progress: ${songProgressAdjusted}`)
             setSongProgressAdjusted(songProgress);
-            clearTimeout(timeoutID);
         };
         setProgress();
     }, [songProgress])
