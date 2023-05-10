@@ -29,7 +29,7 @@ function App() {
                 <Route path='/session' >
                     <Route path=':sessionID' element={<Session />} />
                 </Route>
-                <Route path='callback' element={<SpotifyCallback />} />
+                <Route path='/callback' element={<SpotifyCallback />} />
                 <Route path="*" element={
                     <main style={{ padding: "1rem" }}>
                         <p>There's nothing here!</p>
