@@ -16,7 +16,7 @@ run:
 
 run-docker:
 	docker run --rm \
-	-p 5173:5173 \
+	-p 5173:80 \
 	${UNIQUE_IMAGE_TAG}
 
 build:
