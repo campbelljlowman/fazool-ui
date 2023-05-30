@@ -1,0 +1,21 @@
+name: Build and Publish
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  GITHUB_ACCESS_TOKEN: ${{ github.token }}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: build
+      run: make build
+
+    - name: publish
+      run: make publish
