@@ -12,8 +12,6 @@ const LOGIN = graphql(`
 `);
 
 function Login() {
-    console.log(`graphql server: ${import.meta.env.VITE_GRAPHQL_HTTP_SERVER}`);
-    console.log(`subscription server: ${import.meta.env.VITE_GRAPHQL_WS_SERVER}`);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
