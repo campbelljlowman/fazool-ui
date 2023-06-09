@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@lit-labs/react": "^1.2.0",
+    "@material/web": "^1.0.0-pre.10",
     "buffer": "^6.0.3",
     "graphql": "^16.6.0",
     "graphql-ws": "^5.10.1",
