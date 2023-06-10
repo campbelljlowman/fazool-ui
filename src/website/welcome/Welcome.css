@@ -42,3 +42,17 @@
     height: auto;
     width: 40vw;
 }
+
+.body-block-2 {
+    background-color: var(--md-sys-color-surface-container-low);
+    margin: 1rem;
+    border-radius: 12px;
+    height: 70vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.how-it-works-card-row {
+    display: flex;
+}
