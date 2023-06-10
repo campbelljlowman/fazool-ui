@@ -22,3 +22,23 @@
     margin: 0.75rem;
     white-space: nowrap;
 }
+
+.body-block-1 {
+    background-color: var(--md-sys-color-surface-container-high);
+    margin: 1rem;
+    border-radius: 12px;
+    height: 70vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.body-block-1-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.session-mockup {
+    height: auto;
+    width: 40vw;
+}
