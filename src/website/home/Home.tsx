@@ -6,6 +6,7 @@ import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import React from 'react';
 import {createComponent} from '@lit-labs/react';
 import { MdFilledButton } from '@material/web/button/filled-button.js';
+import { StreamingService } from '../../gql/graphql';
 
 const MdFilledButtonComponent = createComponent({
     tagName: 'md-filled-button',
@@ -19,6 +20,7 @@ const GET_ACCOUNT = graphql(`
             id
             firstName
             activeSession
+            streamingService
         }
     }
 `);
@@ -142,7 +144,7 @@ function Home() {
                     </div>
                     <div className='account-info-card'>
                         <h1 className='headline-large'>Streaming Service</h1>
-                        <StreamingServiceInfo isStreamingServiceRegistered={false}/>
+                        <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
                     </div>
                 </div>
             </div>
