@@ -1,6 +1,17 @@
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import { graphql } from '../../gql';
+import './Home.css'
+import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
+import React from 'react';
+import {createComponent} from '@lit-labs/react';
+import { MdFilledButton } from '@material/web/button/filled-button.js';
+
+const MdFilledButtonComponent = createComponent({
+    tagName: 'md-filled-button',
+    elementClass: MdFilledButton,
+    react: React,
+});
 
 const GET_ACCOUNT = graphql(`
     query getAccount {
@@ -65,7 +76,7 @@ function Home() {
         createSessionMutation();
     }
 
-    const launchSession = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const launchSession = (e: React.MouseEvent<MdFilledButton>) => {
         e.preventDefault();
         getVoterTokenQuery();
     }
@@ -76,35 +87,66 @@ function Home() {
 
     if (!getAccountQueryData) return <div>Please login</div>
 
+    interface StreamingServiceInfoProps{
+        isStreamingServiceRegistered: boolean
+    }
+    function StreamingServiceInfo({isStreamingServiceRegistered}: StreamingServiceInfoProps) {
+        if (isStreamingServiceRegistered) {
+            return (
+                <>
+                    <div className='headline-small'>Spotify</div>
+                    <MdFilledButtonComponent href={spotifyLoginURL} onClick={createSession}>Change</MdFilledButtonComponent>  
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <div className='headline-small'>None</div>
+                    <MdFilledButtonComponent href={spotifyLoginURL} onClick={createSession}>Link</MdFilledButtonComponent>  
+                </>
+            )
+        }
+    }
+
     interface SessionInfoProps {
         hasActiveSession: boolean
     }
     function SessionInfo({ hasActiveSession}: SessionInfoProps ) {
         if (hasActiveSession) {
             return (
-                <div>
-                    <div>Current Session: {getAccountQueryData!.account.activeSession}</div>
-                    <button onClick={launchSession}>Launch Session</button>
-                </div>
+                <>
+                    <div className='headline-small'>Current session: {getAccountQueryData!.account.activeSession}</div>
+                    <MdFilledButtonComponent className='navigation-button' onClick={launchSession}>Launch Session</MdFilledButtonComponent>   
+                </>
             )
         } else {
             return (
-                <div>
-                    <div>No Current Session</div>
-                    <button onClick={createSession}>Create Session</button>
-                </div>
+                <>
+                    <div className='headline-small'>No current active session</div>
+                    <MdFilledButtonComponent className='navigation-button'  onClick={createSession}>Start</MdFilledButtonComponent>   
+                </>
             )
 
         }
     }
 
     return (
-        <>
-            <div>Home</div>
-            <div>Welcome {getAccountQueryData.account.firstName}</div>
-            <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
-            <a href={spotifyLoginURL}>Register Spotify</a>
-        </>
+        <div className='home-page'>
+            <LogoIcon className='logo-wrapper'/>
+            <div className='home-page-body-1'>
+                <div className='display-medium'>Welcome {getAccountQueryData.account.firstName}</div>
+                <div className='account-info'>
+                    <div className='account-info-card'>
+                        <h1 className='headline-large'>Session</h1>
+                        <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
+                    </div>
+                    <div className='account-info-card'>
+                        <h1 className='headline-large'>Streaming Service</h1>
+                        <StreamingServiceInfo isStreamingServiceRegistered={false}/>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 
