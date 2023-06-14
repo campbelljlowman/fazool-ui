@@ -10,14 +10,14 @@
 }
 
 .duration-fill {
-    background-color: rgb(209, 207, 207);
+    background-color: var(--md-sys-color-surface-container-highest);
     height: 5px;
     width: 70%;
     border-radius: 50px;
 }
 
 .progress-fill {
-    background-color: black;
+    background-color: var(--md-sys-color-primary);
     height: 5px;
     border-radius: 50px;
 }
