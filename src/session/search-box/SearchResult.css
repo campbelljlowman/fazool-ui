@@ -22,3 +22,10 @@
 .plus-icon {
     height: 3vh;
 }
+
+@media (max-width: 700px) {
+    .search-results {
+        width: 60%;
+        left: 20%;
+    }
+}
