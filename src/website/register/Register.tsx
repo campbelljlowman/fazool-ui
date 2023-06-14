@@ -2,7 +2,17 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
+import './Register.css'
+import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
+import React from 'react';
+import {createComponent} from '@lit-labs/react';
+import { MdFilledButton } from '@material/web/button/filled-button.js';
 
+const MdFilledButtonComponent = createComponent({
+    tagName: 'md-filled-button',
+    elementClass: MdFilledButton,
+    react: React,
+});
 
 const CREATE_ACCOUNT = graphql(`
     mutation createAccount ($newAccount: NewAccount!) {
@@ -43,7 +53,7 @@ function Register() {
         setPassword(e.target.value);
     }
 
-    const submitRegistration = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const submitRegistration = (e: React.MouseEvent<MdFilledButton>) => {
         e.preventDefault();
 
         const newAccount = {
@@ -61,28 +71,41 @@ function Register() {
 
 
     return (
-        <>
-            <div>Sign Up!</div>
-            <form>
-                <label>First name:<br />
-                    <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
-                </label><br />
+        <div className='register-page'>
+                <LogoIcon className='logo-wrapper-main'/>
+                <div className='register-forms-card'> 
+                    <h1 className='display-small'>Sign Up</h1>
 
-                <label>Last name:<br />
-                    <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
-                </label><br />
+                    <input className='input-field' type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
+                    <input className='input-field' type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
+                    <input className='input-field' type="text" placeholder="Email" value={email} onChange={handleEmail} />
+                    <input className='input-field' type="password" placeholder="Password" value={password} onChange={handlePassword} />
 
-                <label>Email:<br />
-                    <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
-                </label><br />
+                    <MdFilledButtonComponent className='navigation-button' onClick={submitRegistration}>Sign Up</MdFilledButtonComponent>   
+                </div>
+        </div>
+        // <>
+        //     <div>Sign Up!</div>
+        //     <form>
+        //         <label>First name:<br />
+        //             <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
+        //         </label><br />
 
-                <label >Password:<br />
-                    <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
-                </label><br />
+        //         <label>Last name:<br />
+        //             <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
+        //         </label><br />
 
-                <button className="transparent-button" onClick={submitRegistration}>Submit</button>
-            </form>
-        </>
+        //         <label>Email:<br />
+        //             <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
+        //         </label><br />
+
+        //         <label >Password:<br />
+        //             <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
+        //         </label><br />
+
+        //         <button className="transparent-button" onClick={submitRegistration}>Submit</button>
+        //     </form>
+        // </>
     )
 }
 
