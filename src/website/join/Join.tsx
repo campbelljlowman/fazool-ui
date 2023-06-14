@@ -46,10 +46,10 @@ function Join() {
         <div className='join-page'>
                 <LogoIcon className='logo-wrapper-main'/>
                 <div className='join-forms-card'> 
-                    <h1 className='display-small'>Log In</h1>
+                    <h1 className='display-small'>Join Session</h1>
 
                     <input className='input-field' type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
-                    <MdFilledButtonComponent className='navigation-button' onClick={joinSession}>Log In</MdFilledButtonComponent>   
+                    <MdFilledButtonComponent className='navigation-button' onClick={joinSession}>Join</MdFilledButtonComponent>   
                 </div>
         </div>
         // <>

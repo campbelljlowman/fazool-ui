@@ -8,6 +8,7 @@
     margin: 0;
 
     font-family: 'Roboto', sans-serif;
+    color: var(--md-sys-color-on-surface);
 }
 
 #root {
