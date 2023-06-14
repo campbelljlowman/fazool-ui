@@ -2,6 +2,16 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useLazyQuery } from '@apollo/client';
 import { graphql } from '../../gql'
+import './Join.css'
+import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
+import {createComponent} from '@lit-labs/react';
+import { MdFilledButton } from '@material/web/button/filled-button.js';
+
+const MdFilledButtonComponent = createComponent({
+    tagName: 'md-filled-button',
+    elementClass: MdFilledButton,
+    react: React,
+});
 
 const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
@@ -24,7 +34,7 @@ function Join() {
         setSessionID(e.target.value);
     }
 
-    const joinSession = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const joinSession = (e: React.MouseEvent<MdFilledButton>) => {
         e.preventDefault();
         getVoterTokenQuery();
         
@@ -33,13 +43,22 @@ function Join() {
     if (getVoterTokenQueryError) console.log(`Error joining voters: ${getVoterTokenQueryError.message}`)
 
     return (
-        <>
-            <div>Join Session!</div>
-            <form>
-                <input type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
-                <button className="transparent-button" onClick={joinSession}>Join</button>
-            </form>
-        </>
+        <div className='join-page'>
+                <LogoIcon className='logo-wrapper-main'/>
+                <div className='join-forms-card'> 
+                    <h1 className='display-small'>Log In</h1>
+
+                    <input className='input-field' type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
+                    <MdFilledButtonComponent className='navigation-button' onClick={joinSession}>Log In</MdFilledButtonComponent>   
+                </div>
+        </div>
+        // <>
+        //     <div>Join Session!</div>
+        //     <form>
+        //         <input type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
+        //         <button className="transparent-button" onClick={joinSession}>Join</button>
+        //     </form>
+        // </>
     )
 }
 
