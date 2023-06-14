@@ -25,6 +25,7 @@ function Welcome() {
 
     return (
         <div className='welcome-page'>
+            <div className='margin-top'></div>
             <div className='navigation-header'>
                 <LogoIcon className='logo-wrapper'/>
                 <div>
