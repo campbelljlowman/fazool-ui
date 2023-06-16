@@ -37,7 +37,7 @@ function Welcome() {
             <div className='body-block-1'>
                 <div className='body-block-1-text'>
                     <h1 className='display-medium' style={{padding: '0.5rem'}}>Democratized DJing</h1>
-                    <p className='headline-small' style={{padding: '0.5rem'}}>Fazool allows a group of people to vote on what songs get played.</p>
+                    <p className='headline-small' style={{padding: '0.5rem'}}>Fazool allows a group of people to vote on which songs get played.</p>
                     <ul style={{padding: '0.5rem'}}>
                         <li className='title-medium' style={{listStylePosition: 'inside', lineHeight: '1.5'}}>Connects with popular streaming services</li>
                         <li className='title-medium' style={{listStylePosition: 'inside', lineHeight: '1.5'}}>Basic functionality is completely free</li>

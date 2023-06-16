@@ -13,7 +13,7 @@ function JoinLink({ sessionID, numberOfVoters, maximumVoters}: JoinLinkProps) {
             <div>Scan to join!</div>
             <div>Free, no account required</div>
             <img className='qr-code' src={JoinQRCode} alt='QR code link to fazool.party' />
-            <div>fazool.party</div>
+            <div>fazool.party/join</div>
             <div className='session-id'>Session {sessionID}</div>
         </div>
     );

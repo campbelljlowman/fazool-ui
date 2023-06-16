@@ -184,7 +184,7 @@ function Session() {
                 <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
             </div>
             <div className='queue-container'>
-                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null, isAdmin(getVoterQueryData.voter))}
+                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
                 <SearchBox sessionID={sessionID} />
             </div>
             <div className='join-link-container'>
