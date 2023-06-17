@@ -26,7 +26,6 @@
 .navigation-button {
     margin: 0.75rem;
     white-space: nowrap;
-    height: 100%;
 }
 
 .body-block-1 {
@@ -71,6 +70,12 @@
     }
     .navigation-button {
         margin: 0.25rem;
+    }
+    .navigation-buttons-wrapper {
+        display: flex;
+        width: 90vw;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     .body-block-1 {
         flex-direction: column;

@@ -28,7 +28,7 @@ function Welcome() {
             <div className='margin-top'></div>
             <div className='navigation-header'>
                 <LogoIcon className='logo-wrapper'/>
-                <div>
+                <div className='navigation-buttons-wrapper'>
                     <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/join");}}>Join Session</MdOutlinedButtonComponent>
                     <MdFilledButtonComponent className='navigation-button' onClick={() => {navigate("/register");}}>Sign Up</MdFilledButtonComponent>
                     <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/login");}}>Login</MdOutlinedButtonComponent>
