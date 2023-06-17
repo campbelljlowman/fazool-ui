@@ -36,6 +36,7 @@
 
 .queue-item:first-child {
     border: 10px sandybrown solid;
+    width: 87%;
 }
 
 .queue-item-album-cover {

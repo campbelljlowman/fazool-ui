@@ -15,7 +15,6 @@
 
 .account-info {
     display: flex;
-
 }
 
 .account-info-card {
@@ -30,4 +29,17 @@
     justify-content: space-around;
     padding: 1rem;
     text-align: center;
+}
+
+@media (max-width: 700px) {
+    .home-page-body-1 {
+        flex-direction: column;
+        height: 100vh;
+    }
+    .account-info {
+        flex-direction: column;
+    }
+    .account-info-card {
+        width: 80vw;
+    }
 }

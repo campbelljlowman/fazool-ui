@@ -118,14 +118,14 @@ function Home() {
             return (
                 <>
                     <div className='headline-small'>Current session: {getAccountQueryData!.account.activeSession}</div>
-                    <MdFilledButtonComponent className='navigation-button' onClick={launchSession}>Launch Session</MdFilledButtonComponent>   
+                    <MdFilledButtonComponent onClick={launchSession}>Launch Session</MdFilledButtonComponent>   
                 </>
             )
         } else {
             return (
                 <>
                     <div className='headline-small'>No current active session</div>
-                    <MdFilledButtonComponent className='navigation-button'  onClick={createSession}>Start</MdFilledButtonComponent>   
+                    <MdFilledButtonComponent onClick={createSession}>Start</MdFilledButtonComponent>   
                 </>
             )
 

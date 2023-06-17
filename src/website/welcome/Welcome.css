@@ -26,12 +26,7 @@
 .navigation-button {
     margin: 0.75rem;
     white-space: nowrap;
-}
-
-@media (max-width: 700px) {
-    .navigation-button {
-        font-size: 5px;
-    }
+    height: 100%;
 }
 
 .body-block-1 {
@@ -66,4 +61,25 @@
 
 .how-it-works-card-row {
     display: flex;
+}
+
+@media (max-width: 700px) {
+    .navigation-header {
+        flex-direction: column;
+        justify-content: space-around;
+        height: 150px;
+    }
+    .navigation-button {
+        margin: 0.25rem;
+    }
+    .body-block-1 {
+        flex-direction: column;
+    }
+    .body-block-2 {
+        flex-direction: column;
+        height: 150vh;
+    }
+    .how-it-works-card-row {
+        flex-direction: column;
+    }
 }
