@@ -55,7 +55,9 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
         <div className="search-results">
             {searchResults.map(song => (
                 <div className="search-result-item" key={song.id}>
-                    <Song song={song} />
+                    <div className='search-result-item-song'>
+                        <Song song={song}/>
+                    </div>
                     <button className="transparent-button plus-icon" onClick={() => addSongToQueue(song)}><PlusIcon/></button>
                 </div>
             ))}

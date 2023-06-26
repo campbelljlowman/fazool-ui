@@ -12,7 +12,7 @@
 
 @media (max-width: 700px) {
     .queue {
-        grid-template-columns: repeat(3, 33%);
+        grid-template-columns: repeat(2, 50%);
         height: 82vh;
     }
 }

@@ -3,13 +3,28 @@
     flex-grow: 2;
     gap: 10px;
     align-self: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    /* width: 100%; */
 }
 
 .song-info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    width: 100%;
 }
 
 .song-title {
     font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.song-artist {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
