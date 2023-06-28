@@ -40,3 +40,11 @@
         display: none;
     }
 }
+
+.empty-queue-message {
+    height: 87vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}

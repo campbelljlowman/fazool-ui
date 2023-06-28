@@ -167,10 +167,16 @@ function Session() {
 
     const QueueOrPlaylistPopulate = (queueIsEmpty: boolean, isAdmin: boolean) => {
         console.log("Is queue empty?" + queueIsEmpty);
-        if (queueIsEmpty && isAdmin) {
-            return (
-                <PlaylistPopulate sessionID={sessionID}/>
-            )
+        if (queueIsEmpty) {
+            if (isAdmin) {
+                return (
+                    <PlaylistPopulate sessionID={sessionID}/>
+                )
+            } else {
+                return (
+                    <div className='empty-queue-message'>Looks like the queue is empty. Add songs with the search bar</div>
+                )
+            }
         } else {
             return (
                 <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
