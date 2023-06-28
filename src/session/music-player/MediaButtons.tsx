@@ -50,20 +50,20 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
     const playPause = (playing: boolean) => {
         if (playing) {
             return (
-                <button className="transparent-button" onClick={pause}><PauseIcon/></button>
+                <button className="transparent-button svg-wrapper" onClick={pause}><PauseIcon/></button>
                 )
         } else {
             return (
-                <button className="transparent-button" onClick={play}><PlayIcon/></button>
+                <button className="transparent-button svg-wrapper" onClick={play}><PlayIcon/></button>
             )
         }
     }
 
     return (
         <div className="media-buttons">
-            <button className='transparent-button'><SettingsIcon/></button>
+            <button className='transparent-button svg-wrapper'><SettingsIcon/></button>
             {playPause(currentlyPlaying)}
-            <button className="transparent-button" onClick={advance}><SkipIcon/></button>
+            <button className="transparent-button svg-wrapper" onClick={advance}><SkipIcon/></button>
         </div>
     )
 }

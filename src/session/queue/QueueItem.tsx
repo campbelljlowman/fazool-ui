@@ -51,9 +51,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon style={{color: 'orange'}} /></button>
+            return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon style={{color: 'orange'}} /></button>
         } else {
-            return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><UpvoteIcon/></button>
+            return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><UpvoteIcon/></button>
         }
     };
 
@@ -61,9 +61,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon style={{color: 'blue'}}/></button>
+                return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon style={{color: 'blue'}}/></button>
             } else {
-                return <button className="transparent-button" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><DownvoteIcon/></button>
+                return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><DownvoteIcon/></button>
             }
         } else {
             return null

@@ -64,7 +64,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
         <div className='search-box-wrapper'>
             <form className='search-box'>
                 <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
-                <button className="transparent-button search-icon" onClick={searchForSong}><SearchIcon/></button>
+                <button className="transparent-button search-icon svg-wrapper" onClick={searchForSong}><SearchIcon/></button>
             </form>
             {displaySearchResults()}
         </div>

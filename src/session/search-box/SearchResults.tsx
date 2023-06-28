@@ -58,7 +58,7 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
                     <div className='search-result-item-song'>
                         <Song song={song}/>
                     </div>
-                    <button className="transparent-button plus-icon" onClick={() => addSongToQueue(song)}><PlusIcon/></button>
+                    <button className="transparent-button svg-wrapper" onClick={() => addSongToQueue(song)}><PlusIcon/></button>
                 </div>
             ))}
         </div>
