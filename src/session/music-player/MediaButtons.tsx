@@ -16,6 +16,12 @@ const UPDATE_CURRENTLY_PLAYING = graphql(`
     }
 `)
 
+const END_SESSION = graphql(`
+    mutation endSession($sessionID: Int!){
+        endSession(sessionID: $sessionID)
+    }
+`)
+
 interface MediaButtonsProps {
     showMediaButtons: boolean
     currentlyPlaying: boolean
@@ -23,6 +29,7 @@ interface MediaButtonsProps {
 }
 function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaButtonsProps) {
     const [updateCurrentlyPlayingMutation, { error: updateCurrentlyPlayingMutationError }] = useMutation(UPDATE_CURRENTLY_PLAYING)
+    const [endSessionMutation, { error: endSessionMutationError }] = useMutation(END_SESSION)
 
     const play = () => {
         console.log("Play/Pause");
@@ -47,6 +54,10 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
         console.log(`Error! ${updateCurrentlyPlayingMutationError.message}`);
     }
 
+    if (endSessionMutationError) {
+        console.log(`Error! ${endSessionMutationError.message}`);
+    }
+
     const playPause = (playing: boolean) => {
         if (playing) {
             return (
@@ -61,7 +72,7 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
 
     return (
         <div className="media-buttons">
-            <button className='transparent-button svg-wrapper'><SettingsIcon/></button>
+            <button className='transparent-button svg-wrapper' onClick={() => {endSessionMutation({ variables: {sessionID: sessionID}})}}><SettingsIcon/></button>
             {playPause(currentlyPlaying)}
             <button className="transparent-button svg-wrapper" onClick={advance}><SkipIcon/></button>
         </div>

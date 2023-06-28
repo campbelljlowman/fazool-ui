@@ -18,6 +18,7 @@ const documents = {
     "\n    query getSessionConfig($sessionID: Int!){\n        sessionConfig(sessionID: $sessionID){\n            sessionID\n            adminAccountID\n            maximumVoters\n        }\n    }\n": types.GetSessionConfigDocument,
     "\n    query voter ($sessionID: Int!){\n        voter (sessionID: $sessionID){\n            id\n            type\n            songsUpVoted\n            songsDownVoted\n            bonusVotes\n        }\n    }\n": types.VoterDocument,
     "\n    mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {\n        updateCurrentlyPlaying(sessionID:$sessionID, action:$action){\n            numberOfVoters\n        }\n    }\n": types.UpdateCurrentlyPlayingDocument,
+    "\n    mutation endSession($sessionID: Int!){\n        endSession(sessionID: $sessionID)\n    }\n": types.EndSessionDocument,
     "\n    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {\n        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {\n            numberOfVoters\n        }\n    }\n": types.SetPlaylistDocument,
     "\n    query playlists ($sessionID: Int!){\n        playlists (sessionID: $sessionID){\n            id\n            name\n            image\n        }\n    }\n": types.PlaylistsDocument,
     "\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n": types.UpdateQueueDocument,
@@ -64,6 +65,10 @@ export function graphql(source: "\n    query voter ($sessionID: Int!){\n        
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {\n        updateCurrentlyPlaying(sessionID:$sessionID, action:$action){\n            numberOfVoters\n        }\n    }\n"): (typeof documents)["\n    mutation updateCurrentlyPlaying ($sessionID: Int!, $action: QueueAction!) {\n        updateCurrentlyPlaying(sessionID:$sessionID, action:$action){\n            numberOfVoters\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation endSession($sessionID: Int!){\n        endSession(sessionID: $sessionID)\n    }\n"): (typeof documents)["\n    mutation endSession($sessionID: Int!){\n        endSession(sessionID: $sessionID)\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
