@@ -17,7 +17,7 @@
     bottom: 50px;
     left: 35%;
     right: 0;
-    background-color: rgb(254, 168, 168);
+    background-color: var(--md-sys-color-secondary);
     border-radius: 15px;
     border: black;
     border-style: solid;
