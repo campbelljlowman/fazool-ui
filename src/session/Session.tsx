@@ -129,6 +129,9 @@ function Session() {
             subscribeToMore({
                 document: SUBSCRIBE_SESSION_STATE,
                 variables: { sessionID: sessionID },
+                onError(error) {
+                    console.log(`caught subscription error 123 ${error}`)
+                },
                 updateQuery: (prev, { subscriptionData }) => {
                     if (!subscriptionData.data) return prev;
                     // TODO: There's probably a better way to merge these resulst
