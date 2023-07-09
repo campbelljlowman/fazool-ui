@@ -32,17 +32,14 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
     const [endSessionMutation, { error: endSessionMutationError }] = useMutation(END_SESSION)
 
     const play = () => {
-        console.log("Play/Pause");
         updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Play } })
     };
 
     const pause = () => {
-        console.log("Play/Pause");
         updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Pause } })
     };
 
     const advance = () => {
-        console.log("Skip to next track");
         updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Advance } })
     }
 

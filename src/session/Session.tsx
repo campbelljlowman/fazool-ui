@@ -166,7 +166,6 @@ function Session() {
     }
 
     const QueueOrPlaylistPopulate = (queueIsEmpty: boolean, isAdmin: boolean) => {
-        console.log("Is queue empty?" + queueIsEmpty);
         if (queueIsEmpty) {
             if (isAdmin) {
                 return (

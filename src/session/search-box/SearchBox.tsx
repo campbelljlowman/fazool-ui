@@ -49,7 +49,8 @@ function SearchBox({ sessionID }: SearchBoxProps) {
 
     const clearSearchResults = () => {
         setShowSearchResults(false);
-        setSearchQuery("");
+        // TODO: This causes errors somehow
+        // setSearchQuery("");
     };
     
     const displaySearchResults  = () => {

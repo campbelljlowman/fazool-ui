@@ -21,9 +21,6 @@ function PlaylistPopulate({ sessionID }: PlaylistPopulateProps) {
     const [playlistSearchQuery, { data: playlistSearchQueryData, error: playlistSearchQueryError }] = useLazyQuery(PLAYLIST_SEARCH , {
         variables: {
             sessionID: sessionID
-        },
-        onCompleted(data){
-            console.log(JSON.stringify(data));
         }
     });
 

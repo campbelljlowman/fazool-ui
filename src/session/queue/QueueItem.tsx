@@ -39,7 +39,6 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
     }
 
     const vote = (direction: SongVoteDirection, action: SongVoteAction) => {
-        console.log("Voting for song :" + queuedSong.simpleSong);
         const songData = {
             'id': queuedSong.simpleSong.id,
             'vote': direction,

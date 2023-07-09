@@ -48,7 +48,6 @@ function Login() {
             "password": password
         };
 
-        console.log("Login values: " + JSON.stringify(accountLogin));
         loginMutation({ variables: { accountLogin: accountLogin } });
     }
 
