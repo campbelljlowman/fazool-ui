@@ -16,10 +16,7 @@ const wsLink = new GraphQLWsLink(createClient({
     url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
     connectionParams: {
         SubscriptionAuthentication: "Subscription-Allowed",
-    },
-    onNonLazyError(errorOrCloseEvent) {
-        console.log(`Caught subscription error: ${errorOrCloseEvent}`)
-    },
+    }
 }));
 
 const splitLink = split(
