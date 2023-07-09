@@ -129,10 +129,15 @@ function Session() {
             subscribeToMore({
                 document: SUBSCRIBE_SESSION_STATE,
                 variables: { sessionID: sessionID },
-                onError() {
+                onError(error) {
                     // If subscription is closed, reload page to refresh subscription.
                     // This is workaround for iPhones disconnecting, could possibly cause issues
-                    location.reload()
+                    // if (error.message === "Socket closed") {
+                        console.log(`Error cause: ${error.cause}`)
+                        console.log(`Error messasge: ${error.message}`)
+                        console.log(`Error name: ${error.name}`)
+                        // location.reload()
+                    // }
                 },
                 updateQuery: (prev, { subscriptionData }) => {
                     if (!subscriptionData.data) return prev;
