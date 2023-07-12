@@ -20,8 +20,15 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
+    "@hookform/resolvers": "^3.1.1",
     "@lit-labs/react": "^1.2.0",
     "@material/web": "^1.0.0-pre.10",
+    "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-dialog": "^1.0.4",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-scroll-area": "^1.0.4",
+    "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.6.1",
@@ -32,10 +39,12 @@
     "material-symbols": "^0.7.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.45.1",
     "react-router-dom": "^6.3.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
-    "vite-plugin-svgr": "^2.4.0"
+    "vite-plugin-svgr": "^2.4.0",
+    "zod": "^3.21.4"
   },
   "scripts": {
     "start": "vite",

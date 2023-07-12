@@ -30,10 +30,9 @@ function Welcome() {
             <div className='navigation-header'>
                 <LogoIcon className='logo-wrapper'/>
                 <div className='navigation-buttons-wrapper'>
-                    <Button>Button!</Button>
-                    <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/join");}}>Join Session</MdOutlinedButtonComponent>
-                    <MdFilledButtonComponent className='navigation-button' onClick={() => {navigate("/register");}}>Sign Up</MdFilledButtonComponent>
-                    <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/login");}}>Login</MdOutlinedButtonComponent>
+                    <Button className={'m-3'} variant={'secondary'} onClick={() => {navigate("/join");}}>Join Session</Button>
+                    <Button className={'m-3'} onClick={() => {navigate("/register");}}>Sign Up</Button>
+                    <Button className={'m-3'} variant={'secondary'} onClick={() => {navigate("/login");}}>Login</Button>
                 </div>
             </div>
             <div className='body-block-1'>
