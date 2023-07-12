@@ -5,6 +5,7 @@ import {createComponent} from '@lit-labs/react';
 import { MdFilledButton } from '@material/web/button/filled-button.js';
 import { MdOutlinedButton } from '@material/web/button/outlined-button';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
+import { Button } from "@/components/ui/button"
 import SessionMockup from '../../assets/images/session-mock-up.png'
 import HowItWorksCard from './HowItWorksCard';
 
@@ -29,6 +30,7 @@ function Welcome() {
             <div className='navigation-header'>
                 <LogoIcon className='logo-wrapper'/>
                 <div className='navigation-buttons-wrapper'>
+                    <Button>Button!</Button>
                     <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/join");}}>Join Session</MdOutlinedButtonComponent>
                     <MdFilledButtonComponent className='navigation-button' onClick={() => {navigate("/register");}}>Sign Up</MdFilledButtonComponent>
                     <MdOutlinedButtonComponent className='navigation-button' onClick={() => {navigate("/login");}}>Login</MdOutlinedButtonComponent>
