@@ -1,5 +1,5 @@
 import JoinQRCode from '../../assets/images/join-qr-code.png'
-import './JoinLink.css'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 interface JoinLinkProps {
     sessionID: number,
@@ -8,13 +8,18 @@ interface JoinLinkProps {
 }
 function JoinLink({ sessionID, numberOfVoters, maximumVoters}: JoinLinkProps) {
     return (
-        <div className='join-link'>
-            <div className='number-of-voters'>{numberOfVoters}/{maximumVoters} Voters</div>
-            <div>Scan to join!</div>
-            <div>Free, no account required</div>
-            <img className='qr-code' src={JoinQRCode} alt='QR code link to fazool.party' />
-            <div>fazool.party/join</div>
-            <div className='session-id'>Session {sessionID}</div>
+        <div className='flex flex-col items-center justify-around h-full'>
+            <div className='flex flex-col items-center w-full mt-4'>
+                <p className='font-medium text-2xl'>{numberOfVoters}/{maximumVoters} Voters</p>
+                <p className='text-muted-foreground '>Session {sessionID}</p>
+            </div>
+            <div className='flex flex-col w-1/2 mb-4'>
+                    <AspectRatio ratio={1}>
+                        <img className='rounded-lg h-full w-auto' src={JoinQRCode} alt='QR code link to fazool.party' />
+                    </AspectRatio>
+                <p className='text-xl mt-1'>fazool.us/join</p>
+                <p className='text-muted-foreground'>Free, no account required</p>
+            </div>
         </div>
     );
 }
