@@ -44,10 +44,10 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
     }
 
   return (
-    <div className={'flex justify-between items-center mx-4 mb-4 w-5/6 font-bold'}>
-        <div className={'mx-3'}>{toMinutesAndSeconds(songProgressAdjusted)}</div>
+    <div className={'flex justify-between items-center mb-4 w-5/6 font-bold'}>
+        <div className={'mr-4'}>{toMinutesAndSeconds(songProgressAdjusted)}</div>
         <Progress value={songProgressAdjusted/songDuration*100}/>
-        <div className={'mx-3'}>{toMinutesAndSeconds(songDuration)}</div>
+        <div className={'ml-4'}>{toMinutesAndSeconds(songDuration)}</div>
     </div>
   )
 }
