@@ -1,6 +1,5 @@
 import Song from './CurrentlyPlayingSong';
 import MediaButtons from './MediaButtons'
-import './MusicPlayer.css'
 import { CurrentlyPlayingSong } from '../../gql/graphql';
 import ProgressBar from './ProgressBar';
 
@@ -19,7 +18,7 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
     }
 
     return (
-        <div className="music-player" >
+        <div className="flex flex-col justify-between items-center h-full" >
             <Song song={currentlyPlaying.simpleSong} />
             <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.isPlaying} sessionID={sessionID}/>
             <ProgressBar isPlaying={currentlyPlaying.isPlaying} songProgress={currentlyPlaying.songProgressSeconds} songDuration={currentlyPlaying.songDurationSeconds}/>
