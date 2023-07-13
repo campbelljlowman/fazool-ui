@@ -5,11 +5,11 @@ import './Session.css'
 import SearchBox from './search-box/SearchBox'
 import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { graphql } from '../gql'
 import { Voter, VoterType } from '../gql/graphql'
 import PlaylistPopulate from './playlist-populate/PlaylistPopulate'
-
+import { Separator } from '@/components/ui/separator'
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
     subscription subscribeSessionState($sessionID: Int!){
@@ -194,10 +194,14 @@ function Session() {
         <div className='session'>
             <div className='music-player-container'>
                 <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
+                <Separator className='w-full'/>
             </div>
-            <div className='queue-container'>
-                {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
-                <SearchBox sessionID={sessionID} />
+            <div className='queue-container flex'>
+                <Separator orientation='vertical' className='h-full'/>
+                <div className='w-full'>
+                    {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
+                    <SearchBox sessionID={sessionID} />
+                </div>
             </div>
             <div className='join-link-container'>
                 <JoinLink sessionID={sessionID} numberOfVoters={getSessionStateQueryData.sessionState.numberOfVoters} maximumVoters={getSessionConfigQueryData?.sessionConfig.maximumVoters}></JoinLink>
