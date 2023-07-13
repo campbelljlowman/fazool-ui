@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './ProgressBar.css'
+import { Progress } from '@/components/ui/progress'
 
 interface ProgressBarProps {
     isPlaying:      boolean,
@@ -44,12 +44,10 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
     }
 
   return (
-    <div className='progress-bar'>
-        <div>{toMinutesAndSeconds(songProgressAdjusted)}</div>
-        <div className='duration-fill'>
-            <div className='progress-fill' style={{width: songProgressAdjusted/songDuration*100+"%"}}></div>
-        </div>
-        <div>{toMinutesAndSeconds(songDuration)}</div>
+    <div className={'flex justify-between items-center mx-4 mb-4 w-5/6 font-bold'}>
+        <div className={'mx-3'}>{toMinutesAndSeconds(songProgressAdjusted)}</div>
+        <Progress value={songProgressAdjusted/songDuration*100}/>
+        <div className={'mx-3'}>{toMinutesAndSeconds(songDuration)}</div>
     </div>
   )
 }
