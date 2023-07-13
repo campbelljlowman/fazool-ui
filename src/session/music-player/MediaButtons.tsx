@@ -1,11 +1,8 @@
 import { graphql } from '../../gql';
 import { useMutation, } from '@apollo/client';
 import { QueueAction } from '../../gql/graphql';
-import './MediaButtons.css'
-import { ReactComponent as PauseIcon }  from '../../assets/vectors/pause-icon.svg'
-import { ReactComponent as PlayIcon }  from '../../assets/vectors/play-icon.svg'
-import { ReactComponent as SkipIcon }  from '../../assets/vectors/skip-icon.svg'
-import { ReactComponent as SettingsIcon }  from '../../assets/vectors/settings-icon.svg'
+import { Settings, Play, Pause, SkipForward } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 
 const UPDATE_CURRENTLY_PLAYING = graphql(`
@@ -32,15 +29,19 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
     const [endSessionMutation, { error: endSessionMutationError }] = useMutation(END_SESSION)
 
     const play = () => {
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Play } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Play } });
     };
 
     const pause = () => {
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Pause } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Pause } });
     };
 
     const advance = () => {
-        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Advance } })
+        updateCurrentlyPlayingMutation({ variables: { sessionID: sessionID, action: QueueAction.Advance } });
+    }
+
+    const endSession = () => {
+        endSessionMutation({ variables: {sessionID: sessionID } });
     }
 
     if (!showMediaButtons) {
@@ -58,20 +59,20 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
     const playPause = (playing: boolean) => {
         if (playing) {
             return (
-                <button className="transparent-button svg-wrapper" onClick={pause}><PauseIcon/></button>
+                <Button onClick={pause} variant={'ghost'} size={'icon'}><Pause className="h-8 w-8"/></Button>
                 )
         } else {
             return (
-                <button className="transparent-button svg-wrapper" onClick={play}><PlayIcon/></button>
+                <Button onClick={play} variant={'ghost'} size={'icon'}><Play className="h-8 w-8"/></Button>
             )
         }
     }
 
     return (
-        <div className="media-buttons">
-            <button className='transparent-button svg-wrapper' onClick={() => {endSessionMutation({ variables: {sessionID: sessionID}})}}><SettingsIcon/></button>
+        <div className="">
+            <Button onClick={endSession} variant={'ghost'} size={'icon'}><Settings className="h-8 w-8"/></Button>
             {playPause(currentlyPlaying)}
-            <button className="transparent-button svg-wrapper" onClick={advance}><SkipIcon/></button>
+            <Button onClick={advance} variant={'ghost'} size={'icon'}><SkipForward className="h-8 w-8"/></Button>
         </div>
     )
 }

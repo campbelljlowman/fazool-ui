@@ -1,8 +1,0 @@
-.media-buttons {
-    display: flex;
-    gap: 7.5%;
-    justify-content: center;
-    min-height: 25px;
-    max-height: 7.5%;
-    margin: 1rem;
-}
