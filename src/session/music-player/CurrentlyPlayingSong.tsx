@@ -1,5 +1,5 @@
 import { SimpleSong } from '../../gql/graphql'
-import './CurrentlyPlayingSong.css'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 interface CurrentlyPlayingSongProps {
     song: SimpleSong
@@ -10,10 +10,12 @@ function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
     }
 
     return (
-        <div className="currently-playing-song">
-            <img className="currently-playing-album-cover" src={song.image} alt="Album Cover"  />
-            <div className="currently-playing-song-title">{song.title}</div>
-            <div className="currently-playing-song-artist">{song.artist}</div>
+        <div className='flex flex-col w-1/2 mt-6 p-2'>
+            <AspectRatio ratio={1}>
+                <img className='rounded' src={song.image} alt='Album Cover'  />
+            </AspectRatio>
+            <h3 className='font-medium w-full truncate mt-1' >{song.title}</h3>
+            <p className='text-xs text-muted-foreground w-full truncate'>{song.artist}</p>
         </div>
     );
 }

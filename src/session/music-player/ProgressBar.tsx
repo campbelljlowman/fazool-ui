@@ -28,9 +28,9 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
 
     const getExtra0= (totalSeconds: number) => {
         if (totalSeconds % 60 < 10) {
-            return "0"
+            return '0'
         } else {
-            return ""
+            return ''
         }
     }
 
@@ -44,10 +44,10 @@ function ProgressBar({ isPlaying, songProgress, songDuration}: ProgressBarProps)
     }
 
   return (
-    <div className={'flex justify-between items-center mb-4 w-5/6 font-bold'}>
-        <p className={'mr-4'}>{toMinutesAndSeconds(songProgressAdjusted)}</p>
+    <div className='flex justify-between items-center mb-4 w-5/6 font-bold'>
+        <p className='mr-4'>{toMinutesAndSeconds(songProgressAdjusted)}</p>
         <Progress value={songProgressAdjusted/songDuration*100}/>
-        <p className={'ml-4'}>{toMinutesAndSeconds(songDuration)}</p>
+        <p className='ml-4'>{toMinutesAndSeconds(songDuration)}</p>
     </div>
   )
 }

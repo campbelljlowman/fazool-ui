@@ -18,10 +18,12 @@ function MusicPlayer({ sessionID, currentlyPlaying, showMediaButtons }: MusicPla
     }
 
     return (
-        <div className="flex flex-col justify-between items-center h-full" >
+        <div className='flex flex-col justify-between items-center h-full' >
             <Song song={currentlyPlaying.simpleSong} />
-            <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.isPlaying} sessionID={sessionID}/>
-            <ProgressBar isPlaying={currentlyPlaying.isPlaying} songProgress={currentlyPlaying.songProgressSeconds} songDuration={currentlyPlaying.songDurationSeconds}/>
+            <div className='flex flex-col w-full items-center gap-1'>
+                <MediaButtons showMediaButtons={showMediaButtons} currentlyPlaying={currentlyPlaying.isPlaying} sessionID={sessionID}/>
+                <ProgressBar isPlaying={currentlyPlaying.isPlaying} songProgress={currentlyPlaying.songProgressSeconds} songDuration={currentlyPlaying.songDurationSeconds}/>
+            </div>
         </div>
     );
 }
