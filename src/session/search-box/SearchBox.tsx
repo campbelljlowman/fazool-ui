@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import SearchResults from './SearchResults';
 import { useLazyQuery } from '@apollo/client';
-import './SearchBox.css';
 import { graphql } from '../../gql';
-import { ReactComponent as SearchIcon }  from '../../assets/vectors/search-icon.svg'
+import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search } from 'lucide-react';
+
 
 const MUSIC_SEARCH  = graphql(`
     query musicSearch ($sessionID: Int!, $query: String!){
@@ -62,11 +65,14 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     }
 
     return (
-        <div className='search-box-wrapper'>
-            <form className='search-box'>
-                <input className='search-box-input' type="text" placeholder="Song" value={searchQuery} onChange={handleChange} />
-                <button className="transparent-button search-icon svg-wrapper" onClick={searchForSong}><SearchIcon/></button>
-            </form>
+        <div className='flex items-center justify-between w-full'>
+            <div className='w-full flex justify-center'>
+                <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
+                    <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
+                    <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
+                </form>
+            </div>
+            <LogoIcon className='w-48 mx-6'/>
             {displaySearchResults()}
         </div>
     );
