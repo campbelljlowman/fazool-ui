@@ -10,7 +10,7 @@ function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
     }
 
     return (
-        <div className='flex flex-col w-1/2 mt-6'>
+        <div className='flex flex-col w-1/2'>
             <AspectRatio ratio={1}>
                 <img className='rounded' src={song.image} alt='Album Cover'  />
             </AspectRatio>

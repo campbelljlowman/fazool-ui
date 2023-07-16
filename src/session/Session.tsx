@@ -174,15 +174,9 @@ function Session() {
 
     const QueueOrPlaylistPopulate = (queueIsEmpty: boolean, isAdmin: boolean) => {
         if (queueIsEmpty) {
-            if (isAdmin) {
-                return (
-                    <PlaylistPopulate sessionID={sessionID}/>
-                )
-            } else {
-                return (
-                    <div className='empty-queue-message'>Looks like the queue is empty. Add songs with the search bar</div>
-                )
-            }
+            return (
+                <PlaylistPopulate sessionID={sessionID} isAdmin={isAdmin}/>
+            )
         } else {
             return (
                 <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
@@ -198,7 +192,7 @@ function Session() {
             </div>
             <div className='queue-container flex'>
                 <Separator orientation='vertical' className='h-full'/>
-                <div className='w-full'>
+                <div className='w-full h-full'>
                     {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
                     <SearchBox sessionID={sessionID} />
                 </div>
