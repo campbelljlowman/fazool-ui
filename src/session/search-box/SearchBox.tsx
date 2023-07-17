@@ -6,6 +6,7 @@ import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 
 const MUSIC_SEARCH  = graphql(`
@@ -65,15 +66,18 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     }
 
     return (
-        <div className='flex items-center justify-between w-full'>
-            <div className='w-full flex justify-center'>
-                <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
-                    <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
-                    <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
-                </form>
+        <div>
+            <Separator className='w-full'/>
+            <div className='flex items-center justify-between w-full'>
+                <div className='w-full flex justify-center'>
+                    <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
+                        <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
+                        <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
+                    </form>
+                </div>
+                <LogoIcon className='w-48 mx-6'/>
+                {displaySearchResults()}
             </div>
-            <LogoIcon className='w-48 mx-6'/>
-            {displaySearchResults()}
         </div>
     );
 }

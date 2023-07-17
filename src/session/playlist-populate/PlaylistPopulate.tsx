@@ -55,7 +55,7 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
     }
 
     return (
-        <div className='playlist-results'>
+        <div className='grid grid-cols-4 h-[92vh] overflow-auto'>
             {playlistSearchQueryData!.playlists!.map(playlist => (
                 <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
             ))}
