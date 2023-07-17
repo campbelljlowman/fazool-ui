@@ -1,12 +1,22 @@
 import { SimpleSong } from '../../gql/graphql'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface CurrentlyPlayingSongProps {
     song: SimpleSong
 }
 function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
-    if (!song) {
-        return null;
+    if (!song.artist && !song.image && !song.title) {
+        return (
+            <Alert className='w-5/6'>
+                <AlertTitle>
+                    <p>No song is playing!</p>
+                </AlertTitle>
+                <AlertDescription>
+                    <p>Start playing some music using your streaming service</p>
+                </AlertDescription>
+            </Alert>
+        )
     }
 
     return (

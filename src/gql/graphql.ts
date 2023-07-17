@@ -192,7 +192,7 @@ export type SessionConfig = {
 
 export type SessionState = {
   __typename?: 'SessionState';
-  currentlyPlaying?: Maybe<CurrentlyPlayingSong>;
+  currentlyPlaying: CurrentlyPlayingSong;
   numberOfVoters: Scalars['Int'];
   queue?: Maybe<Array<QueuedSong>>;
 };
@@ -264,14 +264,14 @@ export type SubscribeSessionStateSubscriptionVariables = Exact<{
 }>;
 
 
-export type SubscribeSessionStateSubscription = { __typename?: 'Subscription', subscribeSessionState: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying?: { __typename?: 'CurrentlyPlayingSong', isPlaying: boolean, songProgressSeconds: number, songDurationSeconds: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } } | null, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } };
+export type SubscribeSessionStateSubscription = { __typename?: 'Subscription', subscribeSessionState: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying: { __typename?: 'CurrentlyPlayingSong', isPlaying: boolean, songProgressSeconds: number, songDurationSeconds: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } };
 
 export type GetSessionStateQueryVariables = Exact<{
   sessionID: Scalars['Int'];
 }>;
 
 
-export type GetSessionStateQuery = { __typename?: 'Query', sessionState: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying?: { __typename?: 'CurrentlyPlayingSong', isPlaying: boolean, songProgressSeconds: number, songDurationSeconds: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } } | null, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } };
+export type GetSessionStateQuery = { __typename?: 'Query', sessionState: { __typename?: 'SessionState', numberOfVoters: number, currentlyPlaying: { __typename?: 'CurrentlyPlayingSong', isPlaying: boolean, songProgressSeconds: number, songDurationSeconds: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }, queue?: Array<{ __typename?: 'QueuedSong', votes: number, simpleSong: { __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string } }> | null } };
 
 export type GetSessionConfigQueryVariables = Exact<{
   sessionID: Scalars['Int'];
