@@ -4,6 +4,7 @@ import { graphql } from '../../gql';
 import PlaylistItem from './PlaylistItem';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const PLAYLIST_SEARCH  = graphql(`
     query playlists ($sessionID: Int!){
@@ -55,11 +56,13 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
     }
 
     return (
-        <div className='grid grid-cols-4 h-[92vh] overflow-auto'>
-            {playlistSearchQueryData!.playlists!.map(playlist => (
-                <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
-            ))}
-        </div>
+        <ScrollArea className='h-[92vh]'>
+            <div className='grid grid-cols-4 overflow-auto'>
+                {playlistSearchQueryData!.playlists!.map(playlist => (
+                    <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
+                ))}
+            </div>
+        </ScrollArea>
     )
 }
 

@@ -1,5 +1,6 @@
 import QueueItem from './QueueItem'
 import { SessionState, Voter, VoterType } from '../../gql/graphql'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface QueueProps {
     sessionID:      number,
@@ -49,13 +50,13 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
 
 
     return (
-        <div className='h-[92vh]'>
+        <ScrollArea className='h-[92vh]'>
             <div className='grid grid-cols-6 overflow-auto max-h-full'>
                 {sessionState.queue.map(queuedSong => (
                     <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
                 ))}
             </div>
-        </div>
+        </ScrollArea>
     );
 }
 
