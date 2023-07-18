@@ -1,23 +1,27 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useLazyQuery } from '@apollo/client';
 import { graphql } from '../../gql'
-import './Join.css'
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
-import {createComponent} from '@lit-labs/react';
-import { MdFilledButton } from '@material/web/button/filled-button.js';
-
-const MdFilledButtonComponent = createComponent({
-    tagName: 'md-filled-button',
-    elementClass: MdFilledButton,
-    react: React,
-});
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 const GET_VOTER_TOKEN = graphql(`
     query getVoterToken {
         voterToken
     }
 `);
+
+const formSchema = z.object({
+    sessionID: z.string().length(6, {
+        message: "Session ID must be 6 numbers"
+    }),
+})
 
 function Join() {
     const navigate = useNavigate();
@@ -30,35 +34,44 @@ function Join() {
         },
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSessionID(e.target.value);
-    }
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            sessionID: '',
+        },
+    })
 
-    const joinSession = (e: React.MouseEvent<MdFilledButton>) => {
-        e.preventDefault();
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        setSessionID(values.sessionID);
         getVoterTokenQuery();
-        
     }
 
     if (getVoterTokenQueryError) console.log(`Error joining voters: ${getVoterTokenQueryError.message}`)
 
     return (
-        <div className='join-page'>
-                <LogoIcon className='logo-wrapper-main'/>
-                <div className='join-forms-card'> 
-                    <h1 className='display-small'>Join Session</h1>
-
-                    <input className='input-field' type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
-                    <MdFilledButtonComponent className='navigation-button' onClick={joinSession}>Join</MdFilledButtonComponent>   
-                </div>
+        <div className='flex flex-col justify-center items-center h-5/6'>
+            <LogoIcon className='h-24 m-4'/>
+            <Card className='w-1/4 p-4'>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center'>
+                        <FormField
+                            control={form.control}
+                            name='sessionID'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Session ID</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Session ID' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit' className='mt-3'>Join</Button>
+                    </form>
+                </Form>
+            </Card>
         </div>
-        // <>
-        //     <div>Join Session!</div>
-        //     <form>
-        //         <input type="text" placeholder="Session ID" value={sessionID} onChange={handleChange} />
-        //         <button className="transparent-button" onClick={joinSession}>Join</button>
-        //     </form>
-        // </>
     )
 }
 
