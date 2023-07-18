@@ -1,10 +1,11 @@
-import './QueueItem.css'
 import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
-import { ReactComponent as UpvoteIcon }  from '../../assets/vectors/upvote-icon.svg'
-import { ReactComponent as DownvoteIcon }  from '../../assets/vectors/downvote-icon.svg'
-
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { ChevronDownCircle, ChevronUpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const UPDATE_QUEUE = graphql(`
     mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
@@ -49,9 +50,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const upvote = () => {
         if (upVotedFor) {
-            return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><UpvoteIcon style={{color: 'orange'}} /></button>
+            return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Remove)}><ChevronUpCircle className='h-6 w-6 text-orange-400 stroke-orange-400'/></Button>
         } else {
-            return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><UpvoteIcon/></button>
+            return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><ChevronUpCircle className='h-6 w-6'/></Button>
         }
     };
 
@@ -59,9 +60,9 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
         // TODO: This needs separate increment and decrement functions
         if (showDecrement) {
             if (downVotedFor) {
-                return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><DownvoteIcon style={{color: 'blue'}}/></button>
+                return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
             } else {
-                return <button className="transparent-button svg-wrapper" onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><DownvoteIcon/></button>
+                return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
             }
         } else {
             return null
@@ -69,16 +70,20 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
     };
 
     return (
-        <div className="queue-item">
-            <img className="queue-item-album-cover" src={queuedSong.simpleSong.image} alt="Album Cover"  />
-            <div className="queue-item-song-title">{queuedSong.simpleSong.title}</div>
-            <div className="queue-item-song-artist">{queuedSong.simpleSong.artist}</div>
-            <div className='votes'>{queuedSong.votes}</div>
-            <div className="vote-buttons">
-                {downVote()}
-                {upvote()}
-            </div>
-        </div>
+        <Card className='relative w-5/6 m-4'>
+            <CardContent className='p-4 pb-0'>
+                <AspectRatio>
+                    <img className="h-auto w-full" src={queuedSong.simpleSong.image} alt="Album Cover"  />
+                </AspectRatio>
+                <p className="font-medium truncate w-full">{queuedSong.simpleSong.title}</p>
+                <p className="text-xs text-muted-foreground truncate w-full mb-1">{queuedSong.simpleSong.artist}</p>
+                <Badge className='absolute top-3 right-3'>{queuedSong.votes}</Badge>
+            </CardContent>
+            <CardFooter className="flex justify-around p-2 pt-0">
+                    {downVote()}
+                    {upvote()}
+            </CardFooter>
+        </Card>
     );
 }
 

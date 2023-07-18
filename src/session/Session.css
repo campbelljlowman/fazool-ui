@@ -7,7 +7,6 @@
     grid-template-areas: 
     "music-player queue"
     "join-link queue";
-    background-color: var(--md-sys-color-background);
 }
 
 .music-player-container {
@@ -38,12 +37,4 @@
     .join-link-container {
         display: none;
     }
-}
-
-.empty-queue-message {
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
 }
