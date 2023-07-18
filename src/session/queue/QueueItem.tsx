@@ -1,4 +1,3 @@
-import Song from '../song/Song'
 import './QueueItem.css'
 import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'

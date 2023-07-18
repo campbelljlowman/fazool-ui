@@ -1,11 +1,12 @@
-import Song from '../song/Song';
-import './SearchResult.css';
+import SearchResultSong from './SearchResultSong';
 import { useMutation } from '@apollo/client';
 import { useParams } from "react-router-dom";
 import { graphql } from '../../gql';
 import { SimpleSong, SongUpdate, SongVoteAction, SongVoteDirection } from '../../gql/graphql';
-import { ReactComponent as PlusIcon }  from '../../assets/vectors/plus-icon.svg'
-
+import { Card, CardContent, CardTitle, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { PlusCircle, XCircle } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const UPDATE_QUEUE = graphql(`
     mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
@@ -52,16 +53,27 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
     }
 
     return (
-        <div className="search-results">
-            {searchResults.map(song => (
-                <div className="search-result-item" key={song.id}>
-                    <div className='search-result-item-song'>
-                        <Song song={song}/>
+        <Card className='absolute bottom-[10vh] left-1/3 w-1/3'>
+            <CardHeader className='pb-2'>
+                <CardTitle className='flex justify-between items-center'>
+                    <p>Search Results</p>
+                    <Button variant={'ghost'} onClick={clearSearchResults}><XCircle className='h-6 w-6'/></Button>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+            {searchResults.slice(0).map(song => (
+                <>
+                    <Separator/>
+                    <div className="flex items-center justify-between w-full py-2" key={song.id}>
+                        <div className='w-3/4'>
+                            <SearchResultSong song={song}/>
+                        </div>
+                        <Button variant={"ghost"} onClick={() => addSongToQueue(song)}><PlusCircle className='h-6 w-6'/></Button>
                     </div>
-                    <button className="transparent-button svg-wrapper" onClick={() => addSongToQueue(song)}><PlusIcon/></button>
-                </div>
+                </>
             ))}
-        </div>
+            </CardContent>
+        </Card>
     );
 }
 
