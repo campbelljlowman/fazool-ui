@@ -1,5 +1,4 @@
 import QueueItem from './QueueItem'
-import './Queue.css'
 import { SessionState, Voter, VoterType } from '../../gql/graphql'
 
 interface QueueProps {
@@ -50,10 +49,12 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
 
 
     return (
-        <div className='queue'>
-            {sessionState.queue.map(queuedSong => (
-                <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
-            ))}
+        <div className='h-[92vh]'>
+            <div className='grid grid-cols-6 overflow-auto max-h-full'>
+                {sessionState.queue.map(queuedSong => (
+                    <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
+                ))}
+            </div>
         </div>
     );
 }
