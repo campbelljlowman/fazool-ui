@@ -1,19 +1,17 @@
-import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
 import { AccountLogin } from '../../gql/graphql';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import './Login.css'
-import React from 'react';
-import {createComponent} from '@lit-labs/react';
-import { MdFilledButton } from '@material/web/button/filled-button.js';
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
-const MdFilledButtonComponent = createComponent({
-    tagName: 'md-filled-button',
-    elementClass: MdFilledButton,
-    react: React,
-});
 
 const LOGIN = graphql(`
     mutation login ($accountLogin: AccountLogin!) {
@@ -21,9 +19,12 @@ const LOGIN = graphql(`
     }
 `);
 
+const formSchema = z.object({
+    email: z.string().email(),
+    password: z.string()
+})
+
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
@@ -33,19 +34,18 @@ function Login() {
         }
     });
 
-    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    }
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: '',
+            password: ''
+        },
+    })
 
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
-
-    const login = (event: React.MouseEvent<MdFilledButton>) => {
-        event.preventDefault();
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
         const accountLogin: AccountLogin = {
-            "email": email,
-            "password": password
+            "email": values.email,
+            "password": values.password
         };
 
         loginMutation({ variables: { accountLogin: accountLogin } });
@@ -55,15 +55,41 @@ function Login() {
     if (loginMutationError) console.log(`Error! ${loginMutationError.message}`)
 
     return (
-        <div className='login-page'>
-                <LogoIcon className='logo-wrapper-main'/>
-                <div className='login-forms-card'> 
-                    <h1 className='display-small'>Log In</h1>
-
-                    <input className='input-field' type="text" placeholder="Email" value={email} onChange={handleEmail} />
-                    <input className='input-field' type="password" placeholder="Password" value={password} onChange={handlePassword} />
-                    <MdFilledButtonComponent className='navigation-button' onClick={login}>Log In</MdFilledButtonComponent>   
-                </div>
+        <div className='flex flex-col justify-center items-center h-5/6'>
+            <LogoIcon className='h-24 m-4'/>
+            <Card className='w-1/4 p-4'>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-2'>
+                        <FormField
+                            control={form.control}
+                            name='email'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Email' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='password'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Password' type='password' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit' className='mt-3'>Login</Button>
+                    </form>
+                </Form>
+            </Card>
         </div>
     )
 }
