@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
 import { AccountLogin } from '../../gql/graphql';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
-import './Login.css'
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from 'react-hook-form';
