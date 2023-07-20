@@ -1,18 +1,12 @@
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import { graphql } from '../../gql';
-import './Home.css'
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
-import React from 'react';
-import {createComponent} from '@lit-labs/react';
-import { MdFilledButton } from '@material/web/button/filled-button.js';
 import { StreamingService } from '../../gql/graphql';
+import { Separator } from '@/components/ui/separator';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-const MdFilledButtonComponent = createComponent({
-    tagName: 'md-filled-button',
-    elementClass: MdFilledButton,
-    react: React,
-});
 
 const GET_ACCOUNT = graphql(`
     query getAccount {
@@ -78,8 +72,7 @@ function Home() {
         createSessionMutation();
     }
 
-    const launchSession = (e: React.MouseEvent<MdFilledButton>) => {
-        e.preventDefault();
+    const launchSession = () => {
         getVoterTokenQuery();
     }
 
@@ -93,59 +86,59 @@ function Home() {
         isStreamingServiceRegistered: boolean
     }
     function StreamingServiceInfo({isStreamingServiceRegistered}: StreamingServiceInfoProps) {
-        if (isStreamingServiceRegistered) {
-            return (
-                <>
-                    <div className='headline-small'>Spotify</div>
-                    <MdFilledButtonComponent href={spotifyLoginURL} onClick={createSession}>Change</MdFilledButtonComponent>  
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <div className='headline-small'>None</div>
-                    <MdFilledButtonComponent href={spotifyLoginURL} onClick={createSession}>Link</MdFilledButtonComponent>  
-                </>
-            )
-        }
+        return (
+            <Card className='flex flex-col justify-between items-center m-4 w-2/5 text-center'>
+                <CardHeader>
+                    <CardTitle className='text-3xl'>Streaming Service</CardTitle>
+                </CardHeader>
+                <CardContent className='text-xl'>
+                    {isStreamingServiceRegistered && <p>Spotify</p>}
+                    {!isStreamingServiceRegistered && <p>None</p>}
+                </CardContent>
+                <CardFooter>
+                    <a href={spotifyLoginURL}>
+                        {isStreamingServiceRegistered && <Button>Change</Button>}
+                        {!isStreamingServiceRegistered && <Button>Link</Button>}
+                    </a>
+                </CardFooter>
+            </Card>
+        )
     }
 
     interface SessionInfoProps {
         hasActiveSession: boolean
     }
     function SessionInfo({ hasActiveSession}: SessionInfoProps ) {
-        if (hasActiveSession) {
-            return (
-                <>
-                    <div className='headline-small'>Current session: {getAccountQueryData!.account.activeSession}</div>
-                    <MdFilledButtonComponent onClick={launchSession}>Launch Session</MdFilledButtonComponent>   
-                </>
-            )
-        } else {
-            return (
-                <>
-                    <div className='headline-small'>No current active session</div>
-                    <MdFilledButtonComponent onClick={createSession}>Start</MdFilledButtonComponent>   
-                </>
-            )
-
-        }
+        return (
+            <Card className='flex flex-col justify-between items-center m-4 w-2/5 text-center'>
+                <CardHeader>
+                    <CardTitle className='text-3xl'>Session</CardTitle>
+                </CardHeader>
+                <CardContent className='text-xl'>
+                    {hasActiveSession && <p>Current session: {getAccountQueryData!.account.activeSession}</p>}
+                    {!hasActiveSession && <p>No current active session</p>}
+                </CardContent>
+                <CardFooter>
+                    {hasActiveSession && <Button onClick={launchSession}>Launch Session</Button>}
+                    {!hasActiveSession && <Button onClick={createSession}>Start Session</Button>}
+                </CardFooter>
+            </Card>
+        )
     }
 
     return (
-        <div className='home-page'>
-            <LogoIcon className='logo-wrapper'/>
-            <div className='home-page-body-1'>
-                <div className='display-medium'>Welcome {getAccountQueryData.account.firstName}</div>
-                <div className='account-info'>
-                    <div className='account-info-card'>
-                        <h1 className='headline-large'>Session</h1>
-                        <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
-                    </div>
-                    <div className='account-info-card'>
-                        <h1 className='headline-large'>Streaming Service</h1>
-                        <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
-                    </div>
+        <div className='h-full'>
+            <div>
+                <div className='flex justify-start w-full'>
+                    <LogoIcon className='w-48 my-2 mx-4'/>
+                </div>
+                <Separator/>
+            </div>
+            <div className='flex justify-around items-center m-4'>
+                <div className='text-4xl font-bold'>Welcome {getAccountQueryData.account.firstName}</div>
+                <div className='flex'>
+                    <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
+                    <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
                 </div>
             </div>
         </div>
