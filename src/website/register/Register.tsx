@@ -1,18 +1,15 @@
-import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { graphql } from '../../gql';
-import './Register.css'
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
-import React from 'react';
-import {createComponent} from '@lit-labs/react';
-import { MdFilledButton } from '@material/web/button/filled-button.js';
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
-const MdFilledButtonComponent = createComponent({
-    tagName: 'md-filled-button',
-    elementClass: MdFilledButton,
-    react: React,
-});
 
 const CREATE_ACCOUNT = graphql(`
     mutation createAccount ($newAccount: NewAccount!) {
@@ -20,12 +17,14 @@ const CREATE_ACCOUNT = graphql(`
     }
 `);
 
-function Register() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+const formSchema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    email: z.string().email(),
+    password: z.string()
+})
 
+function Register() {
     const navigate = useNavigate();
 
     // TODO: Get errors variable here and check 
@@ -36,31 +35,22 @@ function Register() {
         }
     });
 
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: ''
+        },
+    })
 
-    const handleFirstName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
-    }
-
-    const handleLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-    }
-
-    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    }
-
-    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
-
-    const submitRegistration = (e: React.MouseEvent<MdFilledButton>) => {
-        e.preventDefault();
-
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
         const newAccount = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "email": email,
-            "password": password
+            "firstName": values.firstName,
+            "lastName": values.lastName,
+            "email": values.email,
+            "password": values.password
         };
 
         createAccountMutation({ variables: { newAccount: newAccount } });
@@ -71,41 +61,69 @@ function Register() {
 
 
     return (
-        <div className='register-page'>
-                <LogoIcon className='logo-wrapper-main'/>
-                <div className='register-forms-card'> 
-                    <h1 className='display-small'>Sign Up</h1>
-
-                    <input className='input-field' type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
-                    <input className='input-field' type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
-                    <input className='input-field' type="text" placeholder="Email" value={email} onChange={handleEmail} />
-                    <input className='input-field' type="password" placeholder="Password" value={password} onChange={handlePassword} />
-
-                    <MdFilledButtonComponent className='navigation-button' onClick={submitRegistration}>Sign Up</MdFilledButtonComponent>   
-                </div>
+        <div className='flex flex-col justify-center items-center h-5/6'>
+            <LogoIcon className='h-24 m-4'/>
+            <Card className='w-1/4 p-4'>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-4'>
+                        <h1 className='text-3xl font-semibold tracking-tight' >Register</h1>
+                        <FormField
+                            control={form.control}
+                            name='firstName'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>First Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='First Name' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='lastName'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Last Name' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='email'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Email' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='password'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Password' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button type='submit' className='mt-3'>Register</Button>
+                    </form>
+                </Form>
+            </Card>
         </div>
-        // <>
-        //     <div>Sign Up!</div>
-        //     <form>
-        //         <label>First name:<br />
-        //             <input type="text" placeholder="First Name" value={firstName} onChange={handleFirstName} />
-        //         </label><br />
-
-        //         <label>Last name:<br />
-        //             <input type="text" placeholder="Last Name" value={lastName} onChange={handleLastName} />
-        //         </label><br />
-
-        //         <label>Email:<br />
-        //             <input type="text" placeholder="Email" value={email} onChange={handleEmail} />
-        //         </label><br />
-
-        //         <label >Password:<br />
-        //             <input type="password" placeholder="Password" value={password} onChange={handlePassword} />
-        //         </label><br />
-
-        //         <button className="transparent-button" onClick={submitRegistration}>Submit</button>
-        //     </form>
-        // </>
     )
 }
 

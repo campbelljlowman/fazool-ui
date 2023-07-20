@@ -58,7 +58,8 @@ function Login() {
             <LogoIcon className='h-24 m-4'/>
             <Card className='w-1/4 p-4'>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-2'>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-4'>
+                        <h1 className='text-3xl font-semibold tracking-tight' >Login</h1>
                         <FormField
                             control={form.control}
                             name='email'

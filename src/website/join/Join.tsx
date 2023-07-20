@@ -54,6 +54,7 @@ function Join() {
             <Card className='w-1/4 p-4'>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center'>
+                        <h1 className='text-3xl font-semibold tracking-tight' >Join Session</h1>
                         <FormField
                             control={form.control}
                             name='sessionID'
