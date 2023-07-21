@@ -1,23 +1,25 @@
-import './HowItWorksCard.css'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { LucideIcon } from 'lucide-react'
+import React from 'react'
 
 interface HowItWorksCardProps {
     title: string,
-    description: string
-    icon: string
+    description: string,
+    icon: LucideIcon
 }
 function HowItWorksCard({title, description, icon}: HowItWorksCardProps) {
   return (
-    <div className="how-it-works-card">
-        <div className='how-it-works-card-inline'>
-            <div className="display-medium">
+    <Card className='w-2/5 m-5 p-2'>
+        <CardHeader>
+            <CardTitle className='flex justify-between'>
                 {title}
-            </div>
-            <span className="material-symbols-rounded" style={{fontSize: '48px'}}>{icon}</span>
-        </div>
-        <div className="body-large" style={{lineHeight: '1.5'}}>
+                {React.createElement(icon, {className: 'h-8 w-8'})}
+            </CardTitle>
+        </CardHeader>
+        <CardContent>
             {description}
-        </div>
-    </div>
+        </CardContent>
+    </Card>
   )
 }
 
