@@ -7,29 +7,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-*:not(path) {
-    color: var(--md-sys-color-on-surface);
-}
-
-.transparent-button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    color: var(--md-sys-color-on-surface);
-}
-
-/* This is for setting svg auto size correctly on safari*/
-.svg-wrapper {
-    height: 3vh;
-    width: 3vw;
-}
-
-@media (max-width: 700px) {
-    .svg-wrapper {
-        height: 3vh;
-        width: 5vw;
-    }
-}
 
 #root {
     height: 100vh;
