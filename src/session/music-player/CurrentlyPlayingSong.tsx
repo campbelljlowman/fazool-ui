@@ -8,7 +8,7 @@ interface CurrentlyPlayingSongProps {
 function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
     if (!song.artist && !song.image && !song.title) {
         return (
-            <Alert className='w-5/6'>
+            <Alert className='w-5/6 text-center'>
                 <AlertTitle>
                     <p>No song is playing!</p>
                 </AlertTitle>
