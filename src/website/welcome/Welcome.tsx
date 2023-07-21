@@ -10,7 +10,7 @@ function Welcome() {
     const navigate = useNavigate();
 
     return (
-        <div className='welcome-page'>
+        <div>
             <div>
                 <div className='flex justify-between items-center mx-4 my-2'>
                     <LogoIcon className='w-48'/>
