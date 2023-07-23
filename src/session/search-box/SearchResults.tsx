@@ -53,7 +53,7 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
     }
 
     return (
-        <Card className='absolute bottom-[10vh] left-1/3 w-1/3'>
+        <Card className='absolute bottom-[10vh] md:left-1/3 left-[10%] md:w-1/3 w-5/6'>
             <CardHeader className='pb-2'>
                 <CardTitle className='flex justify-between items-center'>
                     <p>Search Results</p>
