@@ -40,7 +40,7 @@ function PlaylistItem({ sessionID, playlist }: PlaylistItmeProps) {
                     <img src={playlist.image} alt='playlist cover' /> 
                 </AspectRatio>
             </CardContent>
-            <CardFooter className='flex justify-between items-center'>
+            <CardFooter className='flex md:flex-row flex-col justify-between items-center'>
                 <p>{playlist.name}</p>
                 <Button onClick={populatePlaylist}>Add</Button>
             </CardFooter>

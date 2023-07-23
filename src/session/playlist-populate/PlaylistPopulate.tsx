@@ -39,7 +39,7 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
     if(!playlistSearchQueryData || !playlistSearchQueryData.playlists) {
         return (
             <div className='flex flex-col justify-center items-center h-[92vh]'>
-                <Alert className='flex justify-between items-center w-1/2'>
+                <Alert className='flex flex-col md:flex-row justify-between items-center w-1/2'>
                     <div>
                         <AlertTitle>
                             Queue is empty!
@@ -49,7 +49,7 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
                             {!isAdmin && <p>Add songs to the queue with the search bar below</p>}
                         </AlertDescription>
                     </div>
-                    {isAdmin && <Button onClick={searchForPlaylists}>Search Playlists</Button>}
+                    {isAdmin && <Button onClick={searchForPlaylists} className='m-2'>Search Playlists</Button>}
                 </Alert>
             </div>
         )
@@ -57,7 +57,7 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
 
     return (
         <ScrollArea className='h-[92vh]'>
-            <div className='grid grid-cols-4 overflow-auto'>
+            <div className='grid md:grid-cols-4 grid-cols-2 overflow-auto'>
                 {playlistSearchQueryData!.playlists!.map(playlist => (
                     <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
                 ))}

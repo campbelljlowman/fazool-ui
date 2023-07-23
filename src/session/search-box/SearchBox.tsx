@@ -66,16 +66,16 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     }
 
     return (
-        <div>
+        <div className='flex flex-col justify-around h-[8vh]'>
             <Separator className='w-full'/>
             <div className='flex items-center justify-between w-full'>
-                <div className='w-full flex justify-center'>
+                <div className='w-full flex justify-center ml-4'>
                     <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
                         <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
                         <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
                     </form>
                 </div>
-                <LogoIcon className='w-48 mx-6'/>
+                <LogoIcon className='w-48 mx-6 md:block hidden'/>
                 {displaySearchResults()}
             </div>
         </div>
