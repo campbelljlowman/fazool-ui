@@ -9,7 +9,7 @@ interface HowItWorksCardProps {
 }
 function HowItWorksCard({title, description, icon}: HowItWorksCardProps) {
   return (
-    <Card className='w-2/5 m-5 p-2'>
+    <Card className='md:w-2/5 m-5 p-2'>
         <CardHeader>
             <CardTitle className='flex justify-between'>
                 {title}

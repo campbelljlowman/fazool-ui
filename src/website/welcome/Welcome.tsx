@@ -12,9 +12,9 @@ function Welcome() {
     return (
         <div>
             <div>
-                <div className='flex justify-between items-center mx-4 my-2'>
+                <div className='flex justify-between items-center md:flex-row flex-col mx-4 my-2'>
                     <LogoIcon className='w-48'/>
-                    <div>
+                    <div className='flex flex-wrap justify-center'>
                         <Button className='m-3' variant={'secondary'} onClick={() => {navigate("/join");}}>Join Session</Button>
                         <Button className='m-3' onClick={() => {navigate("/register");}}>Sign Up</Button>
                         <Button className='m-3' variant={'secondary'} onClick={() => {navigate("/login");}}>Login</Button>
@@ -22,8 +22,8 @@ function Welcome() {
                 </div>
                 <Separator/>
             </div>
-            <div className='flex justify-around items-center mx-4 my-12'>
-                <div className='flex flex-col w-1/2 p-2'>
+            <div className='flex justify-around items-center md:flex-row flex-col mx-4 my-12'>
+                <div className='flex flex-col md:w-1/2 p-2'>
                     <h1 className='text-4xl font-extrabold p-2'>Democratized DJing</h1>
                     <p className='text-2xl font-semibold p-2'>Fazool allows a group of people to vote on which songs get played.</p>
                     <ul className='p-2'>
@@ -33,19 +33,19 @@ function Welcome() {
                         {/* <li className='title-medium' style={{listStylePosition: 'inside', lineHeight: '1.5'}}>No account required for voters</li> */}
                     </ul>
                 </div>
-                <div className='w-1/2 flex justify-center items-center'>
+                <div className='md:w-1/2 flex justify-center items-center'>
                         <img className='w-5/6' src={SessionMockup} alt='Mock up of a Fazool session'/>
                 </div>
             </div>
             <Separator/>
-            <div className='flex justify-around items-center mx-4 my-12'>
-                <h1 className='text-4xl font-extrabold p-4 w-1/3'>How does Fazool work?</h1>
-                <div className='w-2/3'>
-                    <div className='flex justify-around'>
+            <div className='flex justify-around items-center md:flex-row flex-col mx-4 my-12'>
+                <h1 className='text-4xl font-extrabold p-4 md:w-1/3 w-ful'>How does Fazool work?</h1>
+                <div className='md:w-2/3'>
+                    <div className='flex justify-around md:flex-row flex-col'>
                         <HowItWorksCard title='Connect' description='Connect Fazool to your favorite music streaming service. Currently supported ones include Spotify.' icon={Link}/>
                         <HowItWorksCard title='Host' description='Start a Fazool session and display it on a screen where everyone can see.' icon={MonitorPlay}/>
                     </div>
-                    <div className='flex justify-around'>
+                    <div className='flex justify-around md:flex-row flex-col'>
                         <HowItWorksCard title='Join' description='Anyone can join a Fazool session on their phone. Then they can view and vote for songs they want to hear.' icon={ScanLine}/>
                         <HowItWorksCard title='Listen' description='Fazool will make sure the most popular songs get played!' icon={Music}/>
                     </div>

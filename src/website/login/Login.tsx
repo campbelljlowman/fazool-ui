@@ -55,8 +55,8 @@ function Login() {
 
     return (
         <div className='flex flex-col justify-center items-center h-5/6'>
-            <LogoIcon className='h-24 m-4'/>
-            <Card className='w-1/4 p-4'>
+            <LogoIcon className='md:h-24 h-16 m-4'/>
+            <Card className='md:w-1/4 p-4'>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-4'>
                         <h1 className='text-3xl font-semibold tracking-tight' >Login</h1>

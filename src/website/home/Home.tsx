@@ -87,7 +87,7 @@ function Home() {
     }
     function StreamingServiceInfo({isStreamingServiceRegistered}: StreamingServiceInfoProps) {
         return (
-            <Card className='flex flex-col justify-between items-center m-4 w-2/5 text-center'>
+            <Card className='flex flex-col justify-between items-center m-4 md:w-2/5 text-center'>
                 <CardHeader>
                     <CardTitle className='text-3xl'>Streaming Service</CardTitle>
                 </CardHeader>
@@ -110,7 +110,7 @@ function Home() {
     }
     function SessionInfo({ hasActiveSession}: SessionInfoProps ) {
         return (
-            <Card className='flex flex-col justify-between items-center m-4 w-2/5 text-center'>
+            <Card className='flex flex-col justify-between items-center m-4 md:w-2/5 text-center'>
                 <CardHeader>
                     <CardTitle className='text-3xl'>Session</CardTitle>
                 </CardHeader>
@@ -134,9 +134,9 @@ function Home() {
                 </div>
                 <Separator/>
             </div>
-            <div className='flex justify-around items-center m-4'>
+            <div className='flex justify-around items-center md:flex-row flex-col m-4'>
                 <div className='text-4xl font-bold'>Welcome {getAccountQueryData.account.firstName}</div>
-                <div className='flex'>
+                <div className='flex md:flex-row flex-col items-center'>
                     <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
                     <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
                 </div>
