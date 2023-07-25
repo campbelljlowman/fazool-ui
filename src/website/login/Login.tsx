@@ -50,7 +50,6 @@ function Login() {
         loginMutation({ variables: { accountLogin: accountLogin } });
     }
 
-    // TODO: parse error message and don't replace form
     if (loginMutationError) console.log(`Error! ${loginMutationError.message}`)
 
     return (
@@ -86,6 +85,7 @@ function Login() {
                                 </FormItem>
                             )}
                         />
+                        {loginMutationError && <p className='text-destructive mt-2'>Invalid login credentials!</p>}
                         <Button type='submit' className='mt-3'>Login</Button>
                     </form>
                 </Form>
