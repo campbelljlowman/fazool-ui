@@ -70,7 +70,7 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
     };
 
     return (
-        <Card className='relative w-5/6 m-4'>
+        <Card className='relative w-5/6 m-4 first:border-primary'>
             <CardContent className='p-4 pb-0'>
                 <AspectRatio>
                     <img className="h-auto w-full" src={queuedSong.simpleSong.image} alt="Album Cover"  />
