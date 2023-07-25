@@ -1,6 +1,7 @@
 import { SimpleSong } from '../../gql/graphql'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 
 interface CurrentlyPlayingSongProps {
     song: SimpleSong
@@ -8,7 +9,8 @@ interface CurrentlyPlayingSongProps {
 function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
     if (!song.artist && !song.image && !song.title) {
         return (
-            <Alert className='w-5/6 text-center'>
+            <Alert className='w-5/6'>
+                <AlertCircle className='h-4 w-4'/>
                 <AlertTitle>
                     <p>No song is playing!</p>
                 </AlertTitle>
