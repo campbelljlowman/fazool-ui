@@ -42,6 +42,7 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
 
     const endSession = () => {
         endSessionMutation({ variables: {sessionID: sessionID } });
+        location.reload()
     }
 
     if (!showMediaButtons) {
