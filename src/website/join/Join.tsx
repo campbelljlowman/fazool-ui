@@ -12,10 +12,11 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 const GET_VOTER_TOKEN = graphql(`
-    query getVoterToken {
-        voterToken
+    query getVoterToken ($sessionID: Int!) {
+        voterToken(sessionID:$sessionID)
     }
 `);
+
 
 const formSchema = z.object({
     sessionID: z.string().length(6, {
@@ -43,7 +44,7 @@ function Join() {
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         setSessionID(values.sessionID);
-        getVoterTokenQuery();
+        getVoterTokenQuery({ variables: { sessionID: +values.sessionID }});
     }
 
     if (getVoterTokenQueryError) console.log(`Error joining voters: ${getVoterTokenQueryError.message}`)
@@ -68,6 +69,7 @@ function Join() {
                                 </FormItem>
                             )}
                         />
+                        {getVoterTokenQueryError && <p className='text-destructive mt-2'>Session not found!</p>}
                         <Button type='submit' className='mt-3'>Join</Button>
                     </form>
                 </Form>

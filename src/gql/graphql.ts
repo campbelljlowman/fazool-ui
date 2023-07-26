@@ -171,6 +171,11 @@ export type QueryVoterArgs = {
   sessionID: Scalars['Int'];
 };
 
+
+export type QueryVoterTokenArgs = {
+  sessionID: Scalars['Int'];
+};
+
 export enum QueueAction {
   Advance = 'ADVANCE',
   Pause = 'PAUSE',
@@ -350,7 +355,9 @@ export type CreateSessionMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type CreateSessionMutation = { __typename?: 'Mutation', createSession: { __typename?: 'Account', activeSession?: number | null } };
 
-export type GetVoterTokenQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetVoterTokenQueryVariables = Exact<{
+  sessionID: Scalars['Int'];
+}>;
 
 
 export type GetVoterTokenQuery = { __typename?: 'Query', voterToken: string };
@@ -383,6 +390,6 @@ export const MusicSearchDocument = {"kind":"Document","definitions":[{"kind":"Op
 export const UpsertSpotifyCredentialsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"upsertSpotifyCredentials"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SpotifyCreds"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertSpotifyToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"spotifyCreds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertSpotifyCredentialsMutation, UpsertSpotifyCredentialsMutationVariables>;
 export const GetAccountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAccount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"activeSession"}},{"kind":"Field","name":{"kind":"Name","value":"streamingService"}}]}}]}}]} as unknown as DocumentNode<GetAccountQuery, GetAccountQueryVariables>;
 export const CreateSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"activeSession"}}]}}]}}]} as unknown as DocumentNode<CreateSessionMutation, CreateSessionMutationVariables>;
-export const GetVoterTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVoterToken"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voterToken"}}]}}]} as unknown as DocumentNode<GetVoterTokenQuery, GetVoterTokenQueryVariables>;
+export const GetVoterTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVoterToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voterToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}]}]}}]} as unknown as DocumentNode<GetVoterTokenQuery, GetVoterTokenQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AccountLogin"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"accountLogin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}}}]}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const CreateAccountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createAccount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"newAccount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NewAccount"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAccount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"newAccount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"newAccount"}}}]}]}}]} as unknown as DocumentNode<CreateAccountMutation, CreateAccountMutationVariables>;

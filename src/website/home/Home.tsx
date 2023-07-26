@@ -28,8 +28,8 @@ const CREATE_SESSION = graphql(`
 `);
 
 const GET_VOTER_TOKEN = graphql(`
-    query getVoterToken {
-        voterToken
+    query getVoterToken ($sessionID: Int!) {
+        voterToken(sessionID:$sessionID)
     }
 `);
 
@@ -73,7 +73,7 @@ function Home() {
     }
 
     const launchSession = () => {
-        getVoterTokenQuery();
+        getVoterTokenQuery({ variables: { sessionID: getAccountQueryData!.account.activeSession! }});
     }
 
     if (createSessionMutationError) console.log(`Error creating session: ${createSessionMutationError.message}`)

@@ -26,7 +26,7 @@ const documents = {
     "\n    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {\n        upsertSpotifyToken(spotifyCreds:$spotifyCreds){\n            id\n        }\n    }\n": types.UpsertSpotifyCredentialsDocument,
     "\n    query getAccount {\n        account {\n            id\n            firstName\n            activeSession\n            streamingService\n        }\n    }\n": types.GetAccountDocument,
     "\n    mutation createSession {\n        createSession{\n            activeSession\n        }\n    }\n": types.CreateSessionDocument,
-    "\n    query getVoterToken {\n        voterToken\n    }\n": types.GetVoterTokenDocument,
+    "\n    query getVoterToken ($sessionID: Int!) {\n        voterToken(sessionID:$sessionID)\n    }\n": types.GetVoterTokenDocument,
     "\n    mutation login ($accountLogin: AccountLogin!) {\n        login(accountLogin:$accountLogin)\n    }\n": types.LoginDocument,
     "\n    mutation createAccount ($newAccount: NewAccount!) {\n        createAccount(newAccount: $newAccount)\n    }\n": types.CreateAccountDocument,
 };
@@ -100,7 +100,7 @@ export function graphql(source: "\n    mutation createSession {\n        createS
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query getVoterToken {\n        voterToken\n    }\n"): (typeof documents)["\n    query getVoterToken {\n        voterToken\n    }\n"];
+export function graphql(source: "\n    query getVoterToken ($sessionID: Int!) {\n        voterToken(sessionID:$sessionID)\n    }\n"): (typeof documents)["\n    query getVoterToken ($sessionID: Int!) {\n        voterToken(sessionID:$sessionID)\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
