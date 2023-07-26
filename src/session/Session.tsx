@@ -190,7 +190,7 @@ function Session() {
                 <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
                 <Separator className='w-full'/>
             </div>
-            <div className='queue-container flex'>
+            <div className='queue-container flex relative'>
                 <Separator orientation='vertical' className='h-full'/>
                 <div className='w-full h-full'>
                     {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
