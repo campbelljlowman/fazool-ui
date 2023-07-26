@@ -10,6 +10,7 @@ import { graphql } from '../gql'
 import { Voter, VoterType } from '../gql/graphql'
 import PlaylistPopulate from './playlist-populate/PlaylistPopulate'
 import { Separator } from '@/components/ui/separator'
+import PurchaseHeader from './purchase-header/PurchaseHeader'
 
 const SUBSCRIBE_SESSION_STATE = graphql(`
     subscription subscribeSessionState($sessionID: Int!){
@@ -193,6 +194,7 @@ function Session() {
             <div className='queue-container flex relative'>
                 <Separator orientation='vertical' className='h-full'/>
                 <div className='w-full h-full'>
+                    <PurchaseHeader/>
                     {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
                     <SearchBox sessionID={sessionID} />
                 </div>
