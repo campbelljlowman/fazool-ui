@@ -194,7 +194,8 @@ function Session() {
             <div className='queue-container flex relative'>
                 <Separator orientation='vertical' className='h-full'/>
                 <div className='w-full h-full'>
-                    <PurchaseHeader/>
+                    <PurchaseHeader numberOfBonusVotes={23} voterLevel={'Free'} numberOfFazoolTokens={5}/>
+                    <Separator/>
                     {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
                     <SearchBox sessionID={sessionID} />
                 </div>

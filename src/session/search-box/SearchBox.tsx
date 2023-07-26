@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import SearchResults from './SearchResults';
 import { useLazyQuery } from '@apollo/client';
 import { graphql } from '../../gql';
-import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search } from 'lucide-react';
@@ -75,7 +74,6 @@ function SearchBox({ sessionID }: SearchBoxProps) {
                         <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
                     </form>
                 </div>
-                <LogoIcon className='w-48 mx-6 md:block hidden'/>
                 {displaySearchResults()}
             </div>
         </div>

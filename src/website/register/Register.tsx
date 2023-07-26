@@ -119,6 +119,7 @@ function Register() {
                                 </FormItem>
                             )}
                         />
+                        {createAccountMutationError && <p className='text-destructive mt-2'>Error creating account!</p>}
                         <Button type='submit' className='mt-3'>Register</Button>
                     </form>
                 </Form>
