@@ -66,7 +66,7 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     }
 
     return (
-        <div className='flex flex-col justify-around h-[8vh] fixed w-3/4 bottom-0 bg-background'>
+        <div className='flex flex-col justify-around h-[8vh] fixed md:w-3/4 w-full bottom-0 bg-background'>
             <Separator className='w-full'/>
             <div className='flex items-center justify-between w-full'>
                 <div className='w-full flex justify-center ml-4'>
