@@ -16,7 +16,7 @@ function Song({ song }: SongProps) {
                     <img className='rounded h-full w-auto' src={song.image} alt="Album Cover" />
                 </AspectRatio>
             </div>
-            <div className="truncate">
+            <div className="truncate w-5/6">
                 <div className="font-medium truncate">{song.title}</div>
                 <div className="text-xs text-muted-foreground truncate">{song.artist}</div>
             </div>
