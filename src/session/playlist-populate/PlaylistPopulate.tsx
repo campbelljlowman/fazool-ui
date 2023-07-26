@@ -56,7 +56,7 @@ function PlaylistPopulate({ sessionID, isAdmin }: PlaylistPopulateProps) {
     }
 
     return (
-        <ScrollArea className='h-[92vh]'>
+        <ScrollArea>
             <div className='grid md:grid-cols-4 grid-cols-2 overflow-auto'>
                 {playlistSearchQueryData!.playlists!.map(playlist => (
                     <PlaylistItem key={playlist.id} sessionID={sessionID} playlist={playlist} />
