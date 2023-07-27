@@ -13,8 +13,10 @@ const GET_ACCOUNT = graphql(`
         account {
             id
             firstName
+            lastName
             activeSession
             streamingService
+            fazoolTokens
         }
     }
 `);

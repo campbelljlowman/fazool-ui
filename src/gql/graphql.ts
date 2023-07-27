@@ -18,6 +18,7 @@ export type Account = {
   __typename?: 'Account';
   activeSession?: Maybe<Scalars['Int']>;
   email?: Maybe<Scalars['String']>;
+  fazoolTokens?: Maybe<Scalars['Int']>;
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   lastName?: Maybe<Scalars['String']>;
@@ -46,6 +47,7 @@ export type CurrentlyPlayingSong = {
 export type Mutation = {
   __typename?: 'Mutation';
   addBonusVotes: Account;
+  addFazoolTokens: Account;
   createAccount: Scalars['String'];
   createSession: Account;
   deleteAccount: Scalars['String'];
@@ -53,7 +55,7 @@ export type Mutation = {
   login: Scalars['String'];
   setAccountType: Account;
   setPlaylist: SessionState;
-  setVoterType: Account;
+  setSuperVoterSession: Account;
   updateCurrentlyPlaying: SessionState;
   updateQueue: SessionState;
   upsertSpotifyToken: Account;
@@ -62,6 +64,12 @@ export type Mutation = {
 
 export type MutationAddBonusVotesArgs = {
   bonusVotes: Scalars['Int'];
+  targetAccountID: Scalars['Int'];
+};
+
+
+export type MutationAddFazoolTokensArgs = {
+  numberOfFazoolTokens: Scalars['Int'];
   targetAccountID: Scalars['Int'];
 };
 
@@ -98,9 +106,9 @@ export type MutationSetPlaylistArgs = {
 };
 
 
-export type MutationSetVoterTypeArgs = {
+export type MutationSetSuperVoterSessionArgs = {
+  sessionID: Scalars['Int'];
   targetAccountID: Scalars['Int'];
-  voterType: VoterType;
 };
 
 
@@ -261,7 +269,7 @@ export type Voter = {
 export enum VoterType {
   Admin = 'ADMIN',
   Free = 'FREE',
-  Privileged = 'PRIVILEGED'
+  Super = 'SUPER'
 }
 
 export type SubscribeSessionStateSubscriptionVariables = Exact<{
@@ -291,6 +299,11 @@ export type VoterQueryVariables = Exact<{
 
 
 export type VoterQuery = { __typename?: 'Query', voter: { __typename?: 'Voter', id: string, type: VoterType, songsUpVoted?: Array<string> | null, songsDownVoted?: Array<string> | null, bonusVotes?: number | null } };
+
+export type GetAccountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAccountQuery = { __typename?: 'Query', account: { __typename?: 'Account', id: number, firstName?: string | null, lastName?: string | null, activeSession?: number | null, streamingService?: StreamingService | null, fazoolTokens?: number | null } };
 
 export type UpdateCurrentlyPlayingMutationVariables = Exact<{
   sessionID: Scalars['Int'];
@@ -322,6 +335,14 @@ export type PlaylistsQueryVariables = Exact<{
 
 export type PlaylistsQuery = { __typename?: 'Query', playlists?: Array<{ __typename?: 'Playlist', id: string, name: string, image: string }> | null };
 
+export type AddFazoolTokensMutationVariables = Exact<{
+  targetAccountID: Scalars['Int'];
+  numberOfFazoolTokens: Scalars['Int'];
+}>;
+
+
+export type AddFazoolTokensMutation = { __typename?: 'Mutation', addFazoolTokens: { __typename?: 'Account', fazoolTokens?: number | null } };
+
 export type UpdateQueueMutationVariables = Exact<{
   sessionID: Scalars['Int'];
   song: SongUpdate;
@@ -344,11 +365,6 @@ export type UpsertSpotifyCredentialsMutationVariables = Exact<{
 
 
 export type UpsertSpotifyCredentialsMutation = { __typename?: 'Mutation', upsertSpotifyToken: { __typename?: 'Account', id: number } };
-
-export type GetAccountQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAccountQuery = { __typename?: 'Query', account: { __typename?: 'Account', id: number, firstName?: string | null, activeSession?: number | null, streamingService?: StreamingService | null } };
 
 export type CreateSessionMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -381,14 +397,15 @@ export const SubscribeSessionStateDocument = {"kind":"Document","definitions":[{
 export const GetSessionStateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getSessionState"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sessionState"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentlyPlaying"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"simpleSong"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isPlaying"}},{"kind":"Field","name":{"kind":"Name","value":"songProgressSeconds"}},{"kind":"Field","name":{"kind":"Name","value":"songDurationSeconds"}}]}},{"kind":"Field","name":{"kind":"Name","value":"queue"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"simpleSong"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}},{"kind":"Field","name":{"kind":"Name","value":"votes"}}]}},{"kind":"Field","name":{"kind":"Name","value":"numberOfVoters"}}]}}]}}]} as unknown as DocumentNode<GetSessionStateQuery, GetSessionStateQueryVariables>;
 export const GetSessionConfigDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getSessionConfig"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sessionConfig"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sessionID"}},{"kind":"Field","name":{"kind":"Name","value":"adminAccountID"}},{"kind":"Field","name":{"kind":"Name","value":"maximumVoters"}}]}}]}}]} as unknown as DocumentNode<GetSessionConfigQuery, GetSessionConfigQueryVariables>;
 export const VoterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"voter"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voter"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"songsUpVoted"}},{"kind":"Field","name":{"kind":"Name","value":"songsDownVoted"}},{"kind":"Field","name":{"kind":"Name","value":"bonusVotes"}}]}}]}}]} as unknown as DocumentNode<VoterQuery, VoterQueryVariables>;
+export const GetAccountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAccount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"activeSession"}},{"kind":"Field","name":{"kind":"Name","value":"streamingService"}},{"kind":"Field","name":{"kind":"Name","value":"fazoolTokens"}}]}}]}}]} as unknown as DocumentNode<GetAccountQuery, GetAccountQueryVariables>;
 export const UpdateCurrentlyPlayingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateCurrentlyPlaying"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"action"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"QueueAction"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCurrentlyPlaying"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"action"},"value":{"kind":"Variable","name":{"kind":"Name","value":"action"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numberOfVoters"}}]}}]}}]} as unknown as DocumentNode<UpdateCurrentlyPlayingMutation, UpdateCurrentlyPlayingMutationVariables>;
 export const EndSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"endSession"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"endSession"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}]}]}}]} as unknown as DocumentNode<EndSessionMutation, EndSessionMutationVariables>;
 export const SetPlaylistDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setPlaylist"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"playlistID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setPlaylist"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"playlistID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"playlistID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numberOfVoters"}}]}}]}}]} as unknown as DocumentNode<SetPlaylistMutation, SetPlaylistMutationVariables>;
 export const PlaylistsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"playlists"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"playlists"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<PlaylistsQuery, PlaylistsQueryVariables>;
+export const AddFazoolTokensDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddFazoolTokens"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"numberOfFazoolTokens"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addFazoolTokens"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"targetAccountID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}}},{"kind":"Argument","name":{"kind":"Name","value":"numberOfFazoolTokens"},"value":{"kind":"Variable","name":{"kind":"Name","value":"numberOfFazoolTokens"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fazoolTokens"}}]}}]}}]} as unknown as DocumentNode<AddFazoolTokensMutation, AddFazoolTokensMutationVariables>;
 export const UpdateQueueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateQueue"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"song"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SongUpdate"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateQueue"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"song"},"value":{"kind":"Variable","name":{"kind":"Name","value":"song"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numberOfVoters"}}]}}]}}]} as unknown as DocumentNode<UpdateQueueMutation, UpdateQueueMutationVariables>;
 export const MusicSearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"musicSearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"musicSearch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<MusicSearchQuery, MusicSearchQueryVariables>;
 export const UpsertSpotifyCredentialsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"upsertSpotifyCredentials"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SpotifyCreds"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertSpotifyToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"spotifyCreds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertSpotifyCredentialsMutation, UpsertSpotifyCredentialsMutationVariables>;
-export const GetAccountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAccount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"account"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"activeSession"}},{"kind":"Field","name":{"kind":"Name","value":"streamingService"}}]}}]}}]} as unknown as DocumentNode<GetAccountQuery, GetAccountQueryVariables>;
 export const CreateSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"activeSession"}}]}}]}}]} as unknown as DocumentNode<CreateSessionMutation, CreateSessionMutationVariables>;
 export const GetVoterTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVoterToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voterToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}]}]}}]} as unknown as DocumentNode<GetVoterTokenQuery, GetVoterTokenQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AccountLogin"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"accountLogin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}}}]}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;

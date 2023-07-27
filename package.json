@@ -22,6 +22,7 @@
     "@apollo/client": "^3.6.9",
     "@hookform/resolvers": "^3.1.1",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
+    "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.6",

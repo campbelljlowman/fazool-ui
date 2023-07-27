@@ -91,6 +91,19 @@ const GET_VOTER = graphql(`
     }
 `);
 
+const GET_ACCOUNT = graphql(`
+    query getAccount {
+        account {
+            id
+            firstName
+            lastName
+            activeSession
+            streamingService
+            fazoolTokens
+        }
+    }
+`);
+
 function Session() {
     const params = useParams();
     if (!params.sessionID) {
@@ -110,12 +123,12 @@ function Session() {
 
     const { data: getVoterQueryData, error: getVoterQueryError } = useQuery(GET_VOTER, {variables: { sessionID: sessionID }});
 
-    const { subscribeToMore, error: getSessionStateQueryError, data: getSessionStateQueryData } = useQuery(GET_SESSION_STATE, {
-        variables: { sessionID: sessionID },
-    });
+    const { data: getAccountQueryData } = useQuery(GET_ACCOUNT);
 
     const { data: getSessionConfigQueryData, error: getSessionConfigQueryError } = useQuery(GET_SESSION_CONFIG, {variables: { sessionID: sessionID }});
-
+    
+    const { subscribeToMore, error: getSessionStateQueryError, data: getSessionStateQueryData } = useQuery(GET_SESSION_STATE, {variables: { sessionID: sessionID }});
+    
     useEffect(() => {
         const checkForVoterToken = () => {
             if (sessionStorage.getItem('voter-token') == null) {
@@ -194,7 +207,7 @@ function Session() {
             <div className='queue-container flex relative'>
                 <Separator orientation='vertical' className='h-full'/>
                 <div className='w-full h-full'>
-                    <PurchaseHeader numberOfBonusVotes={23} voterLevel={'Free'} numberOfFazoolTokens={5}/>
+                    <PurchaseHeader numberOfBonusVotes={getVoterQueryData.voter.bonusVotes ? getVoterQueryData.voter.bonusVotes : 0} voterType={getVoterQueryData.voter.type} account={getAccountQueryData?.account}/>
                     <Separator/>
                     {QueueOrPlaylistPopulate(getSessionStateQueryData.sessionState.queue === null || getSessionStateQueryData.sessionState.queue?.length === 0, isAdmin(getVoterQueryData.voter))}
                     <SearchBox sessionID={sessionID} />
