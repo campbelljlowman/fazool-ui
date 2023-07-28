@@ -8,7 +8,30 @@ import FazoolTokenOption from './FazoolTokenOption'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Account } from '@/gql/graphql'
 import { useNavigate, useParams } from 'react-router-dom'
+import { superVoterCost, bonusVoteCostMapping } from '../../constants'
+import { graphql } from '../../gql';
+import { useMutation } from '@apollo/client';
 
+const SET_SUPER_VOTER_SESSION = graphql(`
+    mutation SetSuperVoterSession($targetAccountID: Int!, $sessionID: Int!) {
+        setSuperVoterSession(targetAccountID: $targetAccountID, sessionID: $sessionID) {
+            fazoolTokens
+        }
+    }
+`);
+
+const GET_ACCOUNT = graphql(`
+    query getAccount {
+        account {
+            id
+            firstName
+            lastName
+            activeSession
+            streamingService
+            fazoolTokens
+        }
+    }
+`);
 
 interface PurchaseHeaderProps {
     numberOfBonusVotes: number,
@@ -24,6 +47,19 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
     const sessionID = parseInt(params.sessionID)
     const navigate = useNavigate();
 
+    // TODO: Refetch voter and force db hit
+    const [setSuperVoterSessionMutation, { error: setSuperVoterSessionMutationError }] = useMutation(SET_SUPER_VOTER_SESSION, {
+        refetchQueries: [
+            {query: GET_ACCOUNT },
+        ]
+    });
+
+    const setSuperVoterSession = () => {
+        setSuperVoterSessionMutation({ variables: {targetAccountID: account!.id, sessionID: sessionID}})
+    }
+
+    if (setSuperVoterSessionMutationError) console.log(`Error adding fazool tokens: ${setSuperVoterSessionMutationError}`)
+
     return (
         <div className='flex h-[8vh] w-full justify-between'>
             <div className='flex items-center md:justify-start justify-center md:w-1/2 w-full mx-4 gap-4'>
@@ -36,9 +72,9 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                     <PopoverContent className='flex flex-col items-center gap-2'>
                         <h1 className='text-xl'>Bonus Votes</h1>
                         <p className='text-xs text-muted-foreground'>Bonus votes allow you to vote for a song after you've used your one free vote.</p>
-                        <BonusVoteOption numberOfBonusVotes={'10'} costInTokens={'3'} variant={'outline'}/>
-                        <BonusVoteOption numberOfBonusVotes={'25'} costInTokens={'6'} variant={'default'}/>
-                        <BonusVoteOption numberOfBonusVotes={'50'} costInTokens={'10'} variant={'outline'}/>
+                        {bonusVoteCostMapping.map(bonusVoteOption => (
+                            <BonusVoteOption numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'}/>
+                        ))}
                     </PopoverContent>
                 </Popover>
                 <Popover>
@@ -55,12 +91,13 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                             <p>Super Voter</p>
                             <div className='flex items-center gap-2'>
                                 <div className='flex'>
-                                    <p>3</p>
+                                    <p>{superVoterCost}</p>
                                     <Coins className='ml-2'/>
                                 </div>
-                                <Button>Get</Button>
+                                <Button onClick={setSuperVoterSession}>Get</Button>
                             </div>
                         </div>
+                        {setSuperVoterSessionMutationError && <p className='text-destructive'>Not enough Fazool tokens</p>}
                     </PopoverContent>
                 </Popover>
                 <Popover>

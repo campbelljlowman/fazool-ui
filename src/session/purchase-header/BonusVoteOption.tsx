@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button'
 import { Coins } from 'lucide-react'
 
 interface BonusVoteOptionProps {
-    numberOfBonusVotes: string,
-    costInTokens: string,
+    numberOfBonusVotes: number,
+    costInTokens: number,
     variant: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
 }
 function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant}: BonusVoteOptionProps) {
