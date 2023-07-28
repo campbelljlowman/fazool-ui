@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { graphql } from '../../gql';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import * as z from "zod"
@@ -25,13 +25,19 @@ const formSchema = z.object({
 })
 
 function Register() {
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get("redirect")
     const navigate = useNavigate();
 
     // TODO: Get errors variable here and check 
     const [createAccountMutation, { error: createAccountMutationError }] = useMutation(CREATE_ACCOUNT, {
         onCompleted(data) {
             sessionStorage.setItem("account-token", data.createAccount)
-            navigate("/home");
+            if (redirect){
+                navigate(redirect);
+            } else {
+                navigate("/home");
+            }      
         }
     });
 

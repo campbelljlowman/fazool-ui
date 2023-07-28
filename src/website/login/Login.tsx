@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { graphql } from '../../gql';
 import { AccountLogin } from '../../gql/graphql';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
@@ -24,12 +24,18 @@ const formSchema = z.object({
 })
 
 function Login() {
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get("redirect")
     const navigate = useNavigate();
 
     const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
         onCompleted(data) {
             sessionStorage.setItem("account-token", data.login)
-            navigate("/home");
+            if (redirect){
+                navigate(redirect);
+            } else {
+                navigate("/home");
+            }
         }
     });
 

@@ -7,7 +7,7 @@ import BonusVoteOption from './BonusVoteOption'
 import FazoolTokenOption from './FazoolTokenOption'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Account } from '@/gql/graphql'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 interface PurchaseHeaderProps {
@@ -16,6 +16,12 @@ interface PurchaseHeaderProps {
     account: Account | undefined
 }
 function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeaderProps) {
+    const params = useParams();
+    if (!params.sessionID) {
+        throw new Error("Unexpected error: Missing sessionID");
+    }
+
+    const sessionID = parseInt(params.sessionID)
     const navigate = useNavigate();
 
     return (
@@ -79,8 +85,8 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                             </>
                             :
                             <div className='flex'>
-                                <Button className='m-3' onClick={() => {navigate("/register");}}>Sign Up</Button>
-                                <Button className='m-3' variant={'secondary'} onClick={() => {navigate("/login");}}>Login</Button>
+                                <Button className='m-3' onClick={() => {navigate(`/register?redirect=/session/${sessionID}`);}}>Sign Up</Button>
+                                <Button className='m-3' variant={'secondary'} onClick={() => {navigate(`/login?redirect=/session/${sessionID}`);}}>Login</Button>
                             </div>
                         }
                     </PopoverContent>
