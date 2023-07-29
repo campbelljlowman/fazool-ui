@@ -51,6 +51,7 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
     const [setSuperVoterSessionMutation, { error: setSuperVoterSessionMutationError }] = useMutation(SET_SUPER_VOTER_SESSION, {
         refetchQueries: [
             {query: GET_ACCOUNT },
+            'voter'
         ]
     });
 
@@ -97,7 +98,7 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                                 <Button onClick={setSuperVoterSession}>Get</Button>
                             </div>
                         </div>
-                        {setSuperVoterSessionMutationError && <p className='text-destructive'>Not enough Fazool tokens</p>}
+                        {setSuperVoterSessionMutationError && <p className='text-destructive'>{setSuperVoterSessionMutationError.message}</p>}
                     </PopoverContent>
                 </Popover>
                 <Popover>
