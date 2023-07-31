@@ -4,19 +4,6 @@ import { Coins } from 'lucide-react'
 import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 
-const GET_ACCOUNT = graphql(`
-    query getAccount {
-        account {
-            id
-            firstName
-            lastName
-            activeSession
-            streamingService
-            fazoolTokens
-        }
-    }
-`);
-
 const ADD_FAZOOL_TOKENS = graphql(`
     mutation AddFazoolTokens($targetAccountID: Int!, $numberOfFazoolTokens: Int!) {
         addFazoolTokens(targetAccountID: $targetAccountID, numberOfFazoolTokens: $numberOfFazoolTokens) {
@@ -34,7 +21,7 @@ interface FazoolTokenOptionProps {
 function FazoolTokenOption({ accountID, numberOfFazoolTokens, costInDollars, variant}: FazoolTokenOptionProps) {
     const [addFazoolTokensMutation, { error: addFazoolTokensMutationError }] = useMutation(ADD_FAZOOL_TOKENS, {
         refetchQueries: [
-            {query: GET_ACCOUNT },
+            'getAccount',
         ]
     });
 

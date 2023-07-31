@@ -59,7 +59,7 @@ function Home() {
 
     const [createSessionMutation, { error: createSessionMutationError }] = useMutation(CREATE_SESSION, {
         refetchQueries: [
-            { query: GET_ACCOUNT },
+            'getAccount',
         ]
     });
 

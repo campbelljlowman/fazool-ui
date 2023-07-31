@@ -2,32 +2,27 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Separator } from '@/components/ui/separator'
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import { Button } from '@/components/ui/button'
-import { Coins, Vote } from 'lucide-react'
+import { Coins, ChevronsUp } from 'lucide-react'
 import BonusVoteOption from './BonusVoteOption'
 import FazoolTokenOption from './FazoolTokenOption'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Account } from '@/gql/graphql'
+import { Account, BonusVoteAmount } from '@/gql/graphql'
 import { useNavigate, useParams } from 'react-router-dom'
 import { superVoterCost, bonusVoteCostMapping } from '../../constants'
 import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 
 const SET_SUPER_VOTER_SESSION = graphql(`
-    mutation SetSuperVoterSession($targetAccountID: Int!, $sessionID: Int!) {
-        setSuperVoterSession(targetAccountID: $targetAccountID, sessionID: $sessionID) {
+    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {
+        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {
             fazoolTokens
         }
     }
 `);
 
-const GET_ACCOUNT = graphql(`
-    query getAccount {
-        account {
-            id
-            firstName
-            lastName
-            activeSession
-            streamingService
+const ADD_BONUS_VOTES = graphql(`
+    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {
+        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {
             fazoolTokens
         }
     }
@@ -50,7 +45,14 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
     // TODO: Refetch voter and force db hit
     const [setSuperVoterSessionMutation, { error: setSuperVoterSessionMutationError }] = useMutation(SET_SUPER_VOTER_SESSION, {
         refetchQueries: [
-            {query: GET_ACCOUNT },
+            'getAccount',
+            'voter'
+        ]
+    });
+
+    const [addBonusVotesMutation, { error: addBonusVotesMutationError }] = useMutation(ADD_BONUS_VOTES, {
+        refetchQueries: [
+            'getAccount',
             'voter'
         ]
     });
@@ -59,7 +61,12 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
         setSuperVoterSessionMutation({ variables: {targetAccountID: account!.id, sessionID: sessionID}})
     }
 
-    if (setSuperVoterSessionMutationError) console.log(`Error adding fazool tokens: ${setSuperVoterSessionMutationError}`)
+    const addBonusVotes = (bonusVoteAmount: BonusVoteAmount) => {
+        addBonusVotesMutation({ variables: {sessionID: sessionID, targetAccountID: account!.id, bonusVoteAmount: bonusVoteAmount}})
+    }
+
+    if (addBonusVotesMutationError) console.log(`Error adding bonus votes: ${addBonusVotesMutationError}`)
+    if (setSuperVoterSessionMutationError) console.log(`Error setting super voter: ${setSuperVoterSessionMutationError}`)
 
     return (
         <div className='flex h-[8vh] w-full justify-between'>
@@ -67,15 +74,16 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                 <Popover>
                     <PopoverTrigger>
                         <p className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                            {numberOfBonusVotes} <Vote className='ml-2'/>
+                            {numberOfBonusVotes} <ChevronsUp className='ml-2'/>
                         </p>
                     </PopoverTrigger>
                     <PopoverContent className='flex flex-col items-center gap-2'>
                         <h1 className='text-xl'>Bonus Votes</h1>
                         <p className='text-xs text-muted-foreground'>Bonus votes allow you to vote for a song after you've used your one free vote.</p>
                         {bonusVoteCostMapping.map(bonusVoteOption => (
-                            <BonusVoteOption numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'}/>
+                            <BonusVoteOption key={bonusVoteOption.NumberOfBonusVotes} numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'} addBonusVotes={() => addBonusVotes(bonusVoteOption.BonusVoteAmount)}/>
                         ))}
+                        {addBonusVotesMutationError && <p className='text-destructive'>{addBonusVotesMutationError.message}</p>}
                     </PopoverContent>
                 </Popover>
                 <Popover>
@@ -122,22 +130,27 @@ function PurchaseHeader({numberOfBonusVotes, voterType, account}: PurchaseHeader
                                 <FazoolTokenOption accountID={account.id} numberOfFazoolTokens={25} costInDollars='20' variant={'outline'} />
                             </>
                             :
-                            <div className='flex'>
-                                <Button className='m-3' onClick={() => {navigate(`/register?redirect=/session/${sessionID}`);}}>Sign Up</Button>
-                                <Button className='m-3' variant={'secondary'} onClick={() => {navigate(`/login?redirect=/session/${sessionID}`);}}>Login</Button>
-                            </div>
+                            <p className='font-semibold text-center'>Sign up or Login to purchase Fazool tokens</p>
                         }
                     </PopoverContent>
                 </Popover>
-                {account?.firstName && 
+            </div>
+            <div className='flex items-center'>
+            {account?.firstName ? 
                 <Avatar>
                     <AvatarFallback>
                         {Array.from(account.firstName)[0].toUpperCase()}
                         {account.lastName && Array.from(account.lastName)[0].toUpperCase()}
                     </AvatarFallback>
-                </Avatar>}
+                </Avatar>
+                :
+                <>
+                    <Button className='m-3' variant={'secondary'} onClick={() => {navigate(`/register?redirect=/session/${sessionID}`);}}>Sign Up</Button>
+                    <Button className='m-3 mr-0' variant={'secondary'} onClick={() => {navigate(`/login?redirect=/session/${sessionID}`);}}>Login</Button>
+                </>
+                }
+                <LogoIcon className='w-48 mr-6 ml-3 md:block hidden'/>
             </div>
-            <LogoIcon className='w-48 mx-6 md:block hidden'/>
         </div>
     )
 }

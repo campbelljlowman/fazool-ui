@@ -83,6 +83,7 @@ const GET_VOTER = graphql(`
     query voter ($sessionID: Int!){
         voter (sessionID: $sessionID){
             id
+            accountID
             type
             songsUpVoted
             songsDownVoted
@@ -136,6 +137,18 @@ function Session() {
             }
         };
         checkForVoterToken();
+    }, []);
+
+    useEffect(() => {
+        const checkForVoterRefresh = () => {
+            // console.log("Checking tokens")
+            // console.log(`voter account ID: ${getVoterQueryData?.voter.accountID}`)
+            // console.log(`account ID: ${getAccountQueryData?.account.id}`)
+            if (getVoterQueryData?.voter.accountID != getAccountQueryData?.account.id) {
+                location.reload()
+            }
+        };
+        checkForVoterRefresh();
     }, []);
 
     useEffect(() => {
