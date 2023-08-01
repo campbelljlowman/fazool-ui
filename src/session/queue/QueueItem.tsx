@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { ChevronDownCircle, ChevronUpCircle } from 'lucide-react';
+import { ChevronDownCircle, ChevronUpCircle, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,15 +16,15 @@ const UPDATE_QUEUE = graphql(`
 `)
 
 interface QueueItemProps {
-    queuedSong:     QueuedSong,
-    sessionID:      number,
-    showDecrement:  boolean,
-    upVotedFor:     boolean,
-    downVotedFor:   boolean
+    queuedSong:         QueuedSong,
+    sessionID:          number,
+    decrementEnabled:   boolean,
+    hasBonusVotes:      boolean
+    upVotedFor:         boolean,
+    downVotedFor:       boolean
 }
 
-function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVotedFor }: QueueItemProps) {
-
+function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upVotedFor, downVotedFor }: QueueItemProps) {
     const [updateQueueMutation, { error: updateQueueMutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
@@ -58,15 +58,41 @@ function QueueItem({ queuedSong, sessionID, showDecrement, upVotedFor, downVoted
 
     const downVote = () => {
         // TODO: This needs separate increment and decrement functions
-        if (showDecrement) {
-            if (downVotedFor) {
-                return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
+        if (upVotedFor) {
+            if (hasBonusVotes) {
+                // Bonus vote
+                return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Up, SongVoteAction.Add)}><ChevronsUp className='h-6 w-6'/></Button>
             } else {
-                return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
+                // Bonus vote disabled
+                return <Button variant={'ghost'} disabled={true}><ChevronsUp className='h-6 w-6'/></Button>
             }
         } else {
-            return null
+            if (decrementEnabled) {
+                if (downVotedFor) {
+                    // Downvoted for
+                    return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
+                } else {
+                    // Down vote
+                    return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
+                }
+            } else {
+                // Down vote disabled
+                return <Button variant={'ghost'} disabled={true}><ChevronDownCircle className='h-6 w-6'/></Button>
+            }
         }
+        // if (showDecrement) {
+        //     if (downVotedFor) {
+        //         return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
+        //     } else {
+        //         return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
+        //     }
+        // } else {
+        //     if (downVotedFor) {
+        //         return <Button variant={'ghost'} disabled={true} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
+        //     } else {
+        //         return <Button variant={'ghost'} disabled={true} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
+        //     }        
+        // }
     };
 
     return (

@@ -44,6 +44,14 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
         }
     }
 
+    const checkHasBonusVotes = () => {
+        if (voter.bonusVotes && voter.bonusVotes > 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     if (!sessionState || !sessionState.queue) {
         return null;
     }
@@ -53,7 +61,7 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
         <ScrollArea>
             <div className='grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 overflow-auto max-h-[100vh]'>
                 {sessionState.queue.map(queuedSong => (
-                    <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} showDecrement={checkPrivilegedVoter()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
+                    <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} decrementEnabled={checkPrivilegedVoter()} hasBonusVotes={checkHasBonusVotes()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
                 ))}
             </div>
         </ScrollArea>
