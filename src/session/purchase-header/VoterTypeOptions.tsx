@@ -53,7 +53,7 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
                             <p>{superVoterCost}</p>
                             <Coins className='ml-2'/>
                         </div>
-                        <Button onClick={setSuperVoterSession}>Get</Button>
+                        <Button disabled={account == undefined} onClick={setSuperVoterSession}>Get</Button>
                     </div>
                 </div>
                 {setSuperVoterSessionMutationError && <p className='text-destructive'>{setSuperVoterSessionMutationError.message}</p>}

@@ -16,10 +16,10 @@ const ADD_FAZOOL_TOKENS = graphql(`
 `);
 
 interface FazoolTokenOptionProps {
-    accountID: number,
-    numberOfFazoolTokens: number,
-    costInDollars: string,
-    variant: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
+    accountID:              number,
+    numberOfFazoolTokens:   number,
+    costInDollars:          string,
+    variant:                "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
 }
 function FazoolTokenOption({ accountID, numberOfFazoolTokens, costInDollars, variant}: FazoolTokenOptionProps) {
     const [addFazoolTokensMutation, { error: addFazoolTokensMutationError }] = useMutation(ADD_FAZOOL_TOKENS, {

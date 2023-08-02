@@ -20,8 +20,9 @@ interface BonusVoteOptionProps {
     costInTokens:       number,
     variant:            "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
     addBonusVotes:      () => void
+    disabled:           boolean
 }
-function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVotes}: BonusVoteOptionProps) {
+function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVotes, disabled}: BonusVoteOptionProps) {
     return (
         <>
             <Separator/>
@@ -32,7 +33,7 @@ function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVo
                         <p>{costInTokens}</p>
                         <Coins className='ml-2'/>
                     </div>
-                    <Button onClick={addBonusVotes} variant={variant}>Get</Button>
+                    <Button disabled={disabled} onClick={addBonusVotes} variant={variant}>Get</Button>
                 </div>
             </div>
         </>
@@ -69,7 +70,7 @@ function BonusVoteOptions ({sessionID, voter, account}: BonusVoteOptionsProps) {
                 <h1 className='text-xl'>Bonus Votes</h1>
                 <p className='text-xs text-muted-foreground'>Bonus votes allow you to vote for a song after you've used your one free vote.</p>
                 {bonusVoteCostMapping.map(bonusVoteOption => (
-                    <BonusVoteOption key={bonusVoteOption.NumberOfBonusVotes} numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'} addBonusVotes={() => addBonusVotes(bonusVoteOption.BonusVoteAmount)}/>
+                    <BonusVoteOption key={bonusVoteOption.NumberOfBonusVotes} numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'} addBonusVotes={() => addBonusVotes(bonusVoteOption.BonusVoteAmount)} disabled={account == undefined}/>
                 ))}
                 {addBonusVotesMutationError && <p className='text-destructive'>{addBonusVotesMutationError.message}</p>}
             </PopoverContent>
