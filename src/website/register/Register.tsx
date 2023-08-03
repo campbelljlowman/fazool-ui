@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import validator from 'validator';
 
 
 const CREATE_ACCOUNT = graphql(`
@@ -18,10 +19,11 @@ const CREATE_ACCOUNT = graphql(`
 `);
 
 const formSchema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
+    firstName: z.string().min(1, { message: "First name is required" }),
+    lastName: z.string().min(1, { message: "Last name is required" }),
     email: z.string().email(),
-    password: z.string()
+    phoneNumber: z.string().refine(validator.isMobilePhone),
+    password: z.string().min(1, { message: "Password is required" })
 })
 
 function Register() {
@@ -46,6 +48,7 @@ function Register() {
         defaultValues: {
             firstName: '',
             lastName: '',
+            phoneNumber: '',
             email: '',
             password: ''
         },
@@ -55,6 +58,7 @@ function Register() {
         const newAccount = {
             "firstName": values.firstName,
             "lastName": values.lastName,
+            "phoneNumber": values.phoneNumber,
             "email": values.email,
             "password": values.password
         };
@@ -67,7 +71,7 @@ function Register() {
 
 
     return (
-        <div className='flex flex-col justify-center items-center md:h-5/6'>
+        <div className='flex flex-col justify-center items-center md:h-full'>
             <LogoIcon className='md:h-24 h-16 m-4'/>
             <Card className='md:w-1/4 p-4'>
                 <Form {...form}>
@@ -78,7 +82,7 @@ function Register() {
                             name='firstName'
                             render={({ field }) => (
                                 <FormItem className='w-full'>
-                                    <FormLabel>First Name</FormLabel>
+                                    <FormLabel>First Name*</FormLabel>
                                     <FormControl>
                                         <Input placeholder='First Name' {...field}/>
                                     </FormControl>
@@ -91,7 +95,7 @@ function Register() {
                             name='lastName'
                             render={({ field }) => (
                                 <FormItem className='w-full'>
-                                    <FormLabel>Last Name</FormLabel>
+                                    <FormLabel>Last Name*</FormLabel>
                                     <FormControl>
                                         <Input placeholder='Last Name' {...field}/>
                                     </FormControl>
@@ -104,9 +108,22 @@ function Register() {
                             name='email'
                             render={({ field }) => (
                                 <FormItem className='w-full'>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Email*</FormLabel>
                                     <FormControl>
                                         <Input placeholder='Email' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name='phoneNumber'
+                            render={({ field }) => (
+                                <FormItem className='w-full'>
+                                    <FormLabel>Phone Number</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Phone Number (Optional)' {...field}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -117,7 +134,7 @@ function Register() {
                             name='password'
                             render={({ field }) => (
                                 <FormItem className='w-full'>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Password*</FormLabel>
                                     <FormControl>
                                         <Input placeholder='Password' {...field}/>
                                     </FormControl>

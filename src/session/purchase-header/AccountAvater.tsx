@@ -14,11 +14,11 @@ function AccountAvater({sessionID, account}: AccountAvaterProps) {
 
     return (
         <>
-        {account?.firstName ? 
+        {account ? 
             <Avatar className='mr-3'>
                 <AvatarFallback>
                     {Array.from(account.firstName)[0].toUpperCase()}
-                    {account.lastName && Array.from(account.lastName)[0].toUpperCase()}
+                    {Array.from(account.lastName)[0].toUpperCase()}
                 </AvatarFallback>
             </Avatar>
         :
