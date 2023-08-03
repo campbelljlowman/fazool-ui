@@ -39,6 +39,10 @@ function Login() {
         }
     });
 
+    const logoOnClick = () => {
+        navigate('/');
+    }
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -60,7 +64,7 @@ function Login() {
 
     return (
         <div className='flex flex-col justify-center items-center h-5/6'>
-            <LogoIcon className='md:h-24 h-16 m-4'/>
+            <LogoIcon onClick={logoOnClick} className='md:h-24 h-16 m-4'/>
             <Card className='md:w-1/4 w-3/4 p-4'>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center gap-4'>

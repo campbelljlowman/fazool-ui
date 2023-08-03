@@ -1,7 +1,4 @@
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
-import { Coins } from 'lucide-react'
-import FazoolTokenOption from './FazoolTokenOptions'
 import { Account, Voter } from '@/gql/graphql'
 import { useNavigate, useParams } from 'react-router-dom'
 import BonusVoteOptions from './BonusVoteOptions'
@@ -15,9 +12,14 @@ interface PurchaseHeaderProps {
     account:            Account | undefined,
 }
 function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
+    const navigate = useNavigate();
     const params = useParams();
     if (!params.sessionID) {
         throw new Error("Unexpected error: Missing sessionID");
+    }
+
+    const logoOnClick = () => {
+        navigate('/');
     }
 
     const sessionID = parseInt(params.sessionID)
@@ -32,7 +34,7 @@ function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
             </div>
             <div className='flex items-center'>
                 <AccountAvater sessionID={sessionID} account={account}/>
-                <LogoIcon className='w-48 mr-6 md:block hidden'/>
+                <LogoIcon onClick={logoOnClick} className='w-48 mr-6 md:block hidden'/>
             </div>
         </div>
     )

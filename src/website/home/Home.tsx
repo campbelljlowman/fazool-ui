@@ -70,6 +70,10 @@ function Home() {
         },
     });
 
+    const logoOnClick = () => {
+        navigate('/');
+    }
+
     const createSession = () => {
         createSessionMutation();
     }
@@ -132,7 +136,7 @@ function Home() {
         <div className='h-full'>
             <div>
                 <div className='flex justify-start w-full'>
-                    <LogoIcon className='w-48 my-2 mx-4'/>
+                    <LogoIcon onClick={logoOnClick} className='w-48 my-2 mx-4'/>
                 </div>
                 <Separator/>
             </div>
