@@ -4,34 +4,34 @@ import { Coins } from 'lucide-react'
 import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Account } from '@/gql/graphql';
-
+import { Account, FazoolTokenAmount } from '@/gql/graphql';
 
 const ADD_FAZOOL_TOKENS = graphql(`
-    mutation AddFazoolTokens($targetAccountID: Int!, $numberOfFazoolTokens: Int!) {
-        addFazoolTokens(targetAccountID: $targetAccountID, numberOfFazoolTokens: $numberOfFazoolTokens) {
-           fazoolTokens
-        }
+    mutation AddFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {
+        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)
     }
 `);
 
 interface FazoolTokenOptionProps {
+    sessionID:              number,
     accountID:              number,
     numberOfFazoolTokens:   number,
     costInDollars:          string,
+    fazoolTokenAmount:      FazoolTokenAmount,
     variant:                "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
 }
-function FazoolTokenOption({ accountID, numberOfFazoolTokens, costInDollars, variant}: FazoolTokenOptionProps) {
+function FazoolTokenOption({ sessionID, accountID, numberOfFazoolTokens, costInDollars, fazoolTokenAmount, variant}: FazoolTokenOptionProps) {
     const [addFazoolTokensMutation, { error: addFazoolTokensMutationError }] = useMutation(ADD_FAZOOL_TOKENS, {
-        refetchQueries: [
-            'getAccount',
-        ]
+        onCompleted(data) {
+            window.location.href = data.addFazoolTokens;
+            console.log(`create checkout session data: ${data.addFazoolTokens}`)
+        }
     });
 
     if (addFazoolTokensMutationError) console.log(`Error adding fazool tokens: ${addFazoolTokensMutationError}`)
 
     const addFazoolTokens = () => {
-        addFazoolTokensMutation({ variables: {targetAccountID: accountID, numberOfFazoolTokens: numberOfFazoolTokens}})
+        addFazoolTokensMutation({ variables: {sessionID: sessionID, targetAccountID: accountID, fazoolTokenAmount: fazoolTokenAmount}})
     }
     return (
         <>
@@ -51,9 +51,10 @@ function FazoolTokenOption({ accountID, numberOfFazoolTokens, costInDollars, var
 }
 
 interface FazoolTokenOptionsProps {
+    sessionID: number,
     account: Account | undefined
 }
-function FazoolTokenOptions({account}: FazoolTokenOptionsProps) {
+function FazoolTokenOptions({sessionID, account}: FazoolTokenOptionsProps) {
     return (
     <Popover>
         <PopoverTrigger>
@@ -71,9 +72,9 @@ function FazoolTokenOptions({account}: FazoolTokenOptionsProps) {
             <p className='text-xs text-muted-foreground'>Fazool tokens allow you to get access to extra Fazool features like super voter status and bonus votes</p>
             {account ? 
                 <>
-                    <FazoolTokenOption accountID={account.id} numberOfFazoolTokens={5} costInDollars='5' variant={'outline'} />
-                    <FazoolTokenOption accountID={account.id} numberOfFazoolTokens={12} costInDollars='10' variant={'default'} />
-                    <FazoolTokenOption accountID={account.id} numberOfFazoolTokens={25} costInDollars='20' variant={'outline'} />
+                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} costInDollars='5' fazoolTokenAmount={FazoolTokenAmount.Five} variant={'outline'} />
+                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} fazoolTokenAmount={FazoolTokenAmount.Five} costInDollars='10' variant={'default'} />
+                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} fazoolTokenAmount={FazoolTokenAmount.Five} costInDollars='20' variant={'outline'} />
                 </>
                 :
                 <p className='font-semibold text-center'>Sign up or Login to purchase Fazool tokens</p>

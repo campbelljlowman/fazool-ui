@@ -30,7 +30,7 @@ function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
             <div className='flex items-center md:justify-start justify-center md:w-1/2 w-full mx-4 gap-4'>
                 <BonusVoteOptions sessionID={sessionID} voter={voter} account={account}/>
                 <VoterTypeOptions sessionID={sessionID} voter={voter} account={account}/>
-                <FazoolTokenOptions account={account}/>
+                <FazoolTokenOptions sessionID={sessionID} account={account}/>
             </div>
             <div className='flex items-center'>
                 <AccountAvater sessionID={sessionID} account={account}/>
