@@ -51,7 +51,9 @@ export type CurrentlyPlayingSong = {
 };
 
 export enum FazoolTokenAmount {
-  Five = 'FIVE'
+  Five = 'FIVE',
+  Ten = 'TEN',
+  TwentyTwo = 'TWENTY_TWO'
 }
 
 export type Mutation = {

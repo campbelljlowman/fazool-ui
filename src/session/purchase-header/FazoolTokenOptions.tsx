@@ -5,6 +5,7 @@ import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Account, FazoolTokenAmount } from '@/gql/graphql';
+import { fazoolTokenCostMapping } from '@/constants';
 
 const ADD_FAZOOL_TOKENS = graphql(`
     mutation AddFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {
@@ -16,15 +17,16 @@ interface FazoolTokenOptionProps {
     sessionID:              number,
     accountID:              number,
     numberOfFazoolTokens:   number,
-    costInDollars:          string,
+    costInDollars:          number,
     fazoolTokenAmount:      FazoolTokenAmount,
     variant:                "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
 }
 function FazoolTokenOption({ sessionID, accountID, numberOfFazoolTokens, costInDollars, fazoolTokenAmount, variant}: FazoolTokenOptionProps) {
     const [addFazoolTokensMutation, { error: addFazoolTokensMutationError }] = useMutation(ADD_FAZOOL_TOKENS, {
         onCompleted(data) {
-            window.location.href = data.addFazoolTokens;
-            console.log(`create checkout session data: ${data.addFazoolTokens}`)
+            if (data.addFazoolTokens !== "") {
+                window.location.href = data.addFazoolTokens;
+            }
         }
     });
 
@@ -72,9 +74,9 @@ function FazoolTokenOptions({sessionID, account}: FazoolTokenOptionsProps) {
             <p className='text-xs text-muted-foreground'>Fazool tokens allow you to get access to extra Fazool features like super voter status and bonus votes</p>
             {account ? 
                 <>
-                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} costInDollars='5' fazoolTokenAmount={FazoolTokenAmount.Five} variant={'outline'} />
-                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} fazoolTokenAmount={FazoolTokenAmount.Five} costInDollars='10' variant={'default'} />
-                    <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens= {5} fazoolTokenAmount={FazoolTokenAmount.Five} costInDollars='20' variant={'outline'} />
+                    {fazoolTokenCostMapping.map(fazoolTokenOption => (
+                        <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens={fazoolTokenOption.NumberOfFazoolTokens} costInDollars={fazoolTokenOption.CostInDollars} fazoolTokenAmount={fazoolTokenOption.FazoolTokenAmount} variant={'outline'}/>
+                    ))}
                 </>
                 :
                 <p className='font-semibold text-center'>Sign up or Login to purchase Fazool tokens</p>
