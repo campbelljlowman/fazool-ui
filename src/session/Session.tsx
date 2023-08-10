@@ -214,7 +214,7 @@ function Session() {
     return (
         <div className='session'>
             <div className='music-player-container'>
-                <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} showMediaButtons={isAdmin(getVoterQueryData.voter)} />
+                <MusicPlayer sessionID={sessionID} currentlyPlaying={getSessionStateQueryData.sessionState.currentlyPlaying} isAdmin={isAdmin(getVoterQueryData.voter)} streamingService={getAccountQueryData?.account.streamingService}/>
                 <Separator className='w-full'/>
             </div>
             <div className='queue-container flex relative'>

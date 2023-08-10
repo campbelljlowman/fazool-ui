@@ -68,7 +68,8 @@ function BonusVoteOptions ({sessionID, voter, account}: BonusVoteOptionsProps) {
             </PopoverTrigger>
             <PopoverContent className='flex flex-col items-center gap-2'>
                 <h1 className='text-xl'>Bonus Votes</h1>
-                <p className='text-xs text-muted-foreground'>Bonus votes allow you to vote for a song after you've used your one free vote.</p>
+                <p className='text-xs text-muted-foreground'>Bonus votes allow you to vote for a song after you've used your one free vote. 
+                Bonus votes for songs that don't get played are returned at the end of a session</p>
                 {bonusVoteCostMapping.map(bonusVoteOption => (
                     <BonusVoteOption key={bonusVoteOption.NumberOfBonusVotes} numberOfBonusVotes={bonusVoteOption.NumberOfBonusVotes} costInTokens={bonusVoteOption.CostInFazoolTokens} variant={'outline'} addBonusVotes={() => addBonusVotes(bonusVoteOption.BonusVoteAmount)} disabled={account == undefined}/>
                 ))}

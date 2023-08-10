@@ -75,7 +75,7 @@ function FazoolTokenOptions({sessionID, account}: FazoolTokenOptionsProps) {
             {account ? 
                 <>
                     {fazoolTokenCostMapping.map(fazoolTokenOption => (
-                        <FazoolTokenOption sessionID={sessionID} accountID={account.id} numberOfFazoolTokens={fazoolTokenOption.NumberOfFazoolTokens} costInDollars={fazoolTokenOption.CostInDollars} fazoolTokenAmount={fazoolTokenOption.FazoolTokenAmount} variant={'outline'}/>
+                        <FazoolTokenOption key={fazoolTokenOption.NumberOfFazoolTokens} sessionID={sessionID} accountID={account.id} numberOfFazoolTokens={fazoolTokenOption.NumberOfFazoolTokens} costInDollars={fazoolTokenOption.CostInDollars} fazoolTokenAmount={fazoolTokenOption.FazoolTokenAmount} variant={'outline'}/>
                     ))}
                 </>
                 :

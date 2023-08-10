@@ -2,11 +2,14 @@ import { SimpleSong } from '../../gql/graphql'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
+import { toLowerCaseBesidesFirst } from '@/utils'
 
 interface CurrentlyPlayingSongProps {
-    song: SimpleSong
+    song:               SimpleSong
+    isAdmin:            boolean
+    streamingService:   string | null | undefined
 }
-function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
+function CurrentlyPlayingSong({ song, isAdmin, streamingService }: CurrentlyPlayingSongProps) {
     if (!song.artist && !song.image && !song.title) {
         return (
             <Alert className='w-5/6'>
@@ -15,7 +18,11 @@ function CurrentlyPlayingSong({ song }: CurrentlyPlayingSongProps) {
                     <p>No song is playing!</p>
                 </AlertTitle>
                 <AlertDescription>
-                    <p>Start playing some music using your streaming service</p>
+                    {isAdmin && streamingService ? 
+                        <p>Start playing some music using {toLowerCaseBesidesFirst(streamingService)}</p>
+                    :
+                        <p>Ask your host to start some music</p>
+                    }
                 </AlertDescription>
             </Alert>
         )
