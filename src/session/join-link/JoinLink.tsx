@@ -17,7 +17,7 @@ function JoinLink({ sessionID, numberOfVoters, maximumVoters}: JoinLinkProps) {
                     <AspectRatio ratio={1}>
                         <img className='rounded-lg h-full w-auto' src={JoinQRCode} alt='QR code link to fazool.party' />
                     </AspectRatio>
-                <p className='text-xl leading-6 mt-2'>fazool.us/join</p>
+                <p className='text-xl leading-6 mt-2'>https://fazool.us/join</p>
                 <p className='text-muted-foreground'>No account required</p>
             </div>
         </div>
