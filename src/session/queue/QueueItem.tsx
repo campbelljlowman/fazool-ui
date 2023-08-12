@@ -6,6 +6,7 @@ import { ChevronDownCircle, ChevronUpCircle, ChevronsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import SpotifyLogo from '../../assets/images/spotify-logo.png'
 
 const UPDATE_QUEUE = graphql(`
     mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
@@ -25,6 +26,7 @@ interface QueueItemProps {
 }
 
 function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upVotedFor, downVotedFor }: QueueItemProps) {
+    const spotifySongLink = `https://open.spotify.com/track/${queuedSong.simpleSong.id}`
     const [updateQueueMutation, { error: updateQueueMutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
@@ -57,7 +59,6 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
     };
 
     const downVote = () => {
-        // TODO: This needs separate increment and decrement functions
         if (upVotedFor) {
             if (hasBonusVotes) {
                 // Bonus vote
@@ -80,19 +81,6 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
                 return <Button variant={'ghost'} disabled={true}><ChevronDownCircle className='h-6 w-6'/></Button>
             }
         }
-        // if (showDecrement) {
-        //     if (downVotedFor) {
-        //         return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
-        //     } else {
-        //         return <Button variant={'ghost'} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
-        //     }
-        // } else {
-        //     if (downVotedFor) {
-        //         return <Button variant={'ghost'} disabled={true} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Remove)}><ChevronDownCircle className='h-6 w-6  text-blue-400 stroke-blue-40'/></Button>
-        //     } else {
-        //         return <Button variant={'ghost'} disabled={true} onClick={() => vote(SongVoteDirection.Down, SongVoteAction.Add)}><ChevronDownCircle className='h-6 w-6'/></Button>
-        //     }        
-        // }
     };
 
     return (
@@ -104,6 +92,9 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
                 <p className="font-medium truncate w-full">{queuedSong.simpleSong.title}</p>
                 <p className="text-xs text-muted-foreground truncate w-full mb-1">{queuedSong.simpleSong.artist}</p>
                 <Badge className='absolute top-3 right-3'>{queuedSong.votes}</Badge>
+                <a href={spotifySongLink} target='_blank'>
+                    <img className='absolute top-3 left-3 h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
+                </a>
             </CardContent>
             <CardFooter className="flex justify-around p-2 pt-0">
                     {downVote()}
