@@ -23,7 +23,6 @@ const formSchema = z.object({
     lastName: z.string().min(1, { message: "Last name is required" }),
     email: z.string().email(),
     phoneNumber: z.union([z.string().length(0, {message: "Must be valid phone number"}), z.string().refine(validator.isMobilePhone)]).optional(),
-    // phoneNumber: z.string().refine(validator.isMobilePhone),
     password: z.string().min(1, { message: "Password is required" })
 })
 
@@ -35,7 +34,7 @@ function Register() {
     // TODO: Get errors variable here and check 
     const [createAccountMutation, { error: createAccountMutationError }] = useMutation(CREATE_ACCOUNT, {
         onCompleted(data) {
-            sessionStorage.setItem("account-token", data.createAccount)
+            localStorage.setItem("fazool-account-token", data.createAccount)
             if (redirect){
                 navigate(redirect);
             } else {

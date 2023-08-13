@@ -30,7 +30,7 @@ function Login() {
 
     const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
         onCompleted(data) {
-            sessionStorage.setItem("account-token", data.login)
+            localStorage.setItem("fazool-account-token", data.login)
             if (redirect){
                 navigate(redirect);
             } else {

@@ -65,7 +65,7 @@ function Home() {
 
     const [getVoterTokenQuery, { error: getVoterTokenQueryError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
+            localStorage.setItem('fazool-voter-token', voterTokenData.voterToken);
             navigate(`/session/${getAccountQueryData!.account.activeSession}`);
         },
     });
@@ -79,7 +79,11 @@ function Home() {
     }
 
     const launchSession = () => {
-        getVoterTokenQuery({ variables: { sessionID: getAccountQueryData!.account.activeSession! }});
+        if (localStorage.getItem('fazool-voter-token') == null) {
+            getVoterTokenQuery({ variables: { sessionID: getAccountQueryData!.account.activeSession! }});
+        } else {
+            navigate(`/session/${getAccountQueryData!.account.activeSession}`);
+        }
     }
 
     if (createSessionMutationError) console.log(`Error creating session: ${createSessionMutationError.message}`)

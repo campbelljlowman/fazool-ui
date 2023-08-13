@@ -30,7 +30,7 @@ function Join() {
 
     const [getVoterTokenQuery, { error: getVoterTokenQueryError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
-            sessionStorage.setItem('voter-token', voterTokenData.voterToken);
+            localStorage.setItem('fazool-voter-token', voterTokenData.voterToken);
             navigate(`/session/${sessionID}`);
         },
     });
@@ -48,7 +48,11 @@ function Join() {
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         setSessionID(values.sessionID);
-        getVoterTokenQuery({ variables: { sessionID: +values.sessionID }});
+        if (localStorage.getItem('fazool-voter-token') == null) {
+            getVoterTokenQuery({ variables: { sessionID: +values.sessionID }});
+        } else {
+            navigate(`/session/${values.sessionID}`);
+        }
     }
 
     if (getVoterTokenQueryError) console.log(`Error joining voters: ${getVoterTokenQueryError.message}`)

@@ -33,8 +33,8 @@ const splitLink = split(
 );
 
 const authLink = setContext((_, { headers }) => {
-    const accountToken = sessionStorage.getItem('account-token');
-    const voterToken = sessionStorage.getItem('voter-token');
+    const accountToken = localStorage.getItem('fazool-account-token');
+    const voterToken = localStorage.getItem('fazool-voter-token');
     return {
         headers: {
             ...headers,
