@@ -124,12 +124,7 @@ function Session() {
 
     const { data: getVoterQueryData, error: getVoterQueryError } = useQuery(GET_VOTER, {variables: { sessionID: sessionID }});
 
-    const { data: getAccountQueryData } = useQuery(GET_ACCOUNT, {
-        onError(error) {
-            console.log(`Caught error on getting account: ${error.message}`)
-            // Probably redirect to login page or call refresh token mutation
-        },
-    });
+    const { data: getAccountQueryData } = useQuery(GET_ACCOUNT);
 
     const { data: getSessionConfigQueryData, error: getSessionConfigQueryError } = useQuery(GET_SESSION_CONFIG, {variables: { sessionID: sessionID }});
     
