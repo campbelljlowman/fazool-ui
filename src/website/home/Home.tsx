@@ -144,7 +144,7 @@ function Home() {
                 </div>
                 <Separator/>
             </div>
-            <div className='flex justify-around items-center md:flex-row flex-col m-4'>
+            <div className='flex justify-around items-center h-5/6 md:flex-row flex-col m-4'>
                 <div className='text-4xl font-bold text-center'>Welcome {getAccountQueryData.account.firstName}</div>
                 <div className='flex md:flex-row flex-col items-center'>
                     <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
