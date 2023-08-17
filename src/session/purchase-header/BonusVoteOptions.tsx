@@ -1,12 +1,11 @@
 import { Separator } from '@/components/ui/separator'
-import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Coins, ChevronsUp } from 'lucide-react'
 import { bonusVoteCostMapping } from '@/constants'
 import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Account, BonusVoteAmount, Voter } from '@/gql/graphql'
-import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { DialogClose } from '@radix-ui/react-dialog'
 
 const ADD_BONUS_VOTES = graphql(`
@@ -48,10 +47,8 @@ function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVo
                                     Confirm purchase of {numberOfBonusVotes} bonus votes for {costInTokens} Fazool tokens
                                 </DialogDescription>
                             </DialogHeader>
-                            <DialogClose>
-                                <DialogFooter>
-                                    <Button disabled={disabled} type='submit' onClick={addBonusVotes} variant={'default'}>Get</Button>
-                                </DialogFooter>
+                            <DialogClose disabled={disabled} onClick={addBonusVotes} className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'>
+                                Get
                             </DialogClose>
                         </DialogContent>
                     </Dialog>

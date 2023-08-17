@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Coins } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -7,7 +6,7 @@ import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Voter, Account } from '@/gql/graphql'
 import { toLowerCaseBesidesFirst } from '@/utils'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger, DialogTitle } from '@/components/ui/dialog'
 import { DialogClose } from '@radix-ui/react-dialog'
 
 const SET_SUPER_VOTER_SESSION = graphql(`
@@ -67,16 +66,9 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
                                     <DialogDescription>
                                         Confirm purchase of super voter status for {superVoterCost} Fazool tokens
                                     </DialogDescription>
-                                    {/* <DialogTitle>
-                                        <p className='text-center'>
-                                            Confirm purchase of Super Voter status for {superVoterCost} Fazool tokens
-                                        </p>
-                                    </DialogTitle> */}
                                 </DialogHeader>
-                                <DialogClose>
-                                    <DialogFooter>
-                                        <Button disabled={account == undefined} onClick={setSuperVoterSession}>Get</Button>
-                                    </DialogFooter>
+                                <DialogClose disabled={account == undefined} onClick={setSuperVoterSession} className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'>
+                                    Get
                                 </DialogClose>
                             </DialogContent>
                         </Dialog>
