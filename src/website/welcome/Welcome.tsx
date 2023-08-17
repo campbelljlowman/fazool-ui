@@ -5,6 +5,7 @@ import SessionMockup from '../../assets/images/session-mock-up.png'
 import HowItWorksCard from './HowItWorksCard';
 import { Separator } from '@/components/ui/separator';
 import { Link, MonitorPlay, ScanLine, Music } from 'lucide-react'
+import Footer from '../components/Footer';
 
 function Welcome() {
     const navigate = useNavigate();
@@ -51,6 +52,7 @@ function Welcome() {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }

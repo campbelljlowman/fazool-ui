@@ -6,6 +6,7 @@ import { StreamingService } from '../../gql/graphql';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Footer from '../components/Footer';
 
 
 const GET_ACCOUNT = graphql(`
@@ -151,6 +152,7 @@ function Home() {
                     <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }
