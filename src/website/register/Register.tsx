@@ -59,10 +59,11 @@ function Register() {
     })
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
+        let phoneNumber = values.phoneNumber ? values.phoneNumber : ''
         const newAccount = {
             "firstName": values.firstName,
             "lastName": values.lastName,
-            "phoneNumber": values.phoneNumber,
+            "phoneNumber": phoneNumber,
             "email": values.email,
             "password": values.password
         };

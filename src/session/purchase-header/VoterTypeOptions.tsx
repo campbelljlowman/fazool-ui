@@ -7,7 +7,8 @@ import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Voter, Account } from '@/gql/graphql'
 import { toLowerCaseBesidesFirst } from '@/utils'
-
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { DialogClose } from '@radix-ui/react-dialog'
 
 const SET_SUPER_VOTER_SESSION = graphql(`
     mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {
@@ -54,7 +55,31 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
                             <p>{superVoterCost}</p>
                             <Coins className='ml-2'/>
                         </div>
-                        <Button disabled={account == undefined} onClick={setSuperVoterSession}>Get</Button>
+                        <Dialog>
+                            <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                Get
+                            </DialogTrigger>
+                            <DialogContent className='flex flex-col items-center '>
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Confirm Puchase
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        Confirm purchase of super voter status for {superVoterCost} Fazool tokens
+                                    </DialogDescription>
+                                    {/* <DialogTitle>
+                                        <p className='text-center'>
+                                            Confirm purchase of Super Voter status for {superVoterCost} Fazool tokens
+                                        </p>
+                                    </DialogTitle> */}
+                                </DialogHeader>
+                                <DialogClose>
+                                    <DialogFooter>
+                                        <Button disabled={account == undefined} onClick={setSuperVoterSession}>Get</Button>
+                                    </DialogFooter>
+                                </DialogClose>
+                            </DialogContent>
+                        </Dialog>
                     </div>
                 </div>
                 {setSuperVoterSessionMutationError && <p className='text-destructive'>{setSuperVoterSessionMutationError.message}</p>}

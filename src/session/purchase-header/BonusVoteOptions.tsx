@@ -6,6 +6,8 @@ import { bonusVoteCostMapping } from '@/constants'
 import { graphql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { Account, BonusVoteAmount, Voter } from '@/gql/graphql'
+import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog'
+import { DialogClose } from '@radix-ui/react-dialog'
 
 const ADD_BONUS_VOTES = graphql(`
     mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {
@@ -33,7 +35,26 @@ function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVo
                         <p>{costInTokens}</p>
                         <Coins className='ml-2'/>
                     </div>
-                    <Button disabled={disabled} onClick={addBonusVotes} variant={variant}>Get</Button>
+                    <Dialog>
+                        <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                            Get
+                        </DialogTrigger>
+                        <DialogContent className='flex flex-col items-center '>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    Confirm Puchase
+                                </DialogTitle>
+                                <DialogDescription>
+                                    Confirm purchase of {numberOfBonusVotes} bonus votes for {costInTokens} Fazool tokens
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogClose>
+                                <DialogFooter>
+                                    <Button disabled={disabled} type='submit' onClick={addBonusVotes} variant={'default'}>Get</Button>
+                                </DialogFooter>
+                            </DialogClose>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </>
