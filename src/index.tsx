@@ -9,12 +9,12 @@ import { createClient } from 'graphql-ws'
 import './index.css'
 
 const httpLink = new HttpLink({
-    uri: import.meta.env.VITE_GRAPHQL_HTTP_SERVER,
+    uri: import.meta.env.VITE_GRAPHQL_API_HTTP_ADDRESS,
 });
 
 // TODO: Pass voter token on this dynamically?
 const wsLink = new GraphQLWsLink(createClient({
-    url: import.meta.env.VITE_GRAPHQL_WS_SERVER,
+    url: import.meta.env.VITE_GRAPHQL_API_WS_ADDRESS,
     connectionParams: {
         SubscriptionAuthentication: "Subscription-Allowed",
     }

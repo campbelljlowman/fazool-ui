@@ -37,7 +37,7 @@ const GET_VOTER_TOKEN = graphql(`
 `);
 
 const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const redirectURI = `${import.meta.env.VITE_BACKEND_HTTP_SERVER}/callback`
+const redirectURI = `${import.meta.env.VITE_FRONTEND_SERVER_HTTP_ADDRESS}/callback`
 var scope = 'user-modify-playback-state user-read-playback-state';
 
 //TODO: Add state to request
@@ -129,6 +129,7 @@ function Home() {
                     {hasActiveSession && <p>Current session: {getAccountQueryData!.account.activeSession}</p>}
                     {!hasActiveSession && <p>No current active session</p>}
                 </CardContent>
+                {createSessionMutationError && <p className='text-destructive '> {createSessionMutationError.message}</p>}
                 <CardFooter>
                     {hasActiveSession && <Button onClick={launchSession}>Launch Session</Button>}
                     {!hasActiveSession && <Button onClick={createSession}>Start Session</Button>}
