@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import SpotifyLogo from '../../assets/images/spotify-logo.png'
 
 const UPDATE_QUEUE = graphql(`
-    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
+    mutation updateQueue($sessionID: Int!, $song: SongUpdate!) {
         updateQueue(sessionID: $sessionID, song: $song) {
             numberOfVoters
         }

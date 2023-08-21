@@ -9,7 +9,7 @@ import { PlusCircle, XCircle } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const UPDATE_QUEUE = graphql(`
-    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {
+    mutation updateQueue($sessionID: Int!, $song: SongUpdate!) {
         updateQueue(sessionID: $sessionID, song: $song) {
             numberOfVoters
         }

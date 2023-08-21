@@ -8,7 +8,7 @@ import { Account, FazoolTokenAmount } from '@/gql/graphql';
 import { fazoolTokenCostMapping } from '@/constants';
 
 const ADD_FAZOOL_TOKENS = graphql(`
-    mutation AddFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {
+    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {
         addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)
     }
 `);
