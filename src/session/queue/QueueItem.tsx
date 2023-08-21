@@ -84,21 +84,23 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
     };
 
     return (
-        <Card className='relative w-5/6 m-4 first:border-primary'>
+        <Card className='w-5/6 m-4 first:border-primary'>
             <CardContent className='p-4 pb-0'>
+                <div className='flex justify-between w-full mb-2'>
+                        <a href={spotifySongLink} target='_blank'>
+                            <img className=' h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
+                        </a>
+                        <Badge className=''>{queuedSong.votes}</Badge>
+                </div>
                 <AspectRatio>
                     <img className="h-auto w-full" src={queuedSong.simpleSong.image} alt="Album Cover"  />
                 </AspectRatio>
                 <p className="font-medium truncate w-full">{queuedSong.simpleSong.title}</p>
                 <p className="text-xs text-muted-foreground truncate w-full mb-1">{queuedSong.simpleSong.artist}</p>
-                <Badge className='absolute top-3 right-3'>{queuedSong.votes}</Badge>
-                <a href={spotifySongLink} target='_blank'>
-                    <img className='absolute top-3 left-3 h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
-                </a>
             </CardContent>
-            <CardFooter className="flex justify-around p-2 pt-0">
-                    {downVote()}
-                    {upvote()}
+            <CardFooter className='flex justify-around  p-2 pt-0'>
+                {downVote()}
+                {upvote()}
             </CardFooter>
         </Card>
     );

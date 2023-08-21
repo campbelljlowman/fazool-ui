@@ -34,13 +34,17 @@ function CurrentlyPlayingSong({ song, isAdmin, streamingService }: CurrentlyPlay
     return (
         <div className='flex flex-col w-1/2'>
             <AspectRatio ratio={1}>
-                <img className='rounded' src={song.image} alt='Album Cover'  />
-                <a href={spotifySongLink} target='_blank'>
-                    <img className='absolute -top-2 -left-2 h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
-                </a>
+                <img src={song.image} alt='Album Cover'  />
             </AspectRatio>
-            <h3 className='font-medium w-full truncate mt-1' >{song.title}</h3>
-            <p className='text-xs text-muted-foreground w-full truncate'>{song.artist}</p>
+            <div className='flex items-center justify-between'>
+                <div className='truncate'>
+                    <h3 className='font-medium w-full truncate mt-1' >{song.title}</h3>
+                    <p className='text-xs text-muted-foreground w-full truncate'>{song.artist}</p>
+                </div>
+                <a className='flex-shrink-0' href={spotifySongLink} target='_blank'>
+                    <img className='h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
+                </a>
+            </div>
 
         </div>
     );
