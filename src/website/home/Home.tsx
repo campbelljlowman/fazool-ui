@@ -30,6 +30,14 @@ const CREATE_SESSION = graphql(`
     }
 `);
 
+const REMOVE_SPOTIFY_STREAMING_SERVICE = graphql(`
+    mutation removeSpotifyStreamingService($targetAccountID: Int!) {
+        removeSpotifyStreamingService(targetAccountID: $targetAccountID) {
+            id
+        }
+    }
+`)
+
 const GET_VOTER_TOKEN = graphql(`
     query getVoterToken ($sessionID: Int!) {
         voterToken(sessionID:$sessionID)
@@ -64,6 +72,12 @@ function Home() {
         ]
     });
 
+    const [removeSpotifyStreamingServiceMutation, { error: removeSpotifyStreamingServiceMutationError }] = useMutation(REMOVE_SPOTIFY_STREAMING_SERVICE, {
+        refetchQueries: [
+            'getAccount',
+        ]
+    });
+
     const [getVoterTokenQuery, { error: getVoterTokenQueryError }] = useLazyQuery(GET_VOTER_TOKEN, {
         onCompleted(voterTokenData) {
             localStorage.setItem('fazool-voter-token', voterTokenData.voterToken);
@@ -87,7 +101,12 @@ function Home() {
         }
     }
 
+    const removeSpotifyStreamingService = () => {
+        removeSpotifyStreamingServiceMutation({ variables: {targetAccountID: getAccountQueryData!.account.id}})
+    }
+
     if (createSessionMutationError) console.log(`Error creating session: ${createSessionMutationError.message}`)
+    if (removeSpotifyStreamingServiceMutationError) console.log(`Error removing spotify streaming service: ${removeSpotifyStreamingServiceMutationError}`)
     if (getAccountQueryError) return <div>Error! {getAccountQueryError.message}</div>
     if (getVoterTokenQueryError) return <div>Error getting voter token: {getVoterTokenQueryError.message}</div>
 
@@ -98,19 +117,19 @@ function Home() {
     }
     function StreamingServiceInfo({isStreamingServiceRegistered}: StreamingServiceInfoProps) {
         return (
-            <Card className='flex flex-col justify-between items-center m-4 md:w-2/5 w-5/6 text-center'>
+            <Card className='flex flex-col justify-between items-center h-full m-4 md:w-2/5 w-5/6 text-center'>
                 <CardHeader>
                     <CardTitle className='text-3xl'>Streaming Service</CardTitle>
                 </CardHeader>
                 <CardContent className='text-xl'>
-                    {isStreamingServiceRegistered && <p>Spotify</p>}
-                    {!isStreamingServiceRegistered && <p>None</p>}
+                    {isStreamingServiceRegistered ? <p>Spotify</p> : <p>None</p>}
                 </CardContent>
-                <CardFooter>
+                <CardFooter className='flex justify-around w-full'>
                     <a href={spotifyLoginURL}>
-                        {isStreamingServiceRegistered && <Button>Change</Button>}
-                        {!isStreamingServiceRegistered && <Button>Link</Button>}
+                        {isStreamingServiceRegistered ? <Button>Change</Button> : <Button>Link</Button>}
                     </a>
+                    {isStreamingServiceRegistered && <Button onClick={removeSpotifyStreamingService} variant={'destructive'}>Remove</Button>}
+                    {removeSpotifyStreamingServiceMutationError && <p>{removeSpotifyStreamingServiceMutationError.message}</p>}
                 </CardFooter>
             </Card>
         )
@@ -121,18 +140,20 @@ function Home() {
     }
     function SessionInfo({ hasActiveSession}: SessionInfoProps ) {
         return (
-            <Card className='flex flex-col justify-between items-center m-4 md:w-2/5 w-5/6 text-center'>
+            <Card className='flex flex-col justify-between items-center h-full m-4 md:w-2/5 text-center'>
                 <CardHeader>
                     <CardTitle className='text-3xl'>Session</CardTitle>
                 </CardHeader>
                 <CardContent className='text-xl'>
-                    {hasActiveSession && <p>Current session: {getAccountQueryData!.account.activeSession}</p>}
-                    {!hasActiveSession && <p>No current active session</p>}
+                    {hasActiveSession 
+                    ? <p>Current session: {getAccountQueryData!.account.activeSession}</p> 
+                    : <p>No current active session</p>}
                 </CardContent>
                 {createSessionMutationError && <p className='text-destructive '> {createSessionMutationError.message}</p>}
                 <CardFooter>
-                    {hasActiveSession && <Button onClick={launchSession}>Launch Session</Button>}
-                    {!hasActiveSession && <Button onClick={createSession}>Start Session</Button>}
+                    {hasActiveSession 
+                    ? <Button onClick={launchSession}>Launch Session</Button> 
+                    : <Button onClick={createSession}>Start Session</Button>}
                 </CardFooter>
             </Card>
         )
@@ -148,7 +169,7 @@ function Home() {
             </div>
             <div className='flex justify-around items-center h-5/6 md:flex-row flex-col m-4'>
                 <div className='text-4xl font-bold text-center'>Welcome {getAccountQueryData.account.firstName}</div>
-                <div className='flex md:flex-row flex-col items-center'>
+                <div className='flex md:flex-row flex-col items-center h-2/5'>
                     <SessionInfo hasActiveSession={getAccountQueryData!.account.activeSession !== 0} />
                     <StreamingServiceInfo isStreamingServiceRegistered={getAccountQueryData.account.streamingService !== StreamingService.None}/>
                 </div>

@@ -27,8 +27,9 @@ const documents = {
     "\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n": types.SetSuperVoterSessionDocument,
     "\n    mutation UpdateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n": types.UpdateQueueDocument,
     "\n    query musicSearch ($sessionID: Int!, $query: String!){\n        musicSearch (sessionID: $sessionID, query: $query){\n            id\n            title\n            artist\n            image\n        }\n    }\n": types.MusicSearchDocument,
-    "\n    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {\n        upsertSpotifyToken(spotifyCreds:$spotifyCreds){\n            id\n        }\n    }\n": types.UpsertSpotifyCredentialsDocument,
+    "\n    mutation setSpotifyStreamingService ($spotifyRefreshToken: String!) {\n        setSpotifyStreamingService(spotifyRefreshToken: $spotifyRefreshToken){\n            id\n        }\n    }\n": types.SetSpotifyStreamingServiceDocument,
     "\n    mutation createSession {\n        createSession{\n            activeSession\n        }\n    }\n": types.CreateSessionDocument,
+    "\n    mutation removeSpotifyStreamingService($targetAccountID: Int!) {\n        removeSpotifyStreamingService(targetAccountID: $targetAccountID) {\n            id\n        }\n    }\n": types.RemoveSpotifyStreamingServiceDocument,
     "\n    query getVoterToken ($sessionID: Int!) {\n        voterToken(sessionID:$sessionID)\n    }\n": types.GetVoterTokenDocument,
     "\n    mutation login ($accountLogin: AccountLogin!) {\n        login(accountLogin:$accountLogin)\n    }\n": types.LoginDocument,
     "\n    mutation createAccount ($newAccount: NewAccount!) {\n        createAccount(newAccount: $newAccount)\n    }\n": types.CreateAccountDocument,
@@ -107,11 +108,15 @@ export function graphql(source: "\n    query musicSearch ($sessionID: Int!, $que
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {\n        upsertSpotifyToken(spotifyCreds:$spotifyCreds){\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {\n        upsertSpotifyToken(spotifyCreds:$spotifyCreds){\n            id\n        }\n    }\n"];
+export function graphql(source: "\n    mutation setSpotifyStreamingService ($spotifyRefreshToken: String!) {\n        setSpotifyStreamingService(spotifyRefreshToken: $spotifyRefreshToken){\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation setSpotifyStreamingService ($spotifyRefreshToken: String!) {\n        setSpotifyStreamingService(spotifyRefreshToken: $spotifyRefreshToken){\n            id\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation createSession {\n        createSession{\n            activeSession\n        }\n    }\n"): (typeof documents)["\n    mutation createSession {\n        createSession{\n            activeSession\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation removeSpotifyStreamingService($targetAccountID: Int!) {\n        removeSpotifyStreamingService(targetAccountID: $targetAccountID) {\n            id\n        }\n    }\n"): (typeof documents)["\n    mutation removeSpotifyStreamingService($targetAccountID: Int!) {\n        removeSpotifyStreamingService(targetAccountID: $targetAccountID) {\n            id\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

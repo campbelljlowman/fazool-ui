@@ -5,9 +5,9 @@ import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql';
 
 
-const UPSERT_SPOTIFY_CREDENTIALS = graphql(`
-    mutation upsertSpotifyCredentials ($spotifyCreds: SpotifyCreds!) {
-        upsertSpotifyToken(spotifyCreds:$spotifyCreds){
+const SET_SPOTIFY_STREAMING_SERVICE = graphql(`
+    mutation setSpotifyStreamingService ($spotifyRefreshToken: String!) {
+        setSpotifyStreamingService(spotifyRefreshToken: $spotifyRefreshToken){
             id
         }
     }
@@ -29,7 +29,7 @@ function SpotifyCallback() {
         return null
     }
 
-    const [upsertSpotifyCredentialsMutation, { error: upsertSpotifyCredentialsMutationError }] = useMutation(UPSERT_SPOTIFY_CREDENTIALS, {
+    const [upsertSpotifyCredentialsMutation, { error: upsertSpotifyCredentialsMutationError }] = useMutation(SET_SPOTIFY_STREAMING_SERVICE, {
         onCompleted() {
             navigate("/home");
         }
@@ -54,12 +54,7 @@ function SpotifyCallback() {
                 console.log(`Request error body: ${await rsp.text()}`);
             } else {
                 const rspJson = await rsp.json();
-                console.log(rspJson);
-                const spotifyCreds = {
-                    "accessToken": rspJson.access_token,
-                    "refreshToken": rspJson.refresh_token
-                }
-                upsertSpotifyCredentialsMutation({ variables: { spotifyCreds: spotifyCreds } });
+                upsertSpotifyCredentialsMutation({ variables: { spotifyRefreshToken: rspJson.refresh_token } });
             }
         };
         processCredentials();

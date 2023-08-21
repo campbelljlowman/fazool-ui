@@ -65,12 +65,13 @@ export type Mutation = {
   deleteAccount: Scalars['String'];
   endSession: Scalars['String'];
   login: Scalars['String'];
+  removeSpotifyStreamingService: Account;
   setAccountType: Account;
   setPlaylist: SessionState;
+  setSpotifyStreamingService: Account;
   setSuperVoterSession: Account;
   updateCurrentlyPlaying: SessionState;
   updateQueue: SessionState;
-  upsertSpotifyToken: Account;
 };
 
 
@@ -108,6 +109,11 @@ export type MutationLoginArgs = {
 };
 
 
+export type MutationRemoveSpotifyStreamingServiceArgs = {
+  targetAccountID: Scalars['Int'];
+};
+
+
 export type MutationSetAccountTypeArgs = {
   accountType: AccountType;
   targetAccountID: Scalars['Int'];
@@ -117,6 +123,11 @@ export type MutationSetAccountTypeArgs = {
 export type MutationSetPlaylistArgs = {
   playlistID: Scalars['String'];
   sessionID: Scalars['Int'];
+};
+
+
+export type MutationSetSpotifyStreamingServiceArgs = {
+  spotifyRefreshToken: Scalars['String'];
 };
 
 
@@ -135,11 +146,6 @@ export type MutationUpdateCurrentlyPlayingArgs = {
 export type MutationUpdateQueueArgs = {
   sessionID: Scalars['Int'];
   song: SongUpdate;
-};
-
-
-export type MutationUpsertSpotifyTokenArgs = {
-  spotifyCreds: SpotifyCreds;
 };
 
 export type NewAccount = {
@@ -251,11 +257,6 @@ export enum SongVoteDirection {
   Down = 'DOWN',
   Up = 'UP'
 }
-
-export type SpotifyCreds = {
-  accessToken: Scalars['String'];
-  refreshToken: Scalars['String'];
-};
 
 export enum StreamingService {
   None = 'NONE',
@@ -393,17 +394,24 @@ export type MusicSearchQueryVariables = Exact<{
 
 export type MusicSearchQuery = { __typename?: 'Query', musicSearch?: Array<{ __typename?: 'SimpleSong', id: string, title: string, artist: string, image: string }> | null };
 
-export type UpsertSpotifyCredentialsMutationVariables = Exact<{
-  spotifyCreds: SpotifyCreds;
+export type SetSpotifyStreamingServiceMutationVariables = Exact<{
+  spotifyRefreshToken: Scalars['String'];
 }>;
 
 
-export type UpsertSpotifyCredentialsMutation = { __typename?: 'Mutation', upsertSpotifyToken: { __typename?: 'Account', id: number } };
+export type SetSpotifyStreamingServiceMutation = { __typename?: 'Mutation', setSpotifyStreamingService: { __typename?: 'Account', id: number } };
 
 export type CreateSessionMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CreateSessionMutation = { __typename?: 'Mutation', createSession: { __typename?: 'Account', activeSession?: number | null } };
+
+export type RemoveSpotifyStreamingServiceMutationVariables = Exact<{
+  targetAccountID: Scalars['Int'];
+}>;
+
+
+export type RemoveSpotifyStreamingServiceMutation = { __typename?: 'Mutation', removeSpotifyStreamingService: { __typename?: 'Account', id: number } };
 
 export type GetVoterTokenQueryVariables = Exact<{
   sessionID: Scalars['Int'];
@@ -441,8 +449,9 @@ export const AddFazoolTokensDocument = {"kind":"Document","definitions":[{"kind"
 export const SetSuperVoterSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setSuperVoterSession"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setSuperVoterSession"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"targetAccountID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fazoolTokens"}}]}}]}}]} as unknown as DocumentNode<SetSuperVoterSessionMutation, SetSuperVoterSessionMutationVariables>;
 export const UpdateQueueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateQueue"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"song"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SongUpdate"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateQueue"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"song"},"value":{"kind":"Variable","name":{"kind":"Name","value":"song"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"numberOfVoters"}}]}}]}}]} as unknown as DocumentNode<UpdateQueueMutation, UpdateQueueMutationVariables>;
 export const MusicSearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"musicSearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"musicSearch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}},{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<MusicSearchQuery, MusicSearchQueryVariables>;
-export const UpsertSpotifyCredentialsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"upsertSpotifyCredentials"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SpotifyCreds"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertSpotifyToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"spotifyCreds"},"value":{"kind":"Variable","name":{"kind":"Name","value":"spotifyCreds"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertSpotifyCredentialsMutation, UpsertSpotifyCredentialsMutationVariables>;
+export const SetSpotifyStreamingServiceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"setSpotifyStreamingService"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"spotifyRefreshToken"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setSpotifyStreamingService"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"spotifyRefreshToken"},"value":{"kind":"Variable","name":{"kind":"Name","value":"spotifyRefreshToken"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SetSpotifyStreamingServiceMutation, SetSpotifyStreamingServiceMutationVariables>;
 export const CreateSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"activeSession"}}]}}]}}]} as unknown as DocumentNode<CreateSessionMutation, CreateSessionMutationVariables>;
+export const RemoveSpotifyStreamingServiceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeSpotifyStreamingService"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeSpotifyStreamingService"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"targetAccountID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"targetAccountID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<RemoveSpotifyStreamingServiceMutation, RemoveSpotifyStreamingServiceMutationVariables>;
 export const GetVoterTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVoterToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"voterToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"sessionID"},"value":{"kind":"Variable","name":{"kind":"Name","value":"sessionID"}}}]}]}}]} as unknown as DocumentNode<GetVoterTokenQuery, GetVoterTokenQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AccountLogin"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"accountLogin"},"value":{"kind":"Variable","name":{"kind":"Name","value":"accountLogin"}}}]}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const CreateAccountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createAccount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"newAccount"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"NewAccount"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAccount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"newAccount"},"value":{"kind":"Variable","name":{"kind":"Name","value":"newAccount"}}}]}]}}]} as unknown as DocumentNode<CreateAccountMutation, CreateAccountMutationVariables>;
