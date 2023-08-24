@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Footer from '../components/Footer';
+import { ThemeModeToggle } from '../components/ThemeModeToggle';
 
 
 const GET_ACCOUNT = graphql(`
@@ -162,8 +163,9 @@ function Home() {
     return (
         <div className='h-full'>
             <div>
-                <div className='flex justify-start w-full'>
+                <div className='flex justify-start w-full items-center'>
                     <LogoIcon onClick={logoOnClick} className='w-48 my-2 mx-4'/>
+                    <ThemeModeToggle/>
                 </div>
                 <Separator/>
             </div>

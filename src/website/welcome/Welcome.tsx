@@ -6,6 +6,7 @@ import HowItWorksCard from './HowItWorksCard';
 import { Separator } from '@/components/ui/separator';
 import { Link, MonitorPlay, ScanLine, Music } from 'lucide-react'
 import Footer from '../components/Footer';
+import { ThemeModeToggle } from '../components/ThemeModeToggle';
 
 function Welcome() {
     const navigate = useNavigate();
@@ -14,7 +15,10 @@ function Welcome() {
         <div>
             <div>
                 <div className='flex justify-between items-center md:flex-row flex-col mx-4 my-2'>
-                    <LogoIcon className='w-48'/>
+                    <div className='flex items-center'>
+                        <LogoIcon className='w-48 my-2 mx-4'/>
+                        <ThemeModeToggle/>
+                    </div>
                     <div className='flex flex-wrap justify-center'>
                         <Button className='m-3' variant={'secondary'} onClick={() => {navigate("/join");}}>Join Session</Button>
                         <Button className='m-3' onClick={() => {navigate("/register");}}>Sign Up</Button>

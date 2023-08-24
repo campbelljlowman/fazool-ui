@@ -5,7 +5,7 @@ import BonusVoteOptions from './BonusVoteOptions'
 import VoterTypeOptions from './VoterTypeOptions'
 import FazoolTokenOptions from './FazoolTokenOptions'
 import AccountAvater from './AccountAvater'
-
+import { ThemeModeToggle } from '@/website/components/ThemeModeToggle'
 
 interface PurchaseHeaderProps {
     voter:              Voter
@@ -34,6 +34,9 @@ function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
             </div>
             <div className='flex items-center'>
                 <AccountAvater sessionID={sessionID} account={account}/>
+                <div className='mr-2'>
+                    <ThemeModeToggle/>
+                </div>
                 <LogoIcon onClick={logoOnClick} className='w-48 mr-6 md:block hidden'/>
             </div>
         </div>
