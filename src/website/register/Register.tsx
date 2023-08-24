@@ -35,6 +35,13 @@ function Register() {
     const [createAccountMutation, { error: createAccountMutationError }] = useMutation(CREATE_ACCOUNT, {
         onCompleted(data) {
             localStorage.setItem("fazool-account-token", data.createAccount)
+            fetch(`${import.meta.env.VITE_BACKEND_API_HTTP_ADDRESS}/refresh-token`, {
+                credentials: 'include',
+                method: 'GET',
+                headers: {
+                    AccountAuthentication: `Bearer ${data.createAccount}`
+                },
+            })
             if (redirect){
                 navigate(redirect);
             } else {

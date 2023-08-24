@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, split, HttpLink, from } from '@apollo/client';
+import { onError } from "@apollo/client/link/error";
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
@@ -44,8 +45,27 @@ const authLink = setContext((_, { headers }) => {
     }
 });
 
+
+const errorLink = onError(({ graphQLErrors }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message }) => {
+            if (message == "account token is expired") {
+                fetch(`${import.meta.env.VITE_BACKEND_API_HTTP_ADDRESS}/refresh-token`, {
+								credentials: 'include',
+                method: 'POST',
+                }).then(response => response.text()
+                ).then(responseText => {
+                    localStorage.setItem("fazool-account-token", responseText)
+                }).catch(() => {
+                    window.location.href = `${import.meta.env.VITE_BACKEND_API_HTTP_ADDRESS}/login`
+                })
+            }
+        }
+      );
+});
+
 const client = new ApolloClient({
-    link: authLink.concat(splitLink),
+    link: from([authLink, errorLink, splitLink]),
     cache: new InMemoryCache(),
 });
 

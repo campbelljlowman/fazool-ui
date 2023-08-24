@@ -31,6 +31,13 @@ function Login() {
     const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
         onCompleted(data) {
             localStorage.setItem("fazool-account-token", data.login)
+            fetch(`${import.meta.env.VITE_BACKEND_API_HTTP_ADDRESS}/refresh-token`, {
+                credentials: 'include',
+                method: 'GET',
+                headers: {
+                    AccountAuthentication: `Bearer ${data.login}`
+                },
+            })
             if (redirect){
                 navigate(redirect);
             } else {
