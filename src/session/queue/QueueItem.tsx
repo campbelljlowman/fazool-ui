@@ -88,7 +88,7 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
             <CardContent className='p-4 pb-0'>
                 <div className='flex justify-between w-full mb-2'>
                         <a href={spotifySongLink} target='_blank'>
-                            <img className=' h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
+                            <img className=' h-6 w-6 cursor-pointer border-2 border-[--border] rounded-full'  src={SpotifyLogo} alt='spotify logo'/>
                         </a>
                         <Badge className=''>{queuedSong.votes}</Badge>
                 </div>

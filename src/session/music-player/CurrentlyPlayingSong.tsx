@@ -42,7 +42,7 @@ function CurrentlyPlayingSong({ song, isAdmin, streamingService }: CurrentlyPlay
                     <p className='text-xs text-muted-foreground w-full truncate'>{song.artist}</p>
                 </div>
                 <a className='flex-shrink-0' href={spotifySongLink} target='_blank'>
-                    <img className='h-6 w-6 cursor-pointer'  src={SpotifyLogo} alt='spotify logo'/>
+                    <img className='h-6 w-6 cursor-pointer border-2 border-[--border] rounded-full'  src={SpotifyLogo} alt='spotify logo'/>
                 </a>
             </div>
 
