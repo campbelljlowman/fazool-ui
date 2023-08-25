@@ -206,7 +206,7 @@ function Session() {
             )
         } else {
             return (
-                <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} />
+                <Queue sessionID={sessionID} sessionState={getSessionStateQueryData.sessionState} voter={getVoterQueryData.voter} isAdmin={isAdmin} />
             )
         }
     }

@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client';
 import { graphql } from '../../gql'
 import { QueuedSong, SongVoteDirection, SongVoteAction } from '../../gql/graphql'
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { ChevronDownCircle, ChevronUpCircle, ChevronsUp } from 'lucide-react';
+import { ChevronDownCircle, ChevronUpCircle, ChevronsUp, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,26 +16,38 @@ const UPDATE_QUEUE = graphql(`
     }
 `)
 
+const REMOVE_SONG_FROM_QUEUE = graphql(`
+    mutation removeSongFromQueue($sessionID: Int!, $songID: String!) {
+        removeSongFromQueue(sessionID: $sessionID, songID: $songID) {
+            numberOfVoters
+        }
+    }
+`)
+
 interface QueueItemProps {
     queuedSong:         QueuedSong,
     sessionID:          number,
     decrementEnabled:   boolean,
+    removeEnabled:      boolean
     hasBonusVotes:      boolean
     upVotedFor:         boolean,
-    downVotedFor:       boolean
+    downVotedFor:       boolean,
 }
 
-function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upVotedFor, downVotedFor }: QueueItemProps) {
+function QueueItem({ queuedSong, sessionID, decrementEnabled, removeEnabled, hasBonusVotes, upVotedFor, downVotedFor }: QueueItemProps) {
     const spotifySongLink = `https://open.spotify.com/track/${queuedSong.simpleSong.id}`
     const [updateQueueMutation, { error: updateQueueMutationError }] = useMutation(UPDATE_QUEUE, {
         refetchQueries: [
             'voter',
         ]
     });
+    
+    const [removeSongFromQueueMutation, { error: removeSongFromQueueMutationError }] = useMutation(REMOVE_SONG_FROM_QUEUE);
 
-    if (updateQueueMutationError) {
-        console.log("Error updating queue: " + updateQueueMutationError);
-    }
+
+    if (updateQueueMutationError) console.log("Error updating queue: " + updateQueueMutationError);
+    if (removeSongFromQueueMutationError) console.log(`Error removing song from queue: ${removeSongFromQueueMutationError}`)
+
     if (!queuedSong) {
         return null;
     }
@@ -49,6 +61,9 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
         updateQueueMutation({ variables: { sessionID: sessionID, song: songData } });
     }
 
+    const removeSongFromQueue = () => {
+        removeSongFromQueueMutation({ variables: {sessionID: sessionID, songID: queuedSong.simpleSong.id}})
+    }
 
     const upvote = () => {
         if (upVotedFor) {
@@ -84,7 +99,7 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
     };
 
     return (
-        <Card className='w-5/6 m-4 first:border-primary first:border-4'>
+        <Card className='w-5/6 m-4 first:border-primary first:border-4 relative'>
             <CardContent className='p-4 pb-0'>
                 <div className='flex justify-between w-full mb-2'>
                         <a href={spotifySongLink} target='_blank'>
@@ -102,6 +117,7 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, hasBonusVotes, upV
                 {downVote()}
                 {upvote()}
             </CardFooter>
+            {removeEnabled && <XCircle className='absolute -top-2 -right-2 cursor-pointer bg-background rounded-full' onClick={removeSongFromQueue} />}
         </Card>
     );
 }

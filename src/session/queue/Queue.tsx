@@ -5,10 +5,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 interface QueueProps {
     sessionID:      number,
     sessionState:   SessionState | null | undefined,
-    voter:          Voter
+    voter:          Voter,
+    isAdmin:        boolean
 
 }
-function Queue({ sessionID, sessionState, voter }: QueueProps) {
+function Queue({ sessionID, sessionState, voter, isAdmin }: QueueProps) {
 
     const checkVotedFor = (song: string, votes: string[]) => {
         if (voter.type === VoterType.Admin) {
@@ -61,7 +62,7 @@ function Queue({ sessionID, sessionState, voter }: QueueProps) {
         <ScrollArea>
             <div className='grid lg:grid-cols-6 md:grid-cols-4 grid-cols-2 overflow-auto max-h-[84vh]'>
                 {sessionState.queue.map(queuedSong => (
-                    <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} decrementEnabled={checkPrivilegedVoter()} hasBonusVotes={checkHasBonusVotes()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
+                    <QueueItem key={queuedSong.simpleSong.id} queuedSong={queuedSong} sessionID={sessionID} decrementEnabled={checkPrivilegedVoter()} removeEnabled={isAdmin} hasBonusVotes={checkHasBonusVotes()} upVotedFor={checkUpVotedFor(queuedSong.simpleSong.id)} downVotedFor={checkDownVotedFor(queuedSong.simpleSong.id)} />
                 ))}
             </div>
         </ScrollArea>
