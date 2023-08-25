@@ -56,6 +56,7 @@ const errorLink = onError(({ graphQLErrors }) => {
                 }).then(response => response.text()
                 ).then(responseText => {
                     localStorage.setItem("fazool-account-token", responseText)
+                    location.reload()
                 }).catch(() => {
                     window.location.href = `${import.meta.env.VITE_BACKEND_API_HTTP_ADDRESS}/login`
                 })

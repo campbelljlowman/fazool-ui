@@ -53,7 +53,7 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
     }
 
     return (
-        <Card className='absolute bottom-[10vh] md:left-1/3 left-[10%] md:w-1/3 w-5/6'>
+        <Card className='absolute bottom-[6vh] md:left-1/3 left-[10%] md:w-1/3 w-5/6 -z-10 border-4'>
             <CardHeader className='pb-2'>
                 <CardTitle className='flex justify-between items-center'>
                     <p>Search Results</p>
@@ -62,15 +62,15 @@ function SearchResults({ searchResults, clearSearchResults }: SearchResultProps)
             </CardHeader>
             <CardContent>
             {searchResults.slice(0).map(song => (
-                <>
+                <div className='w-full' key={song.id}>
                     <Separator/>
-                    <div className="flex items-center justify-between w-full py-2" key={song.id}>
-                        <div className='w-3/4'>
+                    <div className="flex items-center justify-between w-full py-2">
+                        <div className='w-3/4 truncate'>
                             <SearchResultSong song={song}/>
                         </div>
                         <Button variant={"ghost"} onClick={() => addSongToQueue(song)}><PlusCircle className='h-6 w-6'/></Button>
                     </div>
-                </>
+                </div>
             ))}
             </CardContent>
         </Card>

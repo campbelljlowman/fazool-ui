@@ -65,17 +65,19 @@ function SearchBox({ sessionID }: SearchBoxProps) {
     }
 
     return (
-        <div className='flex flex-col justify-around h-[8vh] fixed md:w-3/4 w-full bottom-0 bg-background'>
-            <Separator className='w-full'/>
-            <div className='flex items-center justify-between w-full'>
-                <div className='w-full flex justify-center ml-4'>
-                    <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
-                        <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
-                        <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
-                    </form>
+        <div className='h-[8vh] fixed md:w-3/4 w-full bottom-0 bg-background'>
+            <div className='flex flex-col justify-around h-full bg-background'>
+                <Separator className='w-full'/>
+                <div className='flex items-center justify-between w-full'>
+                    <div className='w-full flex justify-center ml-4'>
+                        <form className="flex w-full max-w-sm items-center space-x-2 grow-[4]">
+                            <Input type="email" placeholder="Song" value={searchQuery} onChange={handleChange}/>
+                            <Button variant={'ghost'} type="submit" onClick={searchForSong}><Search className='h-8 w-8'/></Button>
+                        </form>
+                    </div>
                 </div>
-                {displaySearchResults()}
             </div>
+            {displaySearchResults()}
         </div>
     );
 }
