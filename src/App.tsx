@@ -7,6 +7,8 @@ import Welcome from './website/welcome/Welcome';
 import Join from './website/join/Join';
 import SpotifyCallback from './website/callback/SpotifyCallback';
 import { ThemeProvider } from './components/theme-provider';
+import CreatePasswordChangeRequest from './website/reset-password/CreatePasswordChangeRequest.tsx';
+import ChangePassword from './website/reset-password/ChangePassword';
 
 // Website endpoints
 // / - welcome page. Welcome, demo video, sign up
@@ -25,6 +27,8 @@ function App() {
                     <Route path='/' element={<Welcome />} />
                     <Route path='/join' element={<Join />} />
                     <Route path='/login' element={<Login />} />
+                    <Route path='/change-password' element={<ChangePassword />} />
+                    <Route path='/create-password-change-request' element={<CreatePasswordChangeRequest />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/home' element={<Home />} />
                     <Route path='/session' >

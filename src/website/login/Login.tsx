@@ -102,8 +102,9 @@ function Login() {
                                 </FormItem>
                             )}
                         />
+                        <p className='text-xs text-muted-foreground cursor-pointer mt-2' onClick={() => navigate('/create-password-change-request')}>Forgot password?</p>
                         {loginMutationError && <p className='text-destructive mt-2'>Invalid login credentials!</p>}
-                        <Button type='submit' className='mt-3'>Login</Button>
+                        <Button type='submit' className='mt-1'>Login</Button>
                     </form>
                 </Form>
             </Card>

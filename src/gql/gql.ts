@@ -22,18 +22,19 @@ const documents = {
     "\n    mutation endSession($sessionID: Int!){\n        endSession(sessionID: $sessionID)\n    }\n": types.EndSessionDocument,
     "\n    mutation setPlaylist($sessionID: Int!, $playlistID: String!) {\n        setPlaylist (sessionID: $sessionID, playlistID: $playlistID) {\n            numberOfVoters\n        }\n    }\n": types.SetPlaylistDocument,
     "\n    query playlists ($sessionID: Int!){\n        playlists (sessionID: $sessionID){\n            id\n            name\n            image\n        }\n    }\n": types.PlaylistsDocument,
-    "\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n": types.AddBonusVotesDocument,
-    "\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n": types.AddFazoolTokensDocument,
-    "\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n": types.SetSuperVoterSessionDocument,
     "\n    mutation updateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n": types.UpdateQueueDocument,
     "\n    mutation removeSongFromQueue($sessionID: Int!, $songID: String!) {\n        removeSongFromQueue(sessionID: $sessionID, songID: $songID) {\n            numberOfVoters\n        }\n    }\n": types.RemoveSongFromQueueDocument,
     "\n    query musicSearch ($sessionID: Int!, $query: String!){\n        musicSearch (sessionID: $sessionID, query: $query){\n            id\n            title\n            artist\n            image\n        }\n    }\n": types.MusicSearchDocument,
+    "\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n": types.AddBonusVotesDocument,
+    "\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n": types.AddFazoolTokensDocument,
+    "\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n": types.SetSuperVoterSessionDocument,
     "\n    mutation setSpotifyStreamingService ($spotifyRefreshToken: String!) {\n        setSpotifyStreamingService(spotifyRefreshToken: $spotifyRefreshToken){\n            id\n        }\n    }\n": types.SetSpotifyStreamingServiceDocument,
     "\n    mutation createSession {\n        createSession{\n            activeSession\n        }\n    }\n": types.CreateSessionDocument,
     "\n    mutation removeSpotifyStreamingService($targetAccountID: Int!) {\n        removeSpotifyStreamingService(targetAccountID: $targetAccountID) {\n            id\n        }\n    }\n": types.RemoveSpotifyStreamingServiceDocument,
     "\n    query getVoterToken ($sessionID: Int!) {\n        voterToken(sessionID:$sessionID)\n    }\n": types.GetVoterTokenDocument,
     "\n    mutation login ($accountLogin: AccountLogin!) {\n        login(accountLogin:$accountLogin)\n    }\n": types.LoginDocument,
     "\n    mutation createAccount ($newAccount: NewAccount!) {\n        createAccount(newAccount: $newAccount)\n    }\n": types.CreateAccountDocument,
+    "\n    mutation createPasswordChangeRequest ($email: String!) {\n        createPasswordChangeRequest(email:$email)\n    }\n": types.CreatePasswordChangeRequestDocument,
 };
 
 /**
@@ -89,18 +90,6 @@ export function graphql(source: "\n    query playlists ($sessionID: Int!){\n    
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n"): (typeof documents)["\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n"): (typeof documents)["\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n"): (typeof documents)["\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function graphql(source: "\n    mutation updateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n"): (typeof documents)["\n    mutation updateQueue($sessionID: Int!, $song: SongUpdate!) {\n        updateQueue(sessionID: $sessionID, song: $song) {\n            numberOfVoters\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -110,6 +99,18 @@ export function graphql(source: "\n    mutation removeSongFromQueue($sessionID: 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query musicSearch ($sessionID: Int!, $query: String!){\n        musicSearch (sessionID: $sessionID, query: $query){\n            id\n            title\n            artist\n            image\n        }\n    }\n"): (typeof documents)["\n    query musicSearch ($sessionID: Int!, $query: String!){\n        musicSearch (sessionID: $sessionID, query: $query){\n            id\n            title\n            artist\n            image\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n"): (typeof documents)["\n    mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {\n        addBonusVotes(sessionID: $sessionID, targetAccountID: $targetAccountID, bonusVoteAmount: $bonusVoteAmount) {\n            fazoolTokens\n        }\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n"): (typeof documents)["\n    mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {\n        addFazoolTokens(sessionID: $sessionID, targetAccountID: $targetAccountID, fazoolTokenAmount: $fazoolTokenAmount)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n"): (typeof documents)["\n    mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {\n        setSuperVoterSession(sessionID: $sessionID, targetAccountID: $targetAccountID) {\n            fazoolTokens\n        }\n    }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -134,6 +135,10 @@ export function graphql(source: "\n    mutation login ($accountLogin: AccountLog
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation createAccount ($newAccount: NewAccount!) {\n        createAccount(newAccount: $newAccount)\n    }\n"): (typeof documents)["\n    mutation createAccount ($newAccount: NewAccount!) {\n        createAccount(newAccount: $newAccount)\n    }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation createPasswordChangeRequest ($email: String!) {\n        createPasswordChangeRequest(email:$email)\n    }\n"): (typeof documents)["\n    mutation createPasswordChangeRequest ($email: String!) {\n        createPasswordChangeRequest(email:$email)\n    }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
