@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import Footer from '../components/Footer';
 import { ThemeModeToggle } from '../components/ThemeModeToggle';
-
+import { ButtonStyledP } from '@/components/ui/button-styled-p';
 
 const GET_ACCOUNT = graphql(`
     query getAccount {

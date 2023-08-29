@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Account, FazoolTokenAmount } from '@/gql/graphql';
 import { fazoolTokenCostMapping } from '@/constants';
+import { ButtonStyledP } from '@/components/ui/button-styled-p';
 
 const ADD_FAZOOL_TOKENS = graphql(`
     mutation addFazoolTokens($sessionID: Int!, $targetAccountID: Int!, $fazoolTokenAmount: FazoolTokenAmount!) {
@@ -60,14 +61,7 @@ function FazoolTokenOptions({sessionID, account}: FazoolTokenOptionsProps) {
     return (
     <Popover>
         <PopoverTrigger>
-            {account ? <p className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                {account.fazoolTokens}<Coins className='ml-2'/>
-            </p>
-            :
-            <p className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                0<Coins className='ml-2'/>
-            </p>
-            }
+            <ButtonStyledP variant={'outline'}>{account ? account.fazoolTokens : 0}<Coins className='ml-2'/></ButtonStyledP>
         </PopoverTrigger>
         <PopoverContent className='flex flex-col items-center gap-2'>
             <h1 className='text-xl'>Fazool Tokens</h1>

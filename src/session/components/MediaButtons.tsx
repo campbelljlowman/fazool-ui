@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { DialogClose } from '@radix-ui/react-dialog';
+import { ButtonStyledP } from '@/components/ui/button-styled-p';
 
 
 const UPDATE_CURRENTLY_PLAYING = graphql(`
@@ -75,8 +76,8 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
     return (
         <div>
             <Dialog>
-                <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                    <Settings className='h-8 w-8'/>
+                <DialogTrigger>
+                    <ButtonStyledP variant={'ghost'} size={'icon'}><Settings className='h-8 w-8'/></ButtonStyledP>
                 </DialogTrigger>
                 <DialogContent className='flex flex-col items-center'>
                     <DialogHeader>
@@ -85,8 +86,8 @@ function MediaButtons ({showMediaButtons, currentlyPlaying, sessionID}: MediaBut
                         </DialogTitle>
                     </DialogHeader>
                     <Separator/>
-                    <DialogClose onClick={endSession} className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2'>
-                        End Session
+                    <DialogClose onClick={endSession}>
+                        <ButtonStyledP variant={'destructive'}>End Session</ButtonStyledP>
                     </DialogClose>
                 </DialogContent>
             </Dialog>

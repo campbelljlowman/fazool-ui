@@ -8,6 +8,7 @@ import { Voter, Account } from '@/gql/graphql'
 import { toLowerCaseBesidesFirst } from '@/utils'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger, DialogTitle } from '@/components/ui/dialog'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { ButtonStyledP } from '@/components/ui/button-styled-p';
 
 const SET_SUPER_VOTER_SESSION = graphql(`
     mutation setSuperVoterSession($sessionID: Int!, $targetAccountID: Int!) {
@@ -39,9 +40,7 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
     return (
         <Popover>
             <PopoverTrigger>
-                <p className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                    {toLowerCaseBesidesFirst(voter.type)}
-                </p>
+                <ButtonStyledP variant={'outline'}>{toLowerCaseBesidesFirst(voter.type)}</ButtonStyledP>
             </PopoverTrigger>
             <PopoverContent className='flex flex-col items-center gap-2'>
                 <h1 className='text-xl'>Voter Type</h1>
@@ -55,8 +54,8 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
                             <Coins className='ml-2'/>
                         </div>
                         <Dialog>
-                            <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                                Get
+                            <DialogTrigger>
+                                <ButtonStyledP variant={'outline'}>Get</ButtonStyledP>
                             </DialogTrigger>
                             <DialogContent className='flex flex-col items-center '>
                                 <DialogHeader>
@@ -67,8 +66,8 @@ function VoterTypeOptions({sessionID, voter, account}: VoterTypeOptionsProps) {
                                         Confirm purchase of super voter status for {superVoterCost} Fazool tokens
                                     </DialogDescription>
                                 </DialogHeader>
-                                <DialogClose disabled={account == undefined} onClick={setSuperVoterSession} className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'>
-                                    Get
+                                <DialogClose disabled={account == undefined} onClick={setSuperVoterSession} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    <ButtonStyledP>Get</ButtonStyledP>
                                 </DialogClose>
                             </DialogContent>
                         </Dialog>

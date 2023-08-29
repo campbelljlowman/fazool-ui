@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client';
 import { Account, BonusVoteAmount, Voter } from '@/gql/graphql'
 import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { DialogClose } from '@radix-ui/react-dialog'
+import { ButtonStyledP } from '@/components/ui/button-styled-p';
 
 const ADD_BONUS_VOTES = graphql(`
     mutation addBonusVotes($sessionID: Int!, $targetAccountID: Int!, $bonusVoteAmount: BonusVoteAmount!) {
@@ -35,8 +36,8 @@ function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVo
                         <Coins className='ml-2'/>
                     </div>
                     <Dialog>
-                        <DialogTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                            Get
+                        <DialogTrigger>
+                                <ButtonStyledP variant={'outline'}>Get</ButtonStyledP>
                         </DialogTrigger>
                         <DialogContent className='flex flex-col items-center '>
                             <DialogHeader>
@@ -47,8 +48,8 @@ function BonusVoteOption({ numberOfBonusVotes, costInTokens, variant, addBonusVo
                                     Confirm purchase of {numberOfBonusVotes} bonus votes for {costInTokens} Fazool tokens
                                 </DialogDescription>
                             </DialogHeader>
-                            <DialogClose disabled={disabled} onClick={addBonusVotes} className='inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'>
-                                Get
+                            <DialogClose disabled={disabled} onClick={addBonusVotes} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    <ButtonStyledP>Get</ButtonStyledP>
                             </DialogClose>
                         </DialogContent>
                     </Dialog>
@@ -80,9 +81,7 @@ function BonusVoteOptions ({sessionID, voter, account}: BonusVoteOptionsProps) {
     return (
         <Popover>
             <PopoverTrigger>
-                <p className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                    {voter.bonusVotes} <ChevronsUp className='ml-2'/>
-                </p>
+                <ButtonStyledP variant={'outline'}>{voter.bonusVotes} <ChevronsUp className='ml-2'/></ButtonStyledP>
             </PopoverTrigger>
             <PopoverContent className='flex flex-col items-center gap-2'>
                 <h1 className='text-xl'>Bonus Votes</h1>
