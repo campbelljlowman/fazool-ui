@@ -6,12 +6,16 @@ import VoterTypeOptions from './VoterTypeOptions'
 import FazoolTokenOptions from './FazoolTokenOptions'
 import AccountAvater from './AccountAvater'
 import { ThemeModeToggle } from '@/website/components/ThemeModeToggle'
+import MediaButtons from '../components/MediaButtons'
+import { CurrentlyPlayingSong } from '@/gql/graphql'
 
-interface PurchaseHeaderProps {
-    voter:              Voter
-    account:            Account | undefined,
+interface SessionHeaderProps {
+    voter:      Voter
+    account:    Account | undefined
+    isAdmin:    boolean
+    currentlyPlaying:   CurrentlyPlayingSong | null | undefined,
 }
-function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
+function SessionHeader({voter, account, isAdmin, currentlyPlaying}: SessionHeaderProps) {
     const navigate = useNavigate();
     const params = useParams();
     if (!params.sessionID) {
@@ -26,12 +30,20 @@ function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
 
 
     return (
-        <div className='flex h-[8vh] w-full justify-between'>
+        <div className='flex h-[8vh] w-full justify-between items-center'>
+            {isAdmin && currentlyPlaying ? 
+            <div>
+                <div className='md:hidden block mx-4'>
+                    <MediaButtons showMediaButtons={true} currentlyPlaying={currentlyPlaying?.isPlaying} sessionID={sessionID}/>
+                </div>
+            </div>
+            : 
             <div className='flex items-center md:justify-start justify-center md:w-1/2 w-full mx-4 gap-4'>
                 <BonusVoteOptions sessionID={sessionID} voter={voter} account={account}/>
                 <VoterTypeOptions sessionID={sessionID} voter={voter} account={account}/>
                 <FazoolTokenOptions sessionID={sessionID} account={account}/>
             </div>
+            }
             <div className='flex items-center'>
                 <AccountAvater sessionID={sessionID} account={account}/>
                 <div className='mr-2'>
@@ -43,4 +55,4 @@ function PurchaseHeader({voter, account}: PurchaseHeaderProps) {
     )
 }
 
-export default PurchaseHeader
+export default SessionHeader

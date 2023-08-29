@@ -1,5 +1,5 @@
 import Song from './CurrentlyPlayingSong';
-import MediaButtons from './MediaButtons'
+import MediaButtons from '../components/MediaButtons'
 import { CurrentlyPlayingSong } from '../../gql/graphql';
 import ProgressBar from './ProgressBar';
 
