@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import { useNavigate } from "react-router-dom";
 import { graphql } from '../../gql';
+import { useState } from 'react';
 
 
 const CREATE_PASSWORD_CHANGE_REQUEST = graphql(`
@@ -22,9 +23,14 @@ const formSchema = z.object({
 })
 
 function CreatePasswordChangeRequest() {
+    const [mutationSuccessMessage, setMutationSuccessMessage] = useState("")
     const navigate = useNavigate();
 
-    const [createPasswordChangeRequestMutation, { error: createPasswordChangeRequestMutationError }] = useMutation(CREATE_PASSWORD_CHANGE_REQUEST)
+    const [createPasswordChangeRequestMutation, { error: createPasswordChangeRequestMutationError }] = useMutation(CREATE_PASSWORD_CHANGE_REQUEST, {
+        onCompleted() {
+            setMutationSuccessMessage("Password change request sent")
+        }
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -65,6 +71,7 @@ function CreatePasswordChangeRequest() {
                             )}
                         />
                         {createPasswordChangeRequestMutationError && <p className='text-destructive mt-2'>Password reset failed</p>}
+                        {mutationSuccessMessage && <p>{mutationSuccessMessage}</p>}
                         <Button type='submit' className='mt-1 w-1/3'>Reset</Button>
                         <Button className='w-1/3' variant={'secondary'} onClick={() => navigate('/login')}>Back to login</Button>
                     </form>
