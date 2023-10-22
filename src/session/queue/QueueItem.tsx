@@ -102,19 +102,21 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, removeEnabled, has
         <>
         {/* Mobile queue item */}
         <Card className='md:hidden mx-4 my-2 first:border-primary first:border-4 relative'>
-            <CardContent className='flex justify-between items-center p-4 pr-0 w-full'>
-                <div className='flex items-center gap-2 w-3/5'>
-                    <a href={spotifySongLink} target='_blank'>
-                        <img className='h-4 w-4 cursor-pointer border-2 border-[--border] rounded-full'  src={SpotifyLogo} alt='spotify logo'/>
-                    </a>
+            <CardContent className='flex justify-between items-center p-4 pl-2 pr-0 w-full'>
+                <div className='flex items-center gap-2 w-2/3'>
+                    <div className='flex flex-col items-center gap-1'>
+                        <Badge className=''>{queuedSong.votes}</Badge>
+                        <a href={spotifySongLink} target='_blank'>
+                            <img className='h-4 w-4 cursor-pointer border-2 border-[--border] rounded-full'  src={SpotifyLogo} alt='spotify logo'/>
+                        </a>
+                    </div>
                     <img className="h-9 w-9" src={queuedSong.simpleSong.image} alt="Album Cover"  />
                     <div className='w-3/5'>
                         <p className="font-medium text-sm  truncate w-full">{queuedSong.simpleSong.title}</p>
                         <p className="text-xs text-muted-foreground truncate w-full mb-1">{queuedSong.simpleSong.artist}</p>
                     </div>
                 </div>
-                <div className='flex justify-end items-center w-2/5'>
-                    <Badge className=''>{queuedSong.votes}</Badge>
+                <div className='flex justify-end items-center w-1/3'>
                     {downVote()}
                     {upvote()}
                 </div>
