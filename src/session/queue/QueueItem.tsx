@@ -99,7 +99,30 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, removeEnabled, has
     };
 
     return (
-        <Card className='w-5/6 m-4 first:border-primary first:border-4 relative'>
+        <>
+        {/* Mobile queue item */}
+        <Card className='md:hidden mx-4 my-2 first:border-primary first:border-4 relative'>
+            <CardContent className='flex justify-between items-center p-4 pr-0 w-full'>
+                <div className='flex items-center gap-2 w-3/5'>
+                    <a href={spotifySongLink} target='_blank'>
+                        <img className='h-4 w-4 cursor-pointer border-2 border-[--border] rounded-full'  src={SpotifyLogo} alt='spotify logo'/>
+                    </a>
+                    <img className="h-9 w-9" src={queuedSong.simpleSong.image} alt="Album Cover"  />
+                    <div className='w-3/5'>
+                        <p className="font-medium text-sm  truncate w-full">{queuedSong.simpleSong.title}</p>
+                        <p className="text-xs text-muted-foreground truncate w-full mb-1">{queuedSong.simpleSong.artist}</p>
+                    </div>
+                </div>
+                <div className='flex justify-end items-center w-2/5'>
+                    <Badge className=''>{queuedSong.votes}</Badge>
+                    {downVote()}
+                    {upvote()}
+                </div>
+            </CardContent>
+            {removeEnabled && <XCircle className='absolute -top-2 -right-2 cursor-pointer bg-background rounded-full' onClick={removeSongFromQueue} />}
+        </Card>
+        {/* Desktop queue item */}
+        <Card className='hidden md:block w-5/6 m-4 first:border-primary first:border-4 relative'>
             <CardContent className='p-4 pb-0'>
                 <div className='flex justify-between w-full mb-2'>
                         <a href={spotifySongLink} target='_blank'>
@@ -119,6 +142,7 @@ function QueueItem({ queuedSong, sessionID, decrementEnabled, removeEnabled, has
             </CardFooter>
             {removeEnabled && <XCircle className='absolute -top-2 -right-2 cursor-pointer bg-background rounded-full' onClick={removeSongFromQueue} />}
         </Card>
+        </>
     );
 }
 
