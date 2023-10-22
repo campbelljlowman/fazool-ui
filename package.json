@@ -39,6 +39,7 @@
     "graphql": "^16.6.0",
     "graphql-ws": "^5.10.1",
     "lucide-react": "^0.259.0",
+    "next": "^13.4.19",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.45.1",
@@ -50,8 +51,10 @@
     "zod": "^3.21.4"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "test": "vitest",
     "codegen": "graphql-codegen --config codegen.ts"
   },
