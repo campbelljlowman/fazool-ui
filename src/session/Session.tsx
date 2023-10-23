@@ -176,7 +176,25 @@ function Session() {
         subscribeToSession();
     }, []);
 
-
+    useEffect(() => {
+        const getScreenWakeLockIfAdmin = () => {
+            if (getVoterQueryData !== undefined && isAdmin(getVoterQueryData.voter)) {
+                try {
+                    return navigator.wakeLock.request('screen');
+                } catch(err) {
+                    console.log(`Couldn't keep session page awake for admin: ${err}`)
+                }
+            }
+        };
+        let screenLock = getScreenWakeLockIfAdmin()
+        return () => {
+            if (screenLock) {
+                screenLock.then((WakeLockSentinel) => {
+                    WakeLockSentinel?.release()
+                })
+            }
+        }
+    }, [getVoterQueryData]);
 
     // This error should keep whole session from loading, not just queue
     if (getSessionStateQueryError) return <div>Error getting session state! {getSessionStateQueryError.message}</div>
