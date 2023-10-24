@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useState } from 'react';
+import { Eye } from 'lucide-react';
 
 
 const LOGIN = graphql(`
@@ -27,6 +29,8 @@ function Login() {
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get("redirect")
     const navigate = useNavigate();
+    const [passwordInputType, setPasswordInputType] = useState<'text' | 'password'>('password')
+
 
     const [loginMutation, { error: loginMutationError }] = useMutation(LOGIN, {
         onCompleted(data) {
@@ -45,6 +49,14 @@ function Login() {
             }
         }
     });
+
+    const togglePasswordInputType = () => {
+        if(passwordInputType == 'text') {
+            setPasswordInputType('password')
+        } else {
+            setPasswordInputType('text')
+        }
+    }
 
     const logoOnClick = () => {
         navigate('/');
@@ -95,9 +107,12 @@ function Login() {
                             render={({ field }) => (
                                 <FormItem className='w-full'>
                                     <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder='Password' type='password' {...field}/>
-                                    </FormControl>
+                                    <div className='flex'>
+                                        <FormControl>
+                                            <Input placeholder='Password' type={passwordInputType} {...field}/>
+                                        </FormControl>
+                                        <Button onClick={togglePasswordInputType} variant={'ghost'} size={'icon'}><Eye/></Button>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}

@@ -4,12 +4,14 @@ import { graphql } from '../../gql';
 import { ReactComponent as LogoIcon }  from '../../assets/vectors/logo-icon.svg'
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import validator from 'validator';
+import { Eye } from 'lucide-react';
+import { useState } from 'react';
 
 
 const CREATE_ACCOUNT = graphql(`
@@ -26,10 +28,12 @@ const formSchema = z.object({
     password: z.string().min(1, { message: "Password is required" })
 })
 
+
 function Register() {
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get("redirect")
     const navigate = useNavigate();
+    const [passwordInputType, setPasswordInputType] = useState<'text' | 'password'>('password')
 
     // TODO: Get errors variable here and check 
     const [createAccountMutation, { error: createAccountMutationError }] = useMutation(CREATE_ACCOUNT, {
@@ -49,6 +53,14 @@ function Register() {
             }      
         }
     });
+
+    const togglePasswordInputType = () => {
+        if(passwordInputType == 'text') {
+            setPasswordInputType('password')
+        } else {
+            setPasswordInputType('text')
+        }
+    }
 
     const logoOnClick = () => {
         navigate('/');
@@ -80,7 +92,6 @@ function Register() {
 
     // TODO: parse error message and don't replace form
     if (createAccountMutationError) console.log(`Error! ${createAccountMutationError.message}`)
-
 
     return (
         <div className='flex flex-col justify-center items-center md:h-full'>
@@ -147,9 +158,12 @@ function Register() {
                             render={({ field }) => (
                                 <FormItem className='w-full'>
                                     <FormLabel>Password*</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder='Password' {...field}/>
-                                    </FormControl>
+                                    <div className='flex'>
+                                        <FormControl>
+                                            <Input placeholder='Password' type={passwordInputType} {...field}/>
+                                        </FormControl>
+                                        <Button onClick={togglePasswordInputType} variant={'ghost'} size={'icon'}><Eye/></Button>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
