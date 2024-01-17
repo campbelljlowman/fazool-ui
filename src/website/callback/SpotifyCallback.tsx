@@ -13,8 +13,8 @@ const SET_SPOTIFY_STREAMING_SERVICE = graphql(`
     }
 `);
 
-const spotifyClientId = "a7666d8987c7487b8c8f345126bd1f0c";
-const spotifyClientSecret = "efa8b45e4d994eaebc25377afc5a9e8d";
+const spotifyClientId = `${import.meta.env.VITE_SPOTIFY_CLIENT_ID}`
+const spotifyClientSecret = `${import.meta.env.VITE_SPOTIFY_CLIENT_SECRET}`
 // TODO: find a way to not have to hard code its own address
 const redirectURI = `${import.meta.env.VITE_FRONTEND_SERVER_HTTP_ADDRESS}/callback`
 
